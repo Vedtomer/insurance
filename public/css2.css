@@ -1,0 +1,393 @@
+/**
+ * @author zhixin wen <wenzhixin2010@gmail.com>
+ */
+
+ .ms-parent {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
+.ms-choice {
+    display: block;
+    width: 100%;
+    height: 26px;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid #aaa;
+    text-align: left;
+    white-space: nowrap;
+    line-height: 26px;
+    color: #444;
+    text-decoration: none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.ms-choice.disabled {
+    background-color: #f4f4f4;
+    background-image: none;
+    border: 1px solid #ddd;
+    cursor: default;
+}
+
+.ms-choice > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    padding-left: 8px;
+}
+
+.ms-choice > span.placeholder {
+    color: #999;
+}
+
+.ms-choice > div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 25px;
+    background: url('multiple-select.png') left top no-repeat;
+}
+
+.ms-choice > div.open {
+    background: url('multiple-select.png') right top no-repeat;
+}
+
+.ms-drop {
+    width: 100%;
+    overflow: hidden;
+    display: none;
+    margin-top: -1px;
+    padding: 0;
+    position: absolute;
+    z-index: 1000;
+    background: #fff;
+    color: #000;
+    border: 1px solid #aaa;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.ms-drop.bottom {
+    top: 100%;
+    -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+    -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+}
+
+.ms-drop.top {
+    bottom: 100%;
+    -webkit-box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
+    -moz-box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
+    box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
+}
+
+.ms-search {
+    display: inline-block;
+    margin: 0;
+    min-height: 26px;
+    padding: 4px;
+    position: relative;
+    white-space: nowrap;
+    width: 100%;
+    z-index: 10000;
+}
+
+.ms-search input {
+    width: 100%;
+    height: auto !important;
+    min-height: 24px;
+    padding: 0 20px 0 5px;
+    margin: 0;
+    outline: 0;
+    font-family: sans-serif;
+    font-size: 1em;
+    border: 1px solid #aaa;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    background: #fff url('multiple-select.png') no-repeat 100% -22px;
+    background: url('multiple-select.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+    background: url('multiple-select.png') no-repeat 100% -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+    background: url('multiple-select.png') no-repeat 100% -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+    background: url('multiple-select.png') no-repeat 100% -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+    background: url('multiple-select.png') no-repeat 100% -22px, -ms-linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+    background: url('multiple-select.png') no-repeat 100% -22px, linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+}
+
+.ms-search, .ms-search input {
+    -webkit-box-sizing: border-box;
+    -khtml-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ms-drop ul {
+    overflow: auto;
+    margin: 0;
+    padding: 5px 8px;
+}
+
+.ms-drop ul > li {
+    list-style: none;
+    display: list-item;
+    background-image: none;
+    position: static;
+}
+
+.ms-drop ul > li .disabled {
+    opacity: .35;
+    filter: Alpha(Opacity=35);
+}
+
+.ms-drop ul > li.multiple {
+    display: block;
+    float: left;
+}
+
+.ms-drop ul > li.group {
+    clear: both;
+}
+
+.ms-drop ul > li.multiple label {
+    width: 100%;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ms-drop ul > li label {
+    font-weight: normal;
+    display: block;
+    white-space: nowrap;
+}
+
+.ms-drop ul > li label.optgroup {
+    font-weight: bold;
+}
+
+.ms-drop input[type="checkbox"] {
+    vertical-align: middle;
+}
+
+.ms-drop .ms-no-results {
+    display: none;
+}
+
+
+html, body {
+  
+    height:100%;;
+   line-height: 1.20;
+   
+      font-size: 16px;
+      font-weight: bold;
+      
+  }
+  #left-shaddow {
+      left: 0px; width: 301px; height: 100%; position: fixed; z-index: -1; background-image: url("../img/ck-left-shaddow-background.png");
+  }
+  #right-shaddow {
+      width: 301px; height: 100%; right: 0px; position: fixed; z-index: -1; background-image: url("../img/ck-right-shaddow-background.png");
+  }
+  input { 
+      text-align: center; 
+  }
+  .TimeHeadCss {
+      text-align: center; color: white; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; background-color: rgb(241, 6, 39);
+  }
+  .CalcHeadCss {
+      text-align: center; color: white; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; background-color: rgb(54, 54, 53);
+  }
+  .sr {
+      text-align: center; color: black; font-family: "Courier New", Courier, monospace; font-size: 15px; font-weight: bold;
+  }
+  .footer {
+      text-align: center; color: rgb(1, 2, 13); font-family: "Courier New", Courier, monospace; font-size: 11px; font-weight: bold; background-color: rgb(251, 131, 2);
+  }
+  #incalcrow1 {
+      background-color: rgb(0, 255, 0);
+  }
+  #incalcrow2 {
+      background-color: rgb(250, 3, 112);
+  }
+  #incalcrow3 {
+      background-color: rgb(255, 0, 0);
+  }
+  #incalcrow4 {
+      background-color: rgb(8, 211, 229);
+  }
+  #incalcrow5 {
+      background-color: rgb(255, 255, 0);
+  }
+  #incalcrow6 {
+      background-color: rgb(156, 34, 242);
+  }
+  #incalcrow7 {
+      background-color: rgb(177, 18, 54);
+  }
+  #incalcrow8 {
+      background-color: rgb(34, 127, 242);
+  }
+  #incalcrow9 {
+      background-color: rgb(251, 131, 2);
+  }
+  #incalcrow10 {
+      background-color: rgb(255, 0, 255);
+  }
+  .Textcss {
+      border: 0px solid rgb(255, 255, 255); border-image: none; width: 30px; height: 20px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: bold;
+  }
+  .Qtytxtcss {
+      border: 0px solid rgb(255, 255, 255); border-image: none; width: 38px; height: 16px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: bold; background-color: rgb(255, 255, 255);
+  }
+  .Amnttxtcss {
+      border: 0px solid rgb(255, 255, 255); border-image: none; width: 65px; height: 15px; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: bold; background-color: rgb(255, 255, 255);
+  }
+  .CalcBox-out {
+      background-position: center; width: 38px; height: 27px; background-image: url("../img/CalcBox.png"); background-repeat: no-repeat;
+  }
+  .QtyBox-out {
+      background-position: center; margin: 0px;  width: 57px; height: 24px; background-image: url("../img/qtybox.png"); background-repeat: no-repeat;
+  }
+  .Amtbox-out {
+      background-position: center; width: 80px; height: 27px; background-image: url("../img/amtbox.png"); background-repeat: no-repeat;
+  }
+  .loginbox-out {
+      background-position: center; padding: 4px 2px 4px 8px; width: 150px; height: 25px; background-image: url("../img/loginbox.png"); background-repeat: no-repeat;
+  }
+  .loginbox {
+      border: 0px solid rgb(255, 255, 255); border-image: none; width: 110px; height: 15px;
+  }
+  .LotteryNameCss {
+      text-align: center; color: black; text-transform: uppercase; line-height: normal; font-family: "Arial Black", Gadget, sans-serif; font-size: 13px; font-style: normal; font-weight: 400;
+  }
+  .lotteryresult {
+      text-align: center; color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif; font-size: 25px; font-weight: bold;
+  }
+  .ugamename {
+      text-align: center; color: black; line-height: 12px;   font-size: 12px; font-weight: bold; white-space: nowrap;
+  }
+  .bgamename {
+      height: 50px; text-align: center; color: black; padding-bottom: 10px; font-size: 15px; font-weight: bold;
+  }
+  .title {
+      color: rgb(255, 255, 255); font-size: 33px; font-weight: bold;
+  }
+  .slogan {
+      color: rgb(255, 255, 0); font-size: 15px;
+  }
+  a.navbar {
+      color: rgb(255, 255, 255); font-size: 11px; font-weight: bold; text-decoration: none;
+  }
+  a.navbar:hover {
+      color: rgb(255, 153, 0); font-size: 11px; font-weight: bold; text-decoration: none;
+  }
+  .head-1 {
+      color: rgb(255, 153, 0); font-size: 14px; font-weight: bold;
+  }
+  a.navbar2 {
+      color: rgb(0, 0, 0); font-size: 10px; text-decoration: none;
+  }
+  a.navbar2:hover {
+      color: rgb(0, 0, 0); font-size: 10px; text-decoration: none;
+  }
+  h1 {
+      color: rgb(255, 204, 0); font-size: 21px;
+  }
+  .txt-1 {
+      color: rgb(255, 255, 255);
+  }
+  .head-2 {
+      color: rgb(255, 204, 0); font-size: 17px; font-weight: bold;
+  }
+  a.navbar4 {
+      color: rgb(39, 136, 173); font-size: 11px; text-decoration: none;
+  }
+  a.navbar4:hover {
+      color: rgb(255, 255, 255); font-size: 11px; text-decoration: underline;
+  }
+  a.navbar3 {
+      color: rgb(255, 255, 255); font-size: 11px; text-decoration: none;
+  }
+  a.navbar3:hover {
+      color: rgb(255, 255, 255); font-size: 11px; text-decoration: underline;
+  }
+  
+  
+  fieldset {
+      background-color: rgb(255, 255, 255);
+  }
+  .legend {
+      float: right;
+  }
+  .reptable {
+      border-collapse: collapse; border-spacing: 2px;
+  }
+  .reptable th {
+      padding: 5px; border: 1px solid rgb(221, 221, 221) !important; border-image: none !important; text-align: center; line-height: 16px; font-weight: bold;
+  }
+  .reptable td {
+      padding: 5px; border: 1px solid rgb(221, 221, 221) !important; border-image: none !important; text-align: center; line-height: 11px;
+  }
+  .caltable {
+      border-collapse: collapse; border-spacing: 0;
+  }
+  .` th {
+        border: 1px solid rgb(240, 173, 78) !important; border-image: none !important; text-align: center; line-height: 11px; font-weight: bold;
+  }
+  .caltable td {
+        border: 2px solid   !important;    border-image: none !important; text-align: center;   border-width:thick;border-color:Black
+  }
+  .timetable {
+      border-collapse: collapse; border-spacing: 0;
+  }
+  .timetable td {
+      border: 1px solid rgb(148, 144, 144) !important; border-image: none !important; height: 100%; text-align: center;
+  }
+  .game {
+      line-height: .75; font-size: 18px; font-weight: bold;
+  }
+  .chart {
+      color: rgb(22, 70, 102); line-height: 1; font-size: 28px; font-weight: bold;
+  }
+  .head {
+      line-height: .75; font-size: 18px; font-weight: bold;
+  }
+  .sr {
+      line-height: 1; font-size: 18px; font-weight: bold;
+  }
+  .font {
+      color: rgb(247, 15, 7); font-size: 20px;
+  }
+  .black {
+      color: rgb(10, 10, 10); font-size: 20px;
+  }
+  .red {
+      color: rgb(251, 16, 60); font-size: 25px; font-weight: bold;
+  }
+  .name {
+      text-align: center; color: black; font-size: 12px; font-weight: bold;
+  }
+  .result {
+       font-size: 14px; font-weight: bold;color:red;
+  }
+  .topresult {
+       color: rgb(226, 38, 3); font-size: 35px; font-weight: bold;
+  }
