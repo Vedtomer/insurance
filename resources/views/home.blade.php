@@ -1,12 +1,12 @@
 <h1>GOTO => admin/login</h1>
-@section('name')
+{{-- @section('name')
     
 @endsection
 
 @extends('
-')
-@foreach ($collection as $item)
+') --}}
+{{-- @foreach ($collection as $item)
     
-@endforeach
+@endforeach --}}
 
 

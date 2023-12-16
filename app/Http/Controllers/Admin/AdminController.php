@@ -201,7 +201,7 @@ class AdminController extends Controller
         $userdata = new Agent();
         $userdata->name = $request->name;
         $userdata->email = $request->email;
-        $userdata->password = bcrypt($request->password); // Password ko encrypt karna mat bhoolen
+        $userdata->password = ($request->password); // Password ko encrypt karna mat bhoolen
         $userdata->state = $request->state;
         $userdata->city = $request->city;
 
