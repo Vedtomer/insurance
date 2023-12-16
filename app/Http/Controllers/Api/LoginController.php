@@ -44,12 +44,12 @@ public function agentlogin(Request $request)
             }
             $record['name']=$user->name;
             $record['email']=$user->email;
-            $record['passwprd']=$user->password;
+            // $record['passwprd']=$user->password;
             $record['state']=$user->state;
             $record['city']=$user->city;
             $record['address']=$user->address;
             $record['mobile_number']=$user->mobile_number;
-            $record['status']=$user->status;
+            // $record['status']=$user->status;
             $record['commission']=$user->commission;
             
             $token=   $user->createToken('MyApp')-> accessToken; 
@@ -82,9 +82,12 @@ public function agentlogout()
 
 public function getPolicy(Request $request)
 {
+    // return $request;
     try {
         $agent = new Agent();
-        $result = $agent->getPoliciesCount();
+
+
+        $result = $agent->getPoliciesCount($request);
 
         
         return $result;

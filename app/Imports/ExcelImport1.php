@@ -5,23 +5,23 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Models\Royalsundaram;
 use Illuminate\Support\Facades\Log;
-
+use Carbon\Carbon;
 class ExcelImport1 implements ToModel , WithHeadingRow
 {
     public function model(array $row)
     {
-        Log:info($row);
+        // Log:info($row);
         return new Royalsundaram([
      
 
         'branch'=> $row['branch'], 
         'userid'=> $row['userid'], 
-        'policy_link'=> $row['policy_link'],
+        // 'policy_link'=> $row['policy_link'],
         'policy'=> $row['policy'], 
         'prody666yhuct'=> $row['prody666yhuct'], 
         'covernotenumber'=> $row['covernotenumber'], 
         'covernoteissuedate'=> $row['covernoteissuedate'], 
-        'creationdate'=> $row['creationdate'], 
+        'creationdate'=> Carbon::parse($row['creationdate'])->timestamp,
         'lastmodifiedby'=> $row['lastmodifiedby'], 
         'lastmodifiedtime'=> $row['lastmodifiedtime'], 
         'businessstatus'=> $row[ 'businessstatus'], 

@@ -1,19 +1,20 @@
 <?php
 
 namespace App\Imports;
+
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Models\Shriramgi;
 use Illuminate\Support\Facades\Log;
-
+use Carbon\Carbon;
 class ExcelImport2 implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        Log:info($row);
+        // Log:info($row);
         return new Shriramgi([
             
-            'policy_link'=> $row['policy_link'],
+            // 'policy_link'=> $row['policy_link'],
             'sno' => $row['sno'],
             'proposal_no'=> $row['proposal_no'],
             'policy_no' => $row['policy_no'],
@@ -21,7 +22,8 @@ class ExcelImport2 implements ToModel, WithHeadingRow
             'branch_name' => $row['branch_name'],
             'proposal_reg_date'=> $row['proposal_reg_date'], 
             'policy_issuance_date'=> $row['policy_issuance_date'], 
-            'policy_start_date'=> $row['policy_start_date'], 
+            'policy_start_date'=>$timestamp = \Carbon\Carbon::createFromFormat('d/m/Y', $row['policy_start_date'])->timestamp,
+            
             'policy_end_date'=> $row['policy_end_date'], 
             'product_name'=> $row['product_name'], 
             'product_class'=> $row['product_class'], 
