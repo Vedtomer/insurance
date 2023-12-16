@@ -12,7 +12,8 @@ class ExcelImport2 implements ToModel, WithHeadingRow
     {
         Log:info($row);
         return new Shriramgi([
-     
+            
+            'policy_link'=> $row['policy_link'],
             'sno' => $row['sno'],
             'proposal_no'=> $row['proposal_no'],
             'policy_no' => $row['policy_no'],

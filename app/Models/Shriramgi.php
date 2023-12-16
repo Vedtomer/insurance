@@ -10,7 +10,8 @@ class Shriramgi extends Model
     use HasFactory;
     protected $table = 'shriramgi'; 
     protected $fillable = [
-       
+
+       'policy_link',
         'sno',
         'proposal_no',
         'policy_no',

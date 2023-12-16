@@ -16,6 +16,7 @@ class ExcelImport1 implements ToModel , WithHeadingRow
 
         'branch'=> $row['branch'], 
         'userid'=> $row['userid'], 
+        'policy_link'=> $row['policy_link'],
         'policy'=> $row['policy'], 
         'prody666yhuct'=> $row['prody666yhuct'], 
         'covernotenumber'=> $row['covernotenumber'], 

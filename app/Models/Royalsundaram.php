@@ -13,6 +13,7 @@ class Royalsundaram extends Model
        
         'branch', 
         'userid', 
+        'policy_link',
         'policy', 
         'prody666yhuct', 
         'covernotenumber', 
