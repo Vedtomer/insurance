@@ -11,7 +11,7 @@ class Shriramgi extends Model
     protected $table = 'shriramgi'; 
     protected $fillable = [
 
-       'policy_link',
+        'policy_link',
         'sno',
         'proposal_no',
         'policy_no',
@@ -50,7 +50,8 @@ class Shriramgi extends Model
         'cgst_amount',
 
         'net_premium',
-        'agent_id'
+        'agent_id',
+        'agent_commission'
        
     ];
 }

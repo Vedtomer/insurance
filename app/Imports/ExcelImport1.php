@@ -21,7 +21,8 @@ class ExcelImport1 implements ToModel , WithHeadingRow
         'prody666yhuct'=> $row['prody666yhuct'], 
         'covernotenumber'=> $row['covernotenumber'], 
         'covernoteissuedate'=> $row['covernoteissuedate'], 
-        'creationdate'=> Carbon::parse($row['creationdate'])->timestamp,
+        'creationdate' => Carbon::createFromFormat('d/m/Y H:i:s', $row['creationdate']),
+
         'lastmodifiedby'=> $row['lastmodifiedby'], 
         'lastmodifiedtime'=> $row['lastmodifiedtime'], 
         'businessstatus'=> $row[ 'businessstatus'], 

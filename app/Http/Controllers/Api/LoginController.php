@@ -56,8 +56,7 @@ public function agentlogin(Request $request)
             
        return response([
         'status' => true,
-        'data' => $record,'token'=>$token,
-        'message' => 'Login successfully'
+        'data' => $record,'token'=>$token,8000
     ]);
 
         }

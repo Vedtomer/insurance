@@ -22,7 +22,7 @@ class ExcelImport2 implements ToModel, WithHeadingRow
             'branch_name' => $row['branch_name'],
             'proposal_reg_date'=> $row['proposal_reg_date'], 
             'policy_issuance_date'=> $row['policy_issuance_date'], 
-            'policy_start_date'=>$timestamp = \Carbon\Carbon::createFromFormat('d/m/Y', $row['policy_start_date'])->timestamp,
+            'policy_start_date'=> Carbon::createFromFormat('d/m/Y', $row['policy_start_date']),
             
             'policy_end_date'=> $row['policy_end_date'], 
             'product_name'=> $row['product_name'], 

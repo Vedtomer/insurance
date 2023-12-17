@@ -61,18 +61,18 @@ class Agent extends Authenticatable implements MustVerifyEmail
                 $startDate = Carbon::now()->firstOfMonth();
             } else {
                 // Convert the provided date to the correct format (date only)
-                $startDate = Carbon::createFromFormat('d/m/Y', $startDate)->startOfDay();
+                $startDate = Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay();
             }
 
             if (empty($endDate)) {
                 $endDate = Carbon::now();
             } else {
                 // Convert the provided date to the correct format (date only)
-                $endDate = Carbon::createFromFormat('d/m/Y', $endDate)->endOfDay();
+                $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
             }
 
             $royalData = Royalsundaram::where('agent_id',Auth::id())
-                ->whereBetween('creationdate', [$startDate->timestamp, $endDate->timestamp])
+                ->whereBetween('creationdate', [$startDate,$endDate])
                 ->select('agent_id', 'policy as policy_no', 'creationdate as policy_start_date', 'expirydate as policy_end_date', 'policyholder as customername', 'policypremium as premium')
                 ->get();
 
