@@ -84,11 +84,7 @@ public function getPolicy(Request $request)
     // return $request;
     try {
         $agent = new Agent();
-
-
         $result = $agent->getPoliciesCount($request);
-
-        
         return $result;
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
