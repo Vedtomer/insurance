@@ -69,11 +69,11 @@ class Agent extends Authenticatable implements MustVerifyEmail
                 $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
             }
             $royalData = Royalsundaram::whereBetween('creationdate', [$startDate, $endDate])
-                ->select('agent_id', 'policy as policy_no', 'creationdate as policy_start_date', 'expirydate as policy_end_date', 'policyholder as customername', 'policypremium as premium')
+                ->select('agent_id', 'policy as policy_no', 'creationdate as policy_start_date', 'expirydate as policy_end_date', 'policyholder as customername', 'policypremium as premium','agent_commission')
                 ->get();
     
             $shriramData = Shriramgi::whereBetween('policy_start_date', [$startDate, $endDate])
-                ->select('agent_id', 'policy_no', 'policy_start_date', 'policy_end_date', 'insured_name as customername', 'net_premium as premium')
+                ->select('agent_id', 'policy_no', 'policy_start_date', 'policy_end_date', 'insured_name as customername', 'net_premium as premium','agent_commission')
                 ->get();
     
             $combinedData = collect();
@@ -89,6 +89,8 @@ class Agent extends Authenticatable implements MustVerifyEmail
                     'policy_end_date' => $royalItem->policy_end_date,
                     'customername' => $royalItem->customername,
                     'premium' => $royalItem->premium,
+                    'agent_commission' => $royalItem->agent_commission,
+                    'insurance_company' => "Royal Sundaram",
                 ]);
             }
     
@@ -103,6 +105,8 @@ class Agent extends Authenticatable implements MustVerifyEmail
                     'policy_end_date' => $shriramItem->policy_end_date,
                     'customername' => $shriramItem->customername,
                     'premium' => $shriramItem->premium,
+                    'agent_commission' => $royalItem->agent_commission,
+                    'insurance_company' => "Shriram",
                 ]);
             }
     

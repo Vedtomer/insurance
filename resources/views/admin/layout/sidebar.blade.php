@@ -41,32 +41,21 @@
                         Dashboard
                     </a>
                 </li>
-                <li>
-                    <a href="" >
-                        <i class="metismenu-icon pe-7s-rocket"></i>
-                        Home
-                    </a>
-                </li>
+               
                 <li>
                     <a href="user">
                         <i class="metismenu-icon pe-7s-display2"></i>
-                        Agent
+                        Agent List
                     </a>
                 </li>
                
                 <li>
                     <a href="excel">
                         <i class="metismenu-icon pe-7s-graph2"></i>
-                        Excel
+                       Upload Policy 
                     </a>
                 </li>
-                <li>
-                    <a href="">
-                        <i class="metismenu-icon pe-7s-diamond"></i>
-                        Result
-                        
-                    </a>
-                </li>
+               
                    <li>
                     <a href="royalsundaram">
                         <i class="metismenu-icon pe-7s-eyedropper">
@@ -79,17 +68,8 @@
                         Shriramgi
                     </a>
                 </li>
-                    {{-- <ul>
-                        <li>
-                            <a href="elements-buttons-standard.html">
-                                {{-- <i class="metismenu-icon"></i> --}}
-                                {{-- Buttons
-                            </a> --}}
-                        {{-- </li> --}}
-                       
                     
-                    {{-- </ul> --}}
-                    <li  >
+                    {{-- <li  >
                         <a href="transaction">
                             <i class="metismenu-icon pe-7s-display2"></i>
                             Transaction
@@ -98,9 +78,9 @@
                 <li>
                     <a href="">
                         <i class="metismenu-icon pe-7s-car"></i>
-                        Components
+                        Components --}}
                         {{-- <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i> --}}
-                    </a>
+                    {{-- </a> --}}
                     {{-- <ul>
                         <li>
                             <a href="components-tabs.html">
@@ -169,12 +149,12 @@
                             </a>
                         </li>
                     </ul> --}}
-                </li>
+                {{-- </li>
               
                 <li class="app-sidebar__heading"></li>
              
                 {{-- <li class="app-sidebar__heading">Forms</li> --}}
-                <li>
+                {{-- <li>
                     <a href="">
                         <i class="metismenu-icon pe-7s-mouse">
                         </i>Forms Controls
@@ -191,22 +171,22 @@
                         <i class="metismenu-icon pe-7s-pendrive">
                         </i>Forms Validation
                     </a>
-                </li>
+                </li> --}}
                 {{-- <li class="app-sidebar__heading">Charts</li> --}}
-                <li>
+                {{-- <li>
                     <a href="">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>ChartJS
                     </a>
                 </li>
                 {{-- <li class="app-sidebar__heading">PRO Version</li> --}}
-                <li>
+                {{-- <li>
                     <a href="https://dashboardpack.com/theme-details/architectui-dashboard-html-pro/" target="_blank">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         Upgrade to PRO
-                    </a>
-                </li>
+                    </a> --}}
+                {{-- </li>  --}}
             </ul>
         </div>
     </div>
