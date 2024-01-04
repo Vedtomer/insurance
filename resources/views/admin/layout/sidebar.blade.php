@@ -41,7 +41,12 @@
                         Dashboard
                     </a>
                 </li>
-               
+                {{-- <li>
+                    <a href="" >
+                        <i class="metismenu-icon pe-7s-rocket"></i>
+                        Home
+                    </a>
+                </li> --}}
                 <li>
                     <a href="user">
                         <i class="metismenu-icon pe-7s-display2"></i>
@@ -52,22 +57,36 @@
                 <li>
                     <a href="excel">
                         <i class="metismenu-icon pe-7s-graph2"></i>
-                       Upload Policy 
+                        Import Excel
                     </a>
                 </li>
-               
+                {{-- <li>
+                    <a href="">
+                        <i class="metismenu-icon pe-7s-diamond"></i>
+                        Result
+                        
+                    </a>
+                </li> --}}
                    <li>
                     <a href="royalsundaram">
                         <i class="metismenu-icon pe-7s-eyedropper">
                         </i>Royalsundaram
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="shriramgi">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Shriramgi
                     </a>
-                </li>
+                </li> --}}
+                    {{-- <ul>
+                        <li>
+                            <a href="elements-buttons-standard.html">
+                                {{-- <i class="metismenu-icon"></i> --}}
+                                {{-- Buttons
+                            </a> --}}
+                        {{-- </li> --}}
+                       
                     
                     {{-- <li  >
                         <a href="transaction">
@@ -75,7 +94,7 @@
                             Transaction
                         </a>
                     </li>
-                <li>
+                {{-- <li>
                     <a href="">
                         <i class="metismenu-icon pe-7s-car"></i>
                         Components --}}
@@ -152,7 +171,7 @@
                 {{-- </li>
               
                 <li class="app-sidebar__heading"></li>
-             
+              --}}
                 {{-- <li class="app-sidebar__heading">Forms</li> --}}
                 {{-- <li>
                     <a href="">
@@ -185,8 +204,8 @@
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         Upgrade to PRO
-                    </a> --}}
-                {{-- </li>  --}}
+                    </a>
+                </li> --}}
             </ul>
         </div>
     </div>

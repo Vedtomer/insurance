@@ -20,9 +20,10 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use App\Imports\ExcelImport1;
 use App\Imports\ExcelImport2;
-
+use Illuminate\Support\Facades\Storage;
 // use App\Imports\ExcelImport;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 
 class AdminController extends Controller
@@ -179,8 +180,13 @@ class AdminController extends Controller
 
     public function user()
     {
-        $users = Agent::all();
+        $users = Agent::orderBy('created_at', 'desc')->get();
+
         return view('admin.user', ['data' => $users]);
+    }
+
+    public function useradd(){
+        return view('admin.useradd');
     }
     public function usersave(Request $request)
     {
@@ -188,10 +194,10 @@ class AdminController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:agent',
             'password' => 'required|min:8',
-            'state' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'mobile_number' => 'required|string|max:20',
+            // 'state' => 'string|max:255',
+            // 'city' => 'string|max:255',
+            // 'address' => 'string|max:255',
+            'mobile_number' => 'required|string|max:10|min:10',
             'commission' => 'required|string',
             'commission_type' => 'required|in:fixed,percentage', // ENUM ke liye 'in' rule ka istemal kiya gaya hai
             // ENUM ke liye 'in' rule ka istemal kiya gaya hai
@@ -201,7 +207,7 @@ class AdminController extends Controller
         $userdata = new Agent();
         $userdata->name = $request->name;
         $userdata->email = $request->email;
-        $userdata->password = ($request->password); // Password ko encrypt karna mat bhoolen
+        $userdata->password = ($request->password); 
         $userdata->state = $request->state;
         $userdata->city = $request->city;
 
@@ -342,24 +348,139 @@ class AdminController extends Controller
 
     public function royalsundaram(Request $request)
     {
+// return $id;
+        // if ($request->ajax()) {
+        //     $data = Royalsundaram::select('*');
+        //     return Datatables::of($data)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function ($row) {
 
-        if ($request->ajax()) {
-            $data = Royalsundaram::select('*');
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
+        //             $btn = '<a href="Royalsundaramedit ,$user->id" class="edit btn btn-primary btn-sm">View</a>';
 
-                    $btn = '<a href="Royalsundaramedit ,$user->id" class="edit btn btn-primary btn-sm">View</a>';
-
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-
-        return view('admin.royalsundaram');
+        //             return $btn;
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
+    //     $user = User::with('agent')->find($userId);
+ 
+      $users = Royalsundaram::with('agent')->get();
+      $data = Agent::all();
+        
+        return view('admin.royalsundaram', ['data' => $users ,'dat' => $data]);
     }
+
+
+    // public function updateagentid(Request $request,  $royalsundaram_id=null , $agent_id=null)
+    // {
+    //     //  return $request;
+    //   $royal = Royalsundaram::find($royalsundaram_id);
+    //   if(!empty($agent_id)){
+    //     $royal ->agent_id = $agent_id;
+    //   }
+     
+    //   $royal ->save();
+    //     return redirect()->back()->with('success', 'Agent update  successfully!');
+       
+    // }
+  
+
+    public function updateagentid(Request $request, $royalsundaram_id = null, $agent_id = null)
+    {
+        // return $request;
+        $royal = Royalsundaram::find($royalsundaram_id);
+    
+        if (!$royal) {
+            return redirect()->back()->with('error', 'Royalsundaram record not found.');
+        }
+    
+        if (!empty($agent_id)) {
+            $royal->agent_id = $agent_id;
+        }
+    
+        if ($request->hasFile('policy_file')) {
+        $file = $request->file('policy_file');
+        $customFileName = $royal->policy . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('public/policy', $customFileName);
+        $royal->policy_link = $customFileName;
+    }
+    
+        $royal->save();
+    
+        return redirect()->back()->with('success', 'Agent and Policy updated successfully!');
+    }
+    // public function uploadPolicy(Request $request, $royalsundaram_id)
+    // {
+    //     $request->validate([
+    //         'policy_file' => 'required|mimes:pdf,doc,docx', // Adjust the file types as needed
+    //     ]);
+
+    //     $royal = Royalsundaram::find($royalsundaram_id);
+
+    //     if ($royal) {
+    //         // Save the file to storage or perform other necessary operations
+    //         $file = $request->file('policy_file');
+    //         $file->storeAs('policy_links', $file->getClientOriginalName(), 'public');
+
+    //         // Update the policy_link in Royalsundaram
+    //         $royal->policy_link = 'policy_links/' . $file->getClientOriginalName();
+    //         $royal->save();
+
+    //         return redirect()->back()->with('success', 'Policy uploaded successfully!');
+    //     }
+
+    //     // Handle the case where Royalsundaram is not found
+    //     return redirect()->back()->with('error', 'Royalsundaram record not found.');
+    // }
+     // return view('admin.updateagentid', [
+        //     'agent_id' => $agent_id,
+        //     'royalsundaram_id' => $royalsundaram_id,
+
+        // ]);
+//     public function royalsundaram(Request $request, $userId)
+// {
+
+//     // $user = User::with('agent')->find($userId);
+
+//     $users = Royalsundaram::all();
+//     return view('admin.royalsundaram', ['data' => $users);
+// }
+
+    // public function royalsundaramsave(request $request){
+    //     $validate = $request->validate([
+    //         'name' => 'required|string|max:100',
+    //         'email' => 'required|email|unique:agent',
+    //         'password' => 'required|min:8',
+    //         'state' => 'required|string|max:255',
+    //         'city' => 'required|string|max:255',
+    //         'address' => 'required|string|max:255',
+    //         'mobile_number' => 'required|string|max:20',
+    //         'commission' => 'required|string',
+    //         'commission_type' => 'required|in:fixed,percentage', // ENUM ke liye 'in' rule ka istemal kiya gaya hai
+    //         // ENUM ke liye 'in' rule ka istemal kiya gaya hai
+    //     ]);
+
+
+    //     $userdata = new Agent();
+    //     $userdata->name = $request->name;
+    //     $userdata->email = $request->email;
+    //     $userdata->password = ($request->password); // Password ko encrypt karna mat bhoolen
+    //     $userdata->state = $request->state;
+    //     $userdata->city = $request->city;
+
+       
+        
+    //     $userdata->address = $request->address;
+    //     $userdata->mobile_number = $request->mobile_number;
+    //     $userdata->commission = $request->commission;
+    //     $userdata->commission_type = $request->commission_type;
+
+
+    //     $userdata->save();
+
+    //     session()->flash('success', 'Agent created successfully.');
+    //     return redirect()->route('admin.royalsundaram');
+    // }
     public function shriramgi(Request $request)
     {
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Agent;
 
 class Royalsundaram extends Model
 {
@@ -55,7 +56,13 @@ class Royalsundaram extends Model
         'business_type', 
         'channel' ,
         'agent_id', 
-        'agent_commission'
+        'agent_commission',
+        'gst',
+        'net_amount'
        
     ];
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class, 'agent_id', 'id');
+    }
 }

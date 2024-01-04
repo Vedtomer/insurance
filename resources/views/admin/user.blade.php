@@ -91,7 +91,7 @@
     <div class="add" style="display: flex; align-items: center;">
         <h3 class="card-title">Agent List</h3>
         <div class="btns" style="margin-left: auto;">
-            <button id="openModalBtn" class="btn btn-secondary">Add Agent</button>
+            <a id="openModalBtn" href="{{ route('useradd') }}" class="btn btn-secondary">Add Agent</a>
         </div>
     </div>
     {{-- <div class="btns" style="margin-left: auto;">
@@ -238,7 +238,7 @@
 
  
 
-
+{{-- 
     <script>
         // Function to open the modal
     function openModal() {
@@ -252,6 +252,6 @@
 
     // Event listener for the open modal button
     document.getElementById("openModalBtn").addEventListener("click", openModal);
-    </script>
+    </script> --}}
 
     @endsection
