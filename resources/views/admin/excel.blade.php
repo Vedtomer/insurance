@@ -35,7 +35,7 @@
                         <label class="form-label">Choose Excel Import Type</label>
                         <select class="form-control" name="importType">
                             <option value="ExcelImport1">Royalsundaram</option>
-                            <option value="ExcelImport2">Shriramgi</option>
+                            {{-- <option value="ExcelImport2">Shriramgi</option> --}}
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>

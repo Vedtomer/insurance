@@ -58,6 +58,8 @@ class ExcelImport1 implements ToModel , WithHeadingRow
         'vehicle_slab'=> $row['vehicle_slab'], 
         'business_type'=> $row['business_type'], 
         'channel'=> $row['channel'],
+        'gst' => $row['policypremium'] * 0.152,
+        'net_amount'=> $row['policypremium'] - $row['policypremium'] * 0.152,
         // 'agent_id'=> $row['agent_id'],
            
         ]);

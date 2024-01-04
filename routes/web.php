@@ -70,16 +70,22 @@ Route::prefix('admin')->group(function () {
 Route::get('/excel', [AdminController::class, 'showForm'])->name('show.upload.form');
 Route::post('/excel', [AdminController::class, 'uploadExcel'])->name('upload.excel');
 
-// Route::get('royalsundaram', [AdminController::class, 'royalsundaram']);
-Route::get('/royalsundaram', [AdminController::class,'royalsundaram'])->name('royalsundaram');
+Route::match(['get', 'post'], '/updateagentid/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'updateagentid'])
+    ->name('updateagentid');
+
+// Route::get('updateagentid/{agent_id?}{royalsundaram_id?}', [AdminController::class, 'updateagentid'])->name('updateagentid');
+
+Route::get('/royalsundaram/{id?}', [AdminController::class,'royalsundaram'])->name('royalsundaram');
+// Route::get('/royalsundaram', [AdminController::class,'royalsundaramsave'])->name('royalsundaramsave');
 route::get('royalsundaramedit/{id}', [AdminController::class, 'royalsundaramedit'])->name('royalsundaramedit');
 Route::post('royalsundaramupdate/{id}', [AdminController::class, 'royalsundaramupdate'])->name('royalsundaramupdate');
 // Route::get('shriramgi', [AdminController::class, 'shriramgi']);
 Route::get('/shriramgi', [AdminController::class,'shriramgi'])->name('shriramgi');
 Route::get('shriramgiedit', [AdminController::class, 'shriramgiedit'])->name('shriramgiedit');
 // Route::post('shriramgiupdate/{id}', [AdminController::class, 'shriramgiupdate'])->name('shriramgiupdate');
+Route::get('/useradd', [AdminController::class, 'useradd'])->name('useradd');
 
-
+// Route::get('useradd', [AdminController::class, 'useradd'])->name('admin.useradd');
         Route::get('user', [AdminController::class, 'user'])->name('admin.user');
         Route::post('user', [AdminController::class, 'usersave'])->name('user.save');
         // Route::get('user', [AdminController::class, 'displayUsers'])->name('user.list');
