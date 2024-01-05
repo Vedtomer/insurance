@@ -60,8 +60,8 @@ class ExcelImport1 implements ToModel , WithHeadingRow
             'vehicle_slab' => $row['vehicle_slab'] ?? null,
             'business_type' => $row['business_type'] ?? null,
             'channel' => $row['channel'] ?? null,
-            'gst' => isset($row['policypremium']) ? $row['policypremium'] * 0.152 : null,
-            'net_amount' => isset($row['policypremium']) ? $row['policypremium'] - $row['policypremium'] * 0.152 : null,
+            'gst' => isset($row['policypremium']) ? $row['policypremium'] * 0.1525 : null,
+            'net_amount' => isset($row['policypremium']) ? $row['policypremium'] - $row['policypremium'] * 0.1525 : null,
             // 'agent_id'=> $row['agent_id'],
         ]);
 
@@ -76,8 +76,8 @@ class ExcelImport1 implements ToModel , WithHeadingRow
         'total_amount' => $row['policypremium'],
         'policy_no' => $row['policy'],
         'policy_id' => $existingRecord->id,
-        'gst' => $row['policypremium'] * 0.152,
-        'net_amount'=> $row['policypremium'] - $row['policypremium'] * 0.152,
+        'gst' => $row['policypremium'] * 0.1525,
+        'net_amount'=> $row['policypremium'] - $row['policypremium'] * 0.1525,
 
     ]);
   
