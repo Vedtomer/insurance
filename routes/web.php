@@ -75,6 +75,11 @@ Route::match(['get', 'post'], '/updateagentid/{royalsundaram_id?}/{agent_id?}', 
 
 // Route::get('updateagentid/{agent_id?}{royalsundaram_id?}', [AdminController::class, 'updateagentid'])->name('updateagentid');
 
+Route::match(['get', 'post'], '/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])
+    ->name('updatetransaction');
+// Route::get('/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])->name('updatetransaction');  
+
+
 Route::get('/royalsundaram/{id?}', [AdminController::class,'royalsundaram'])->name('royalsundaram');
 // Route::get('/royalsundaram', [AdminController::class,'royalsundaramsave'])->name('royalsundaramsave');
 route::get('royalsundaramedit/{id}', [AdminController::class, 'royalsundaramedit'])->name('royalsundaramedit');

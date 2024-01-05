@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'net_amount',
+        'gst',
+        'total_amount',
+        'policy_no',
+        'policy_id'
+
+    ];
+
+
 }

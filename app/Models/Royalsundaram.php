@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Agent;
+use App\Models\Transaction;
 
 class Royalsundaram extends Model
 {
@@ -64,5 +65,9 @@ class Royalsundaram extends Model
     public function agent()
     {
         return $this->belongsTo(Agent::class, 'agent_id', 'id');
+    }
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class, 'id', 'policy_id');
     }
 }

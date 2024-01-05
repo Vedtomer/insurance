@@ -68,9 +68,9 @@
                     </a>
                 </li> --}}
                    <li>
-                    <a href="royalsundaram">
+                    <a href="{{ route('royalsundaram') }}">
                         <i class="metismenu-icon pe-7s-eyedropper">
-                        </i>Royalsundaram
+                        </i>Policy List
                     </a>
                 </li>
                 {{-- <li>
@@ -88,7 +88,7 @@
                         {{-- </li> --}}
                        
                     
-                    {{-- <li  >
+                    <li>
                         <a href="transaction">
                             <i class="metismenu-icon pe-7s-display2"></i>
                             Transaction

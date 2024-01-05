@@ -3,7 +3,32 @@
 
 
 
+<style>
+    td {
+        border: 1px solid black;
 
+    }
+    th {
+        border: 1px solid black;
+        border-bottom: 3px solid black;
+       
+    }
+    .rig {
+    text-align: center;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: green;
+    font-weight: bolder;
+}
+
+    /* tr{
+        border: 2px solid black;
+        
+    } */
+</style>
 {{-- @extends('admin.layout.main')
 @section('section') --}}
 
@@ -55,7 +80,7 @@
         <div class="main-card mb-3 card">
         <div class="card-body">
             <div class="add" style="display: flex; align-items: center;">
-                <h5 class="card-title">Royalsundaram</h5>
+                {{-- <h5 class="card-title">Royalsundaram</h5> --}}
                 <div class="btns" style="margin-left: auto;">
                   {{-- <button type="button" class="btn btn-secondary">Transaction</button> --}}
                 </div>
@@ -64,7 +89,7 @@
     
         <div class="table-responsive">
             @if(isset($data) && count($data) > 0)
-        <table class="mb-0 table">
+        <table class="mb-0 table" >
         <thead>
         <tr>
         <th>S No</th>
@@ -75,9 +100,12 @@
         <th>Net Amount</th>
         <th>GST</th>
         <th>Policy Premium</th>
+        <th>Agent Commission</th>
         <th>Upload Ploicy</th>
         {{-- <th>Policy download</th> --}}
         <th>Agent</th>
+        <th>Transaction</th>
+       
         <th>Policy Start Date</th>
         <th>Policy End Date</th>
        
@@ -95,7 +123,7 @@
                 <td>{{ $user->gst }}</td>
                 {{-- <td>{{ $user->password }}</td> --}}
                 <td>{{ $user->policypremium }}</td>
-              
+                <td>{{ $user->agent_commission }}</td>
                 {{-- <td>
                     @if (empty($user->policy_link)) --}}
                         {{-- <button>Add Button</button> --}}
@@ -104,12 +132,13 @@
                         {{ $user->policy_link }}
                     @endif
                 </td> --}}
+               
                 <td>
                     @if (empty($user->policy_link))
-                        <form action="{{ route('updateagentid', ['royalsundaram_id' => $user->id]) }}" method="post" enctype="multipart/form-data" id="uploadForm">
-                            @csrf
-                            <input type="file" name="policy_file" onchange="submitForm()">
-                        </form>
+                    <form action="{{ route('updateagentid', ['royalsundaram_id' => $user->id]) }}" method="post" enctype="multipart/form-data" onchange="submitForm(this)">
+                        @csrf
+                        <input type="file" name="policy_file">
+                    </form>
                     @else
                     <a href="{{ Storage::url('policy/' . $user->policy_link) }}" download="{{$user->policy_link}}" ><i class="fa fa-download"> Download</i></a>
                     @endif
@@ -136,7 +165,18 @@
                     @endif
                 </td>
                 
-                
+                {{-- <td>{{ $user->transaction->is_agent_paid_premium_amount }}</td> --}}
+                <td>
+                    @if ($user->transaction->is_agent_paid_premium_amount == 0)
+                    <a href="{{ route('updatetransaction', ['transaction_id' => $user->transaction->id])}}" class="btn btn-secondary">Update</a>
+                    @else
+                        @if ($user->transaction->is_agent_paid_premium_amount == 1)
+                        <i class="metismenu-icon pe-7s-check rig" ></i>
+
+                            
+                        @endif
+                    @endif
+                </td>
             
                 <td>{{ \Carbon\Carbon::parse($user->creationdate)->format('d M Y') }}</td>
                 <td>{{ \Carbon\Carbon::createFromFormat('d/m/Y', $user->expirydate)->format('d M Y') }}</td>
@@ -195,9 +235,13 @@
   });
 </script> --}}
 {{-- </html> --}}
+
+
 <script>
-    function submitForm() {
-        document.getElementById('uploadForm').submit();
+    function submitForm(form) {
+        if (form instanceof HTMLFormElement) {
+            form.submit();
+        }
     }
 </script>
 @endsection

@@ -23,6 +23,7 @@ use App\Imports\ExcelImport2;
 use Illuminate\Support\Facades\Storage;
 // use App\Imports\ExcelImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Transaction;
 
 
 
@@ -185,7 +186,8 @@ class AdminController extends Controller
         return view('admin.user', ['data' => $users]);
     }
 
-    public function useradd(){
+    public function useradd()
+    {
         return view('admin.useradd');
     }
     public function usersave(Request $request)
@@ -207,12 +209,12 @@ class AdminController extends Controller
         $userdata = new Agent();
         $userdata->name = $request->name;
         $userdata->email = $request->email;
-        $userdata->password = ($request->password); 
+        $userdata->password = ($request->password);
         $userdata->state = $request->state;
         $userdata->city = $request->city;
 
-       
-        
+
+
         $userdata->address = $request->address;
         $userdata->mobile_number = $request->mobile_number;
         $userdata->commission = $request->commission;
@@ -348,7 +350,7 @@ class AdminController extends Controller
 
     public function royalsundaram(Request $request)
     {
-// return $id;
+        // return $id;
         // if ($request->ajax()) {
         //     $data = Royalsundaram::select('*');
         //     return Datatables::of($data)
@@ -362,12 +364,33 @@ class AdminController extends Controller
         //         ->rawColumns(['action'])
         //         ->make(true);
         // }
-    //     $user = User::with('agent')->find($userId);
- 
-      $users = Royalsundaram::with('agent')->get();
-      $data = Agent::all();
-        
-        return view('admin.royalsundaram', ['data' => $users ,'dat' => $data]);
+        //     $user = User::with('agent')->find($userId);
+
+        $users = Royalsundaram::with('agent', 'transaction')->orderBy('id', 'desc')->get();
+
+
+        $data = Agent::all();
+
+        return view('admin.royalsundaram', ['data' => $users, 'dat' => $data]);
+    }
+
+    public function updatetransaction(Request $request ,$transaction_id){
+    //    return $request;
+    $user = Transaction::find($transaction_id);
+    if ($request->isMethod('post')) {
+        $user->payment_by = $request->payment_by;
+        $user->is_payment_done = $request->is_payment_done;
+        $user->is_agent_paid_premium_amount = $request->is_agent_paid_premium_amount;
+        if($request->is_agent_paid_premium_amount == 1){
+            $user->is_payment_done = 1;
+        }
+        $user->save();
+        return redirect (route('royalsundaram'));
+    }
+
+
+       
+        return view('admin.updatetransaction', ['data' => $user]);
     }
 
 
@@ -378,35 +401,43 @@ class AdminController extends Controller
     //   if(!empty($agent_id)){
     //     $royal ->agent_id = $agent_id;
     //   }
-     
+
     //   $royal ->save();
     //     return redirect()->back()->with('success', 'Agent update  successfully!');
-       
+
     // }
-  
+
 
     public function updateagentid(Request $request, $royalsundaram_id = null, $agent_id = null)
     {
         // return $request;
         $royal = Royalsundaram::find($royalsundaram_id);
-    
+
         if (!$royal) {
             return redirect()->back()->with('error', 'Royalsundaram record not found.');
         }
-    
+
         if (!empty($agent_id)) {
+             $agent = Agent::find($agent_id);
+            if ($agent->commission_type == 'percentage') {
+                $commissionPercentage = $agent->commission;
+                $netAmount = $royal->net_amount;
+                $commissionAmount = $netAmount * ($commissionPercentage / 100);
+                $royal->agent_commission = $commissionAmount;
+            }else{
+                $royal->agent_commission = $agent->commission;
+            }
             $royal->agent_id = $agent_id;
         }
-    
         if ($request->hasFile('policy_file')) {
-        $file = $request->file('policy_file');
-        $customFileName = $royal->policy . '.' . $file->getClientOriginalExtension();
-        $filePath = $file->storeAs('public/policy', $customFileName);
-        $royal->policy_link = $customFileName;
-    }
-    
+            $file = $request->file('policy_file');
+            $customFileName = $royal->policy . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('public/policy', $customFileName);
+            $royal->policy_link = $customFileName;
+        }
+
         $royal->save();
-    
+
         return redirect()->back()->with('success', 'Agent and Policy updated successfully!');
     }
     // public function uploadPolicy(Request $request, $royalsundaram_id)
@@ -432,19 +463,19 @@ class AdminController extends Controller
     //     // Handle the case where Royalsundaram is not found
     //     return redirect()->back()->with('error', 'Royalsundaram record not found.');
     // }
-     // return view('admin.updateagentid', [
-        //     'agent_id' => $agent_id,
-        //     'royalsundaram_id' => $royalsundaram_id,
+    // return view('admin.updateagentid', [
+    //     'agent_id' => $agent_id,
+    //     'royalsundaram_id' => $royalsundaram_id,
 
-        // ]);
-//     public function royalsundaram(Request $request, $userId)
-// {
+    // ]);
+    //     public function royalsundaram(Request $request, $userId)
+    // {
 
-//     // $user = User::with('agent')->find($userId);
+    //     // $user = User::with('agent')->find($userId);
 
-//     $users = Royalsundaram::all();
-//     return view('admin.royalsundaram', ['data' => $users);
-// }
+    //     $users = Royalsundaram::all();
+    //     return view('admin.royalsundaram', ['data' => $users);
+    // }
 
     // public function royalsundaramsave(request $request){
     //     $validate = $request->validate([
@@ -468,8 +499,8 @@ class AdminController extends Controller
     //     $userdata->state = $request->state;
     //     $userdata->city = $request->city;
 
-       
-        
+
+
     //     $userdata->address = $request->address;
     //     $userdata->mobile_number = $request->mobile_number;
     //     $userdata->commission = $request->commission;
@@ -488,12 +519,12 @@ class AdminController extends Controller
             $data = Shriramgi::select('*');
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
+                ->addColumn('action', function ($row) {
 
                     $btn = '<a href="shriramgiedit" class="edit btn btn-primary btn-sm">View</a><a href="excel" class="edit btn btn-info btn-sm">update</a>';
-                
-                 return $btn;
-                 })
+
+                    return $btn;
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -532,16 +563,16 @@ class AdminController extends Controller
     public function shriramgiedit()
     {
         // $user = Shriramgi::find();
-    
+
         // if (!$user) {
         //     abort(404); // Yadi user not found ho, toh 404 error throw karein
         // }
         $users = Shriramgi::all();
-    
+
         return view('admin.shriramgiedit', ['data' => $users]);
     }
-    
-    
+
+
 
     public function shriramgiupdate(Request $request)
     {
@@ -654,49 +685,49 @@ class AdminController extends Controller
     {
         $validate = $request->validate([
 
-            'branch'=> 'required|string|max:100', 
-            'userid'=> 'required|string|max:100', 
-            'policy'=> 'required|string|max:100', 
-            'prody666yhuct'=> 'required|string|max:100', 
-            'covernotenumber'=> 'required|string|max:100', 
-            'covernoteissuedate'=> 'required|string|max:100', 
-            'creationdate'=> 'required|string|max:100', 
-            'lastmodifiedby'=> 'required|string|max:100', 
-            'lastmodifiedtime'=> 'required|string|max:100', 
-            'businessstatus'=> 'required|string|max:100', 
-            'policyholder'=> 'required|string|max:100', 
-            'oacode'=> 'required|string|max:100', 
-            'inceptiondate'=> 'required|string|max:100', 
-            'expirydate'=> 'required|string|max:100', 
-            'make'=> 'required|string|max:100', 
-            'model'=> 'required|string|max:100', 
-            'chassisno'=> 'required|string|max:100', 
-            'engineno'=> 'required|string|max:100', 
-            'registrationnumber'=> 'required|string|max:100', 
-            'contractnumber'=> 'required|string|max:100', 
-            'policypremium'=> 'required|string|max:100', 
-            'idv'=> 'required|string|max:100', 
-            'loading'=> 'required|string|max:100', 
-            'oddiscount'=> 'required|string|max:100', 
-            'covpremium'=> 'required|string|max:100', 
-            'ncd'=> 'required|string|max:100', 
-            'assettype'=> 'required|string|max:100', 
-            'vehicle_inspection_report'=> 'required|string|max:100', 
-            'inspection_date'=> 'required|string|max:100', 
-            'service_providername'=> 'required|string|max:100', 
-            'vir_number'=> 'required|string|max:100', 
-            'fraud_indicator'=> 'required|string|max:100', 
-            'fraud_reason'=> 'required|string|max:100', 
-            'receipt_number'=> 'required|string|max:100', 
-            'policy_type'=> 'required|string|max:100', 
-            'enginecapacity'=> 'required|string|max:100', 
-            'engine_capacity_slab'=> 'required|string|max:100', 
-            'vehicle_fuel_type'=> 'required|string|max:100', 
-            'vehicleage'=> 'required|string|max:100', 
-            'vehicle_slab'=> 'required|string|max:100', 
-            'business_type'=> 'required|string|max:100', 
+            'branch' => 'required|string|max:100',
+            'userid' => 'required|string|max:100',
+            'policy' => 'required|string|max:100',
+            'prody666yhuct' => 'required|string|max:100',
+            'covernotenumber' => 'required|string|max:100',
+            'covernoteissuedate' => 'required|string|max:100',
+            'creationdate' => 'required|string|max:100',
+            'lastmodifiedby' => 'required|string|max:100',
+            'lastmodifiedtime' => 'required|string|max:100',
+            'businessstatus' => 'required|string|max:100',
+            'policyholder' => 'required|string|max:100',
+            'oacode' => 'required|string|max:100',
+            'inceptiondate' => 'required|string|max:100',
+            'expirydate' => 'required|string|max:100',
+            'make' => 'required|string|max:100',
+            'model' => 'required|string|max:100',
+            'chassisno' => 'required|string|max:100',
+            'engineno' => 'required|string|max:100',
+            'registrationnumber' => 'required|string|max:100',
+            'contractnumber' => 'required|string|max:100',
+            'policypremium' => 'required|string|max:100',
+            'idv' => 'required|string|max:100',
+            'loading' => 'required|string|max:100',
+            'oddiscount' => 'required|string|max:100',
+            'covpremium' => 'required|string|max:100',
+            'ncd' => 'required|string|max:100',
+            'assettype' => 'required|string|max:100',
+            'vehicle_inspection_report' => 'required|string|max:100',
+            'inspection_date' => 'required|string|max:100',
+            'service_providername' => 'required|string|max:100',
+            'vir_number' => 'required|string|max:100',
+            'fraud_indicator' => 'required|string|max:100',
+            'fraud_reason' => 'required|string|max:100',
+            'receipt_number' => 'required|string|max:100',
+            'policy_type' => 'required|string|max:100',
+            'enginecapacity' => 'required|string|max:100',
+            'engine_capacity_slab' => 'required|string|max:100',
+            'vehicle_fuel_type' => 'required|string|max:100',
+            'vehicleage' => 'required|string|max:100',
+            'vehicle_slab' => 'required|string|max:100',
+            'business_type' => 'required|string|max:100',
             'channel' => 'required|string|max:100',
-            'agent_id'=> 'required|string|max:100',
+            'agent_id' => 'required|string|max:100',
 
 
             // ENUM ke liye 'in' rule ka istemal kiya gaya hai
@@ -742,7 +773,7 @@ class AdminController extends Controller
         // $userdata->policy_type = $request->policy_type;
         // $userdata->enginecapacity = $request->enginecapacity;
         // $userdata->engine_capacity_slab = $request->engine_capacity_slab;
-          // $userdata->vehicle_fuel_type = $request->vehicle_fuel_type;
+        // $userdata->vehicle_fuel_type = $request->vehicle_fuel_type;
         // $userdata->vehicleage = $request->vehicleage;
         // $userdata->vehicle_slab = $request->vehicle_slab;
         // $userdata->business_type = $request->business_type;
@@ -768,7 +799,9 @@ class AdminController extends Controller
 
     public function  transaction()
     {
-        return view('admin.transaction');
+        $users = Transaction::orderBy('id','desc')->get();
+
+        return view('admin.transaction', ['data' => $users]);
     }
     public function  home()
     {
@@ -797,8 +830,8 @@ class AdminController extends Controller
     // }
 
 
-//     sudo apt install php-fpm php-mbstring php-bcmath php-xml php-mysql php-common php-gd php-cli php-curl php-zip php-gd
+    //     sudo apt install php-fpm php-mbstring php-bcmath php-xml php-mysql php-common php-gd php-cli php-curl php-zip php-gd
 
-// Use it: php /usr/local/bin/composer
-//
+    // Use it: php /usr/local/bin/composer
+    //
 }

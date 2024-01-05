@@ -6,12 +6,16 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Models\Royalsundaram;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\Transaction;
 class ExcelImport1 implements ToModel , WithHeadingRow
 {
     public function model(array $row)
     {
         // Log:info($row);
-        return new Royalsundaram([
+        $existingRecord = Royalsundaram::firstOrNew(['policy' => $row['policy']]);
+
+
+          $existingRecord->fill([
      
 
         'branch'=> $row['branch'], 
@@ -63,6 +67,25 @@ class ExcelImport1 implements ToModel , WithHeadingRow
         // 'agent_id'=> $row['agent_id'],
            
         ]);
+
+    
+
+    $TransactionRecord = Transaction::firstOrNew(['policy_no' => $row['policy']]);
+
+
+    $TransactionRecord->fill([
+
+        'total_amount' => $row['policypremium'],
+        'policy_no' => $row['policy'],
+        'policy_id' => $existingRecord->id,
+        'gst' => $row['policypremium'] * 0.152,
+        'net_amount'=> $row['policypremium'] - $row['policypremium'] * 0.152,
+
+    ]);
+    $existingRecord->save();
+    $TransactionRecord->save();
+
+    return $existingRecord;
     }
 
     public function headingRow(): int
