@@ -1,4 +1,5 @@
 @extends('admin.layout.main')
+@section('title', 'Import Excel')
 @section('section')
 
 {{-- <style>

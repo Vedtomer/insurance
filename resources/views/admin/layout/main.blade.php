@@ -6,15 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Analytics Dashboard - This is an example dashboard created using build-in elements and components.</title>
+    <title>@yield('title', 'Admin')</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="This is an example dashboard created using build-in elements and components.">
     <meta name="msapplication-tap-highlight" content="no">
     <link href="https://demo.dashboardpack.com/architectui-html-free/main.css" rel="stylesheet">
-    
-
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
 </head>
@@ -23,14 +20,14 @@
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         {{-- topbar start --}}
         @include('admin.layout.topbar')
-     
-       
-       
+
+
+
 
         <div class="app-main">
             {{-- sidebar start --}}
             @include('admin.layout.sidebar')
-           
+
             {{-- sidebar end --}}
             <div class="app-main__outer">
                 <div class="app-main__inner">
@@ -41,7 +38,7 @@
                                     <i class="pe-7s-car icon-gradient bg-mean-fruit">
                                     </i>
                                 </div> --}}
-                                <div>Analytics Dashboard
+                                <div>@yield('title', 'Admin')
                                     {{-- <div class="page-title-subheading">This is an example dashboard created using
                                         build-in elements and components.
                                     </div> --}}
@@ -57,7 +54,7 @@
                                         </span>
                                         Buttons
                                     </button> --}}
-                                    {{-- <div tabindex="-1" role="menu" aria-hidden="true"
+                            {{-- <div tabindex="-1" role="menu" aria-hidden="true"
                                         class="dropdown-menu dropdown-menu-right">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
@@ -97,7 +94,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div> --}} 
+                            </div> --}}
                         </div>
                     </div>
 
@@ -679,7 +676,7 @@
                         </div>
                     </div>
                     {{-- <div class="row"> --}}
-                        {{-- <div class="col-md-6 col-lg-3">
+                    {{-- <div class="col-md-6 col-lg-3">
                             <div class="card-shadow-danger mb-3 widget-chart widget-chart2 text-left card">
                                 <div class="widget-content">
                                     <div class="widget-content-outer">
@@ -771,7 +768,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> --}} 
+                    </div> --}}
                 </div>
                 {{-- <div class="app-wrapper-footer">
                     <div class="app-footer">
@@ -811,10 +808,10 @@
                     </div>
                 </div> --}}
             </div>
-           
+
         </div>
     </div>
-  @include('admin.layout.footer')
+    @include('admin.layout.footer')
 </body>
 
 </html>

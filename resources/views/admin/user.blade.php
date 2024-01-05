@@ -1,4 +1,5 @@
 @extends('admin.layout.main')
+@section('title', 'Agent Listing')
 @section('section')
 
 <style>
@@ -89,7 +90,7 @@
 
 
     <div class="add" style="display: flex; align-items: center;">
-        <h3 class="card-title">Agent List</h3>
+    
         <div class="btns" style="margin-left: auto;">
             <a id="openModalBtn" href="{{ route('useradd') }}" class="btn btn-secondary">Add Agent</a>
         </div>

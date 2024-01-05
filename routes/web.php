@@ -47,7 +47,7 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware('auth:admin')->group(function () {
         Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
-        // Route::get('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
 
         Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
@@ -63,34 +63,33 @@ Route::prefix('admin')->group(function () {
         route::get('newhome', [AdminController::class, 'newhome']);
         route::get('main', [AdminController::class, 'newheader']);
         Route::get('excel', [AdminController::class, 'excel']);
-        // // Route::get('excel', [AdminController::class, 'excelfile']);
-        // Route::get('/import-excel', [AdminController::class,'importExcel']);
-        
-
-Route::get('/excel', [AdminController::class, 'showForm'])->name('show.upload.form');
-Route::post('/excel', [AdminController::class, 'uploadExcel'])->name('upload.excel');
-
-Route::match(['get', 'post'], '/updateagentid/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'updateagentid'])
-    ->name('updateagentid');
-
-// Route::get('updateagentid/{agent_id?}{royalsundaram_id?}', [AdminController::class, 'updateagentid'])->name('updateagentid');
-
-Route::match(['get', 'post'], '/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])
-    ->name('updatetransaction');
-// Route::get('/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])->name('updatetransaction');  
 
 
-Route::get('/royalsundaram/{id?}', [AdminController::class,'royalsundaram'])->name('royalsundaram');
-// Route::get('/royalsundaram', [AdminController::class,'royalsundaramsave'])->name('royalsundaramsave');
-route::get('royalsundaramedit/{id}', [AdminController::class, 'royalsundaramedit'])->name('royalsundaramedit');
-Route::post('royalsundaramupdate/{id}', [AdminController::class, 'royalsundaramupdate'])->name('royalsundaramupdate');
-// Route::get('shriramgi', [AdminController::class, 'shriramgi']);
-Route::get('/shriramgi', [AdminController::class,'shriramgi'])->name('shriramgi');
-Route::get('shriramgiedit', [AdminController::class, 'shriramgiedit'])->name('shriramgiedit');
-// Route::post('shriramgiupdate/{id}', [AdminController::class, 'shriramgiupdate'])->name('shriramgiupdate');
-Route::get('/useradd', [AdminController::class, 'useradd'])->name('useradd');
 
-// Route::get('useradd', [AdminController::class, 'useradd'])->name('admin.useradd');
+        Route::get('/excel', [AdminController::class, 'showForm'])->name('show.upload.form');
+        Route::post('/excel', [AdminController::class, 'uploadExcel'])->name('upload.excel');
+
+        Route::match(['get', 'post'], '/updateagentid/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'updateagentid'])
+            ->name('updateagentid');
+
+        // Route::get('updateagentid/{agent_id?}{royalsundaram_id?}', [AdminController::class, 'updateagentid'])->name('updateagentid');
+
+        Route::match(['get', 'post'], '/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])
+            ->name('updatetransaction');
+        // Route::get('/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])->name('updatetransaction');  
+
+
+        Route::get('/royalsundaram/{id?}', [AdminController::class, 'royalsundaram'])->name('royalsundaram');
+        // Route::get('/royalsundaram', [AdminController::class,'royalsundaramsave'])->name('royalsundaramsave');
+        route::get('royalsundaramedit/{id}', [AdminController::class, 'royalsundaramedit'])->name('royalsundaramedit');
+        Route::post('royalsundaramupdate/{id}', [AdminController::class, 'royalsundaramupdate'])->name('royalsundaramupdate');
+        // Route::get('shriramgi', [AdminController::class, 'shriramgi']);
+        Route::get('/shriramgi', [AdminController::class, 'shriramgi'])->name('shriramgi');
+        Route::get('shriramgiedit', [AdminController::class, 'shriramgiedit'])->name('shriramgiedit');
+        // Route::post('shriramgiupdate/{id}', [AdminController::class, 'shriramgiupdate'])->name('shriramgiupdate');
+        Route::get('/useradd', [AdminController::class, 'useradd'])->name('useradd');
+
+        // Route::get('useradd', [AdminController::class, 'useradd'])->name('admin.useradd');
         Route::get('user', [AdminController::class, 'user'])->name('admin.user');
         Route::post('user', [AdminController::class, 'usersave'])->name('user.save');
         // Route::get('user', [AdminController::class, 'displayUsers'])->name('user.list');
@@ -103,33 +102,14 @@ Route::get('/useradd', [AdminController::class, 'useradd'])->name('useradd');
         route::get('profile', [AdminController::class, 'profile']);
         Route::get('/header', [AdminController::class, 'header'])->name('admin.header');
         Route::get('/change-password', [AdminController::class, 'showChangePasswordForm'])->name('change-password');
-Route::post('/change-password', [AdminController::class, 'changePassword'])->name('change.password');
+        Route::post('/change-password', [AdminController::class, 'changePassword'])->name('change.password');
     });
 });
 
-Route::match(['get', 'post'], '/login', [AgentController::class, 'login'])->name('login');
-Route::middleware('auth:agent')->group(function () {
-    Route::get('/logout', [AgentController::class, 'logout'])->name('logout');
-    Route::get('dashboard', [AgentController::class, 'dashboard'])->name('dashboard');
+// Route::match(['get', 'post'], '/login', [AgentController::class, 'login'])->name('login');
+// Route::middleware('auth:agent')->group(function () {
+//     Route::get('/logout', [AgentController::class, 'logout'])->name('logout');
+//     Route::get('dashboard', [AgentController::class, 'dashboard'])->name('dashboard');
   
-    // Route::get('/userdata', [AgentController::class, 'userdata'])->name('agent.userdata');
-    // Route::post('/userdata', [AgentController::class, 'userstore'])->name('agent.userdata.store');
-    // route::get('userdata/{id}', [AgentController::class, 'view'])->name('agent.view');
-    // route::get('newview/{id}', [AgentController::class, 'newview'])->name('agent.newview');
-    // route::get('newedit/{id}', [AgentController::class, 'edit'])->name('agent.newedit');
-    // Route::post('newupdate/{id}', [AgentController::class, 'newupdate'])->name('agent.newupdate');
-    // route::get('delete/{id}', [AgentController::class, 'delete'])->name('agent.delete');
-    route::get('transaction', [AgentController::class, 'transaction']);
-    // route::get('home', [AgentController::class, 'home']);
-    // route::get('main', [AgentController::class, 'newheader']);
-    // route::get('user', [AgentController::class, 'user']);
-    // route::post('user', [AgentController::class, 'usersave'])->name('agent.usersave');
-    // route::get('result', [AgentController::class, 'result']);
-    // route::get('profile', [AgentController::class, 'profile']);
-    // Route::get('/header', [AgentController::class, 'header'])->name('agent.header');
-    // Route::get('/change-password', [AgentController::class, 'showChangePasswordForm'])->name('agent.change-password');
-    // Route::post('/change-password', [AgentController::class, 'changePassword'])->name('agent.change.password');
-});
-
-
-
+  
+// });

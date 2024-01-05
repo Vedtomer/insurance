@@ -11,9 +11,7 @@
     padding: 0;
     box-sizing: border-box;
     background-image: url('{{ asset('images/newbody.jpeg') }}');
-    /* background-size: cover; Adjust according to your needs */
-    height: 500px; /* Set the height */
-    /* width: 800px; */
+    height: 500px; 
     background-repeat: no-repeat;
 }
 

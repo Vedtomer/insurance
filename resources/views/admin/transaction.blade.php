@@ -1,4 +1,5 @@
 @extends('admin.layout.main')
+@section('title', 'All Transaction')
 @section('section')
 <style>
 
