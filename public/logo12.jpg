@@ -1,0 +1,793 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0045)https://www.goldwinrashi.com/shreemobile2.htm -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+     
+    
+    <title>Golden Rashi Bhavishya</title>
+    
+    <script src="./logo12_files/jquery-1.5.js" type="text/javascript"></script>
+     
+    <script src="./logo12_files/TimerScript15.js" type="text/javascript"></script>
+    <link href="./logo12_files/default6.css" rel="stylesheet" type="text/css">
+     
+    <script src="./logo12_files/default.js" type="text/javascript"></script>
+    <script type="text/javascript" src="./logo12_files/jquery-1.7.1.min.js"></script>
+     
+    
+   
+    
+ <script src="./logo12_files/bowser.min.js"></script>    
+     
+     
+
+     <link rel="stylesheet" href="./logo12_files/flatpickr.css">
+
+ 
+   
+ 
+ 
+  <script>
+
+ 
+  var city = "";
+var lat = "";
+var lng = "";
+var zip = "";
+var ipinfo = "";
+var country = "";
+var version = "";
+var region = "";
+var org = "";
+var browsername = "";
+var browserversion = "";
+var osname = "";
+var osversion = "";
+var device = "";
+function getHttpRequest(url, callback) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function() { 
+          if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+              callback(xmlHttp.response);
+          }
+      }
+      xmlHttp.open("GET", url, true);
+      xmlHttp.send(null);
+  }
+ function getGeoInfo() {
+     visitorinfo();
+    getHttpRequest('https://ipinfo.io/json', function (resp) {
+        var obj = JSON.parse(resp);
+        var latx = obj.loc.split(",");
+        version = "7.0.0";
+        ipinfo = obj.ip;
+        city = obj.city;
+        region = obj.region;
+        country = obj.country;
+        zip = obj.postal;
+        lat = latx[0];
+        lng = latx[1];
+        org = obj.org;
+        browsername = bowser.name;
+        browserversion = bowser.version;
+        osname = bowser.osname;
+        osversion = bowser.osversion;
+        device = bowser.platform;
+        
+    });
+}
+      function visitorinfo() {
+
+ 
+            var xhr = new XMLHttpRequest();
+            var login = "a";
+            var pass = "1";
+          
+            
+             
+            var api_url = "https://www.goldwinrashi.com/rashi1060api/api/products/visitorinfo?name=" + login + "&pass=" + pass + "&country=" + country + "&city=" + city + "&lat=" + lat + "&lon=" + lng + "&ipinfo=" + ipinfo;
+
+
+            $.ajax({
+                url: api_url,
+                type: 'GET',
+                crossOrigin: true,
+                dataType: 'json',
+                success: function (data) {
+
+                    storenum = [];
+                    $.each(data, function (key, item) {
+document.getElementById('visitcount').innerHTML=item.s1;
+  localStorage.setItem("token", item.s1);                            
+                          
+
+                    });
+
+
+
+
+
+                },
+                error: function (request, message, error) {
+
+                }
+            });
+
+
+
+        }
+
+      var myVar;
+
+      function validate(id) {
+          var regex = /^[a-zA-Z ]{4,20}$/;
+
+
+          if (regex.test(id)) {
+              return true;
+          }
+          else {
+              return false;
+          }
+      }
+      $(function () {
+          flatpickr("#datepicker", {
+
+              "enableTime": true,
+
+              "enableSecond": true
+          });
+
+      });
+
+
+      function Result() {
+
+          window.open("shubhank.aspx", '_blank');
+
+      }
+
+      function getToken() {
+
+          if (document.getElementById("txtmobile").value == "") {
+              alert("Please Enter Mobileno");
+              return;
+          }
+          if (document.getElementById("tname").value == "") {
+              alert("Please Enter Name");
+              return;
+          }
+          var aname = validate(document.getElementById("tname").value);
+          if (aname == false) {
+              alert("Please Enter Valid Name");
+              return;
+          }
+          var e = document.getElementById("trashi");
+          var strUser = e.options[e.selectedIndex].value;
+          if (strUser == "Select") {
+              alert("Please Enter Rashi");
+              return;
+          }
+          if (document.getElementById("datepicker").value == "") {
+              alert("Please Enter Birthdate And Time");
+              return;
+          }
+
+          if (document.getElementById("ch1").checked == false) {
+              alert("Please Check on  i Agree to Continue");
+              return;
+          }
+
+
+          if (document.getElementById("txtloc").value == "") {
+              alert("Please Enter Location");
+              return;
+          }
+
+          var aname = validate(document.getElementById("txtloc").value);
+          if (aname == false) {
+              alert("Please Enter Valid Location");
+              return;
+          }
+
+
+          var xhr = new XMLHttpRequest();
+          var name = document.getElementById("tname").value;
+
+          var rashi = strUser;
+          var bdate = document.getElementById("datepicker").value;
+          var btime = document.getElementById("datepicker").value;
+          var location = document.getElementById("txtloc").value;
+          var mobile = document.getElementById("txtmobile").value;
+          document.getElementById("btnsub").disabled = true;
+          document.getElementById("btnres").disabled = true;
+          var api_url = "https://www.goldwinrashi.com/rashi1060api/api/products/addcust?name=" + name + "&rashi=" + rashi + "&bdate=" + bdate + "&btime=" + btime + "&location=" + location + "&mobileno=" + mobile;
+
+
+          $.ajax({
+              url: api_url,
+              type: 'GET',
+              crossOrigin: true,
+              dataType: 'json',
+              success: function (data) {
+
+                  storenum = [];
+                  $.each(data, function (key, item) {
+                      if (item.Address == "Already Asked For Today") {
+                          alert("Each mobile no is entitled to use service once in a day");
+                          document.getElementById("btnsub").disabled = false;
+                          document.getElementById("btnres").disabled = false;
+                          return;
+                      }
+
+                      else {
+                          alert("Thank You for submission");
+                          for (var i = 0; i <= 4; i++) {
+                              var element = document.getElementById("t_" + i);
+
+                              element.disabled = false;
+
+                          }
+                          var element1 = document.getElementById("spredic1");
+                          element1.style.display = "block";
+                          element1.style.color = "yellow";
+                          var element2 = document.getElementById("tcode");
+                          element2.style.display = "block";
+                      }
+                  });
+
+
+
+
+
+              },
+              error: function (request, message, error) {
+
+              }
+          });
+
+
+
+      }
+
+
+      function calc(num) {
+
+          var n1 = document.getElementById("t_0").value;
+          var n2 = document.getElementById("t_1").value;
+          var n3 = document.getElementById("t_2").value;
+          if (n1 == "") {
+              alert("Please Enter valid No");
+              return;
+          }
+          if (n2 == "") {
+              alert("Please Enter valid No");
+              return;
+          }
+          if (n3 == "") {
+              alert("Please Enter valid No");
+              return;
+          }
+          var xhr = new XMLHttpRequest();
+
+          var mobile = document.getElementById("txtmobile").value;
+          num = n1 + "" + n2 + "" + n3;
+          var xhr = new XMLHttpRequest();
+          numx = parseInt(n1) + parseInt(n2) + parseInt(n3);
+          if (numx > 9) {
+              var num2 = numx.toString();
+              var numx1 = num2.substring(0, 1);
+              var numx2 = num2.substring(1);
+              numx = parseInt(numx1) + parseInt(numx2);
+          }
+
+
+          var api_url = "https://www.goldwinrashi.com/rashi1060api/api/products/addticketjodi?login=" + mobile + "&nos=" + numx + "&amt=" + num + "&lname=" + t_3.value;
+
+
+          $.ajax({
+              url: api_url,
+              type: 'GET',
+              crossOrigin: true,
+              dataType: 'json',
+              success: function (data) {
+
+
+                  $.each(data, function (key, item) {
+                      if (item.lname == "INVALID OTP") {
+                          alert("INVALID OTP Please Renter");
+                          return;
+                      }
+                      var element = document.getElementById("spredic1");
+                      element.style.display = "none";
+                      var element2 = document.getElementById("tcode");
+                      element2.style.display = "none";
+                      var element1 = document.getElementById("spredic2");
+
+                      element1.innerHTML = "<br/>" + "आपके लकी नंबर " + num + " के लिए भविष्यवाणी  " + item.lname.replace(' ', '<br/>');
+                      element1.style.display = "block";
+
+                      for (var i = 0; i <= 3; i++) {
+                          var element = document.getElementById("t_" + i);
+                          element.value = "";
+                          element.disabled = true;
+                      }
+                      document.getElementById("tname").value = "";
+
+
+                      document.getElementById("datepicker").value = "";
+
+                      document.getElementById("txtloc").value = "";
+                      document.getElementById("txtmobile").value = "";
+                      myVar = setInterval(removef, 5000);
+
+
+
+                  });
+
+
+
+
+
+              },
+              error: function (request, message, error) {
+
+              }
+          });
+
+
+
+      }
+      function isNumber(evt) {
+          evt = (evt) ? evt : window.event;
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode == 13) {
+              calc();
+          }
+          if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+              return false;
+          }
+          return true;
+      }
+
+      $(document).keydown(function (e) {
+
+          isNumber(e);
+      });
+      function removef() {
+          document.getElementById("spredic2").innerHTML = "";
+          document.getElementById("btnsub").disabled = false;
+          document.getElementById("btnres").disabled = false;
+          clearInterval(myVar);
+      }
+      var tickname = ["08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45", "21:00", "21:15", "21:30", "21:45", "22:00"];
+      function zeroPad(num, places) {
+          var zero = places - num.toString().length + 1;
+          return Array(+(zero > 0 && zero)).join("0") + num;
+      }
+      $(document).ready(function () {
+
+if (document.getElementById('visitcount').innerHTML== "") {
+               getGeoInfo();
+            }
+else
+{
+ 
+document.getElementById('visitcount').innerHTML=localStorage.token;
+}           
+          
+          var api_url = "https://www.goldwinrashi.com/rashi1060api/api/products/getgodres6"
+
+          var td = "";
+          var im = 0;
+          $.ajax({
+              url: api_url,
+              type: 'GET',
+              crossOrigin: true,
+              dataType: 'json',
+              success: function (data) {
+                  $.each(data, function (key, item) {
+if (item.lname.toString().substring(8, 9) == "A") {
+                      im = im + 1;
+
+}
+
+
+                  });
+                  im = im * 10.5;
+                  td = "<div class='divTable' style='overflow:auto;width:" + im + "%' >"
+                  td = td + "<div class=divTableBody>";
+                  td = td + "<div class=divTableRow></div><div class=divTableRow><div class=divTableCell1><div class=container></div></div>";
+                  var jm = 2;
+                  $.each(data, function (key, item) {
+                      if (item.lname.toString().substring(8, 9) == "A") {
+                          if (jm >= 6) {
+                              jm = 2;
+                          }
+                          if (jm % 2 == 0) {
+                              td = td + "<div class=divTableCell1><div class=container1> <img src='http://108.60.209.156//rashiplay//desktoppng/time_1.png'   style='width:60px;height:40px'> <div class=centered>" + item.drhrs + ":" + zeroPad(item.drmins, 2) + "</div></div></div>"
+                          }
+                          else {
+                              td = td + "<div class=divTableCell1><div class=container1> <img src='http://108.60.209.156//rashiplay//desktoppng/time_2.png'   style='width:60px;height:40px'> <div class=centered>" + item.drhrs + ":" + zeroPad(item.drmins, 2) + "</div></div></div>"
+                          }
+                          jm = jm + 1;
+                      }
+
+
+
+
+                  });
+                  td = td + "</div><div class=divTableRow><div class=divTableCell1><img src='601.png'  style= 'height:50px;width:50px;background-color:transparent'/></div>"
+                  $.each(data, function (key, item) {
+                      if (item.lname.toString().substring(8, 9) == "A") {
+                          td = td + "<div class=divTableCell1><div class=container> <img src='http://108.60.209.156//rashiplay//desktoppng/rnum.png'   style='width:58px;height:40px'> <div class=centered1>" + item.nosplayed + "</div></div></div>"
+                      }
+
+
+
+                  });
+                  td = td + "</div><div class=divTableRow> <div class=divTableCell1> <img src='70gh.png'  style= 'height:50px;width:50px'/> </div>"
+                  $.each(data, function (key, item) {
+                      if (item.lname.toString().substring(8, 9) == "B") {
+                          td = td + "<div class=divTableCell1><div class=container> <img src='http://108.60.209.156//rashiplay//desktoppng/rnum.png'   style='width:58px;height:40px'> <div class=centered1>" + item.nosplayed + "</div></div></div>"
+
+                      }
+
+
+                  });
+                  td = td + "</div></div></div>"
+
+
+                  document.getElementById("dispres").innerHTML = td;
+
+              },
+              error: function (request, message, error) {
+
+              }
+          });
+
+
+
+
+      });
+       </script>
+</head>
+<body style="background-size: 120% 120%;" data-new-gr-c-s-check-loaded="14.1147.0" data-gr-ext-installed="">
+  
+     
+    <table width="99%" border="0">
+        <tbody>
+            <tr>
+                 <td style="width:20%">
+                  <table>
+                  <tbody><tr>
+                  <td style="background-image:url(logo12.jpg);background-repeat:no-repeat;background-position: center top;background-size:200px 250px;   width: 200px; height: 250px;"></td>
+                  </tr>
+                   <tr>
+                  <td style="background-image:url(desktop/currenttime_.png);background-repeat:no-repeat;background-size:200px 40px;background-position: center center;   width: 200px; height: 80px;">
+                   <span id="RemainTime" style="font-size: 12pt; font-weight: bold;display:none;color:Yellow">00:14:52</span>
+  
+  <span style="font-size: 18pt; font-weight: bold;color:Yellow;margin-top:50px" id="NowTime">12:00:08 P.M.</span>
+  <input name="hd_nextime" id="hd_nextime" type="hidden">
+                  </td>
+                  </tr>
+                  <tr>
+                  <td style="background-image:url(desktop/date_.png);background-repeat:no-repeat;background-size:200px 40px; background-position: center center;  width: 200px; height: 48px;">
+                  <span style="font-size: 24pt; font-weight: bold;color:Yellow" id="TodatyDate">27/12/2023</span>
+                  </td>
+                  </tr>
+                   
+                   <tr>
+                    <td style="background-image:url(desktop/date_.png);background-repeat:no-repeat;background-size:200px 40px; background-position: center center;  width: 200px; height: 80px;">
+                    <span style="font-size: 19pt; font-weight: bold;color:Yellow;margin-top:60px" id="NextDrowTime">12:15:00 P.M.</span>
+                  </td>
+                   </tr>
+                  <tr>
+                  <td style="background-image:url(desktop/bracelet.png);background-repeat:no-repeat;background-size:150px 150px;background-position: center center;   width: 150px; height: 150px;"></td>
+                  </tr>
+                   <tr>
+                  <td style="width: 230px; height: 30px;color:Yellow;font-size:24px">
+                    
+FREE GIFT...FREE GIFT For First 60 Lucky Voucher Winner
+
+                  </td>
+                  </tr>
+<tr>
+                  <td style="background-image:url(ring.png);background-repeat:no-repeat;background-size:150px 150px;background-position: center center;   width: 150px; height: 150px;"></td>
+                  </tr>
+                   <tr>
+                  <td style="width: 230px; height: 30px;color:Yellow;font-size:24px">
+                  FREE GIFT...FREE GIFT For First 70 Lucky Voucher Winner
+                  GIFT
+
+                  </td>
+                  </tr>
+
+                  <tr>
+                  <td style="background-image:url(desktop/thisimage.png);background-repeat:no-repeat;background-size:200px 15px; background-position: center top;   width: 200px; height: 30px;"></td>
+                  </tr>
+                 <tr>
+                  <td style="background-image:url(contactus.jpg);background-repeat:no-repeat;background-size:150px 100px; background-position: center top;   width: 200px; height: 100px;"></td>
+                  </tr>
+
+                   <tr>
+                  <td style="background-image:url(desktop/snum1.jpg);background-repeat:no-repeat;background-size:150px 50px; background-position: center top;   width: 200px; height: 50px;"></td>
+                  </tr>
+                    <tr>
+                  <td style="background-image:url(desktop/snum2.jpg);background-repeat:no-repeat;background-size:150px 50px; background-position: center top;   width: 200px; height: 50px;"></td>
+                  </tr>
+   <tr>
+                  <td style="background-image:url(desktop/snum3.jpg);background-repeat:no-repeat;background-size:150px 50px; background-position: center top;   width: 200px; height: 50px;"></td>
+                  </tr>
+   
+                
+                   <tr>
+                  <td style="background-image:url(goldwin3.jpg);background-repeat:no-repeat;background-size:150px 50px; background-position: center top;   width: 200px; height: 50px;"></td>
+                  </tr>
+
+                  <tr> 
+                  <td>
+                    <a href="https://www.goldwinrashi.com/aboutus.htm" target="_blank">  <input style="width: 200px; height: 40px;font-size:30px;margin-top:10px" type="button" class="bgtime1" value="About US"></a>
+                    </td>
+                    </tr>
+                    <tr>
+                      <td>
+                    <a href="https://www.goldwinrashi.com/disclaimer.htm" target="_blank"> <input style="width: 200px; height: 40px;font-size:30px;margin-top:10px" type="button" class="bgtime1" value="Disclaimer"></a>
+                    &lt;</td>
+                  </tr>
+
+                  </tbody></table>
+
+                 </td>
+                  <td style="width:79%;">
+                 <table>
+                 <tbody><tr>
+                                 <td>
+                 <marquee style="font-size:xx-large; margin-top:10px;background-color: white;font-family:Tahoma">   <span style="font-weight:bold"> For Lucky Shubhank Contact on <span style="font-weight:bold"> 022.66677688 " 7400058042,7400058032,9819026124", For Trade Enquiry please Contact  on 8450981670  </span></span></marquee>
+                 </td>
+
+                 </tr>
+                 </tbody></table>
+                 
+                   <table>
+                  <tbody><tr>
+                   
+                  <td style="background-image:url(desktop/17.png);background-repeat:no-repeat;background-position: center;background-size:750px 100px; width: 750px; height: 100px;"></td>
+                  
+                  
+                  
+                  
+                 
+                  </tr>
+                  </tbody></table>
+                  <table>
+                  <tbody><tr>
+                  <td>
+                  <div style="overflow:auto;width:750px" id="dispres"><div class="divTable" style="overflow:auto;width:136.5%"><div class="divTableBody"><div class="divTableRow"><div class="divTableCell1"> <img src="./logo12_files/time_1.png" style="width:60px;height:40px"> </div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_1.png" style="width:60px;height:40px"> <div class="centered">12:00</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_2.png" style="width:60px;height:40px"> <div class="centered">11:45</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_1.png" style="width:60px;height:40px"> <div class="centered">11:30</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_2.png" style="width:60px;height:40px"> <div class="centered">11:15</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_1.png" style="width:60px;height:40px"> <div class="centered">11:00</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_2.png" style="width:60px;height:40px"> <div class="centered">10:45</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_1.png" style="width:60px;height:40px"> <div class="centered">10:30</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_2.png" style="width:60px;height:40px"> <div class="centered">10:15</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_1.png" style="width:60px;height:40px"> <div class="centered">10:00</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_2.png" style="width:60px;height:40px"> <div class="centered">9:45</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_1.png" style="width:60px;height:40px"> <div class="centered">9:30</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_2.png" style="width:60px;height:40px"> <div class="centered">9:15</div></div></div><div class="divTableCell1"><div class="container1"> <img src="./logo12_files/time_1.png" style="width:60px;height:40px"> <div class="centered">9:00</div></div></div></div><div class="divTableRow"><div class="divTableCell1"><img src="./logo12_files/601.png" style="height:50px;width:50px;background-color:transparent"></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">50</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">18</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">29</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">20</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">28</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">24</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">23</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">43</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">69</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">05</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">93</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">20</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">86</div></div></div></div><div class="divTableRow"> <div class="divTableCell1"> <img src="./logo12_files/70gh.png" style="height:50px;width:50px"> </div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">60</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">38</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">85</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">06</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">22</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">87</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">32</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">50</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">79</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">43</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">37</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">07</div></div></div><div class="divTableCell1"><div class="container"> <img src="./logo12_files/rnum.png" style="width:60px;height:40px"> <div class="centered1">59</div></div></div></div></div></div></div>
+                  </td>
+                  
+                 
+                
+                  </tr>
+                 
+                  </tbody></table>
+            
+                         <span id="spredic1" class="blinking" style="font-size:24px;color:Yellow;display:none">
+ Please Enter <br>  Lucky No  <br>  &amp; know Astrological Prediction <br>
+ Lucky Coupon Winner  <br>  will Get a Pooja Bracelet
+
+  </span><span id="spredic2" style="font-size:24px;display:none;color:Yellow;">
+   
+  </span><table>
+                    
+   
+                  <tbody><tr>
+                      <td width:="width:" 750px;="750px;" height:="height:" 420px;text-align:center"="420px;text-align:center&quot;">
+
+
+
+                          <span style="font-size:24px; color:Yellow;">Due to Technical issue Live View is Not Available  </span>
+                        <!--<iframe src="https://g2.ipcamlive.com/player/player.php?alias=5e5a05863bb0b"
+                                  height="750px" autoplay="1" allow="autoplay"
+                                  frameborder="0" style="width: 788px"></iframe>--> 
+
+
+                      </td>
+                      </tr>
+                      </tbody></table>
+                      <table>
+                      <tbody><tr>
+
+                      <td>
+                      <input type="button" style="width: 200px; height: 50px;font-size:36px;color:yellow" class="bgtime1" value="Shubhank" id="btnres" onclick="Result()">
+                      </td>
+                      <td>
+                      </td><td style="background-image:url(desktop/2.png);background-repeat:no-repeat;background-size:300px 40px;   width: 300px; height: 40px;"></td>
+                      
+                       <td style="color: yellow;"> Visitor:<span id="visitcount">27506250</span></td>
+                      </tr>
+                      </tbody></table>
+                      <table>
+
+
+                      <tbody><tr>
+                      <td>
+                      <table class="caltable" cellpadding="0" cellspacing="0">
+                      <tbody><tr>
+                      <td colspan="3" style="background-image:url(desktop/image_1_1.png);background-repeat:no-repeat;background-position: center top;background-size:750px 120px;   width: 750px; height: 120px;"></td>
+
+
+                      </tr>
+
+                       <tr>
+                      <td style="background-image:url(desktop/image_1_4.png);background-repeat:no-repeat;background-position: center top;background-size:250px 120px;   width: 250px; height: 120px;">
+                      <br>
+                      <img src="./logo12_files/60small.png" style="height:100px;width:100px;margin-left:70PX">
+                      <br>
+                           <img src="./logo12_files/70gh.png" style="height:100px;width:100px;margin-left:70PX">
+                      </td>
+                      
+                      <td style="background-image:url(desktop/image_1_4.png);background-repeat:no-repeat;background-position: center top;background-size:250px 120px;   width: 250px; height: 120px;">
+                      <table>
+                      <tbody><tr>
+
+
+                      <td style="text-align:center;">
+
+                      <input type="text" style="width:35px;height:40px; border-color:Blue;text-align:center;font-size:larger;font-weight:bold;margin-left:10px;" id="t_1" maxlength="1">
+                       <br><br>
+                          <br><br>
+                      <input type="text" style="width:35px;height:40px;border-color:Blue;text-align:center;font-size:larger;font-weight:bold;margin-left:10px;" id="Text1" maxlength="1">
+                      </td>
+                      <td style="text-align:center;">
+
+                      <input type="text" style="width:35px;height:40px;border-color:Blue;text-align:center;font-size:larger;font-weight:bold;margin-left:10px;" id="t_2" maxlength="1">
+                       <br><br>
+                          <br><br>
+                      <input type="text" style="width:35px;height:40px;border-color:Blue;text-align:center;font-size:larger;font-weight:bold;margin-left:10px;" id="Text2" maxlength="1">
+                      </td>
+                      </tr>
+                      </tbody></table>
+                      </td>
+                      <td style="background-image:url(desktop/image_1_4.png);background-repeat:no-repeat;background-position: center top;background-size:250px 120px;   width: 250px; height: 120px;">
+
+                      </td>
+
+                      </tr>
+                       <tr>
+                      <td style="background-image:url(desktop/image_2_0.png);background-repeat:no-repeat;background-position: center top;background-size:100% 100%;   width: 250px; height: 120px;"></td>
+                      <td style="background-image:url(desktop/image_1_4.png);background-repeat:no-repeat;background-position: center top;background-size:250px 120px;   width: 250px; height: 120px;">
+                       <span id="tcode">Verify OTP</span>
+
+                      </td>
+                      <td style="background-image:url(desktop/image_1_4.png);background-repeat:no-repeat;background-position: center top;background-size:250px 120px;   width: 250px; height: 120px;">
+                      <br><br>
+                      <input type="text" style="width:100px; height:30px; border-color:Blue;margin-left:-50px;font-size:larger;font-weight:bold;" id="t_3" maxlength="6">
+                          <input type="button" class="divCells8" style="color:Yellow;margin-left:10px;font-size:12px;font-weight:bold" onclick="calc()" id="t_4" value="Click here for Predication">
+                      </td>
+
+                      </tr>
+                       <tr>
+                      <td style="background-image:url(desktop/image_2_1.png);background-repeat:no-repeat;background-position: center top;background-size:100% 100%;   width: 250px; height: 120px;"></td>
+                      <td style="background-image:url(desktop/image_1_4.png);background-repeat:no-repeat;background-position: center top;background-size:250px 120px;   width: 250px; height: 120px;">
+
+                      </td>
+
+                      <td style="background-image:url(desktop/image_1_4.png);background-repeat:no-repeat;background-position: center top;background-size:250px 120px;   width: 250px; height: 120px;"></td>
+
+                      </tr>
+                      </tbody></table>
+                      </td>
+
+                      </tr>
+                      </tbody></table>
+                      <table cellpadding="10px;">
+
+
+     <tbody><tr>
+                      <td style="background-image:url(contactus.jpg);background-repeat:no-repeat;background-size:250px 150px; background-position: center top;   width: 250px; height: 150px;"></td>
+
+
+                      <td colspan="2" style="background-image:url(snum5.jpg);background-repeat:no-repeat;background-size:250px 150px; background-position: center top;   width: 250px; height: 150px;"></td>
+                      </tr>
+
+    <tr>
+                      <td>
+                      <span style="color:Yellow">Name :  </span>
+
+
+     <input type="text" id="tname" style="width:130px;color:Black">
+                      </td>
+                      <td>
+                      <span style="color:Yellow"> Mobile</span>
+
+
+     <input type="number" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" id="txtmobile" style="width:130px;color:Black">
+                      </td>
+
+
+                      </tr>
+
+                      <tr>
+                          <td>
+                      <span style="color:Yellow"> Place :  </span>
+
+
+     <input type="text" id="txtloc" style="width:150px;color:Black" "="">
+                      </td>
+                      <td>
+                      <span style="color:Yellow">Rashi:</span>
+
+      <select id="trashi" style="color:Black;width:140px;text-align:center">
+      <option value="Select">Select</option>
+      <option value="Aries">Aries/मेष </option>
+      <option value="Taurus">Taurus/वृष</option>
+      <option value="Gemini">Gemini/मिथुन </option>
+      <option value="Cancer">Cancer/कर्क</option>
+
+       <option value="Leo">Leo/सिंह</option>
+      <option value="Virgo">Virgo/कन्या</option>
+      <option value="Libra">Libra/तुला </option>
+      <option value="Scorpio">Scorpio/वृश्चिक</option>
+
+      <option value="Sagittarius">Sagittarius/धनु</option>
+      <option value="Capricorn">Capricorn/मकर </option>
+      <option value="Aquarius">Aquarius/कुंभ</option>
+      <option value="Pisces">Pisces/मीन</option>
+    </select>
+                      </td>
+                      </tr>
+
+                      <tr>
+                      <td>
+                      <span style="color:Yellow">
+        B.Date/Time:
+        </span>
+      <input id="datepicker" type="text" placeholder="Select D/T" style="width:200px;color:Black" readonly="readonly" class="flatpickr-input">
+                      </td>
+                      <td>
+                      <input type="checkbox" id="ch1">   <span style="color:White;font-size:small"> i agree to the </span> <a href="https://www.goldwinrashi.com/tc.htm" target="_blank"><span style="color:yellow;font-size:small">Terms &amp; Conditions</span></a>
+
+                      </td>
+                     <td>
+                      <input type="button" style="width: 200px; height: 50px;font-size:36px;" class="bsub" id="btnsub" onclick="getToken()">
+                     </td>
+
+                      </tr>
+
+                      </tbody></table>
+
+                     </td>
+             </tr>
+             </tbody>
+             </table>
+    <script src="./logo12_files/jquery.min.js"></script>
+      <!--  Flatpickr  -->
+                          <script src="./logo12_files/flatpickr.js"></script>
+
+                      
+
+<div class="flatpickr-calendar hasTime animate" tabindex="-1"><div class="flatpickr-months"><span class="flatpickr-prev-month"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17 17"><g></g><path d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"></path></svg></span><div class="flatpickr-month"><div class="flatpickr-current-month"><span class="cur-month">December </span><div class="numInputWrapper"><input class="numInput cur-year" type="number" tabindex="-1" aria-label="Year"><span class="arrowUp"></span><span class="arrowDown"></span></div></div></div><span class="flatpickr-next-month"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17 17"><g></g><path d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"></path></svg></span></div><div class="flatpickr-innerContainer"><div class="flatpickr-rContainer"><div class="flatpickr-weekdays"><div class="flatpickr-weekdaycontainer">
+      <span class="flatpickr-weekday">
+        Sun</span><span class="flatpickr-weekday">Mon</span><span class="flatpickr-weekday">Tue</span><span class="flatpickr-weekday">Wed</span><span class="flatpickr-weekday">Thu</span><span class="flatpickr-weekday">Fri</span><span class="flatpickr-weekday">Sat
+      </span>
+      </div></div><div class="flatpickr-days" tabindex="-1"><div class="dayContainer"><span class="flatpickr-day prevMonthDay" aria-label="November 26, 2023" tabindex="-1">26</span><span class="flatpickr-day prevMonthDay" aria-label="November 27, 2023" tabindex="-1">27</span><span class="flatpickr-day prevMonthDay" aria-label="November 28, 2023" tabindex="-1">28</span><span class="flatpickr-day prevMonthDay" aria-label="November 29, 2023" tabindex="-1">29</span><span class="flatpickr-day prevMonthDay" aria-label="November 30, 2023" tabindex="-1">30</span><span class="flatpickr-day " aria-label="December 1, 2023" tabindex="-1">1</span><span class="flatpickr-day " aria-label="December 2, 2023" tabindex="-1">2</span><span class="flatpickr-day " aria-label="December 3, 2023" tabindex="-1">3</span><span class="flatpickr-day " aria-label="December 4, 2023" tabindex="-1">4</span><span class="flatpickr-day " aria-label="December 5, 2023" tabindex="-1">5</span><span class="flatpickr-day " aria-label="December 6, 2023" tabindex="-1">6</span><span class="flatpickr-day " aria-label="December 7, 2023" tabindex="-1">7</span><span class="flatpickr-day " aria-label="December 8, 2023" tabindex="-1">8</span><span class="flatpickr-day " aria-label="December 9, 2023" tabindex="-1">9</span><span class="flatpickr-day " aria-label="December 10, 2023" tabindex="-1">10</span><span class="flatpickr-day " aria-label="December 11, 2023" tabindex="-1">11</span><span class="flatpickr-day " aria-label="December 12, 2023" tabindex="-1">12</span><span class="flatpickr-day " aria-label="December 13, 2023" tabindex="-1">13</span><span class="flatpickr-day " aria-label="December 14, 2023" tabindex="-1">14</span><span class="flatpickr-day " aria-label="December 15, 2023" tabindex="-1">15</span><span class="flatpickr-day " aria-label="December 16, 2023" tabindex="-1">16</span><span class="flatpickr-day " aria-label="December 17, 2023" tabindex="-1">17</span><span class="flatpickr-day " aria-label="December 18, 2023" tabindex="-1">18</span><span class="flatpickr-day " aria-label="December 19, 2023" tabindex="-1">19</span><span class="flatpickr-day " aria-label="December 20, 2023" tabindex="-1">20</span><span class="flatpickr-day " aria-label="December 21, 2023" tabindex="-1">21</span><span class="flatpickr-day " aria-label="December 22, 2023" tabindex="-1">22</span><span class="flatpickr-day " aria-label="December 23, 2023" tabindex="-1">23</span><span class="flatpickr-day " aria-label="December 24, 2023" tabindex="-1">24</span><span class="flatpickr-day " aria-label="December 25, 2023" tabindex="-1">25</span><span class="flatpickr-day " aria-label="December 26, 2023" tabindex="-1">26</span><span class="flatpickr-day today" aria-label="December 27, 2023" aria-current="date" tabindex="-1">27</span><span class="flatpickr-day " aria-label="December 28, 2023" tabindex="-1">28</span><span class="flatpickr-day " aria-label="December 29, 2023" tabindex="-1">29</span><span class="flatpickr-day " aria-label="December 30, 2023" tabindex="-1">30</span><span class="flatpickr-day " aria-label="December 31, 2023" tabindex="-1">31</span><span class="flatpickr-day nextMonthDay" aria-label="January 1, 2024" tabindex="-1">1</span><span class="flatpickr-day nextMonthDay" aria-label="January 2, 2024" tabindex="-1">2</span><span class="flatpickr-day nextMonthDay" aria-label="January 3, 2024" tabindex="-1">3</span><span class="flatpickr-day nextMonthDay" aria-label="January 4, 2024" tabindex="-1">4</span><span class="flatpickr-day nextMonthDay" aria-label="January 5, 2024" tabindex="-1">5</span><span class="flatpickr-day nextMonthDay" aria-label="January 6, 2024" tabindex="-1">6</span></div></div></div></div><div class="flatpickr-time" tabindex="-1"><div class="numInputWrapper"><input class="numInput flatpickr-hour" type="number" tabindex="-1" step="1" min="1" max="12"><span class="arrowUp"></span><span class="arrowDown"></span></div><span class="flatpickr-time-separator">:</span><div class="numInputWrapper"><input class="numInput flatpickr-minute" type="number" tabindex="-1" step="5" min="0" max="59"><span class="arrowUp"></span><span class="arrowDown"></span></div><span class="flatpickr-am-pm" title="Click to toggle" tabindex="-1">PM</span></div></div></body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
