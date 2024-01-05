@@ -16,7 +16,7 @@
         <div class="add" style="display: flex; align-items: center;">
             <h5 class="card-title">TRANSACTION</h5>
             <div class="btns" style="margin-left: auto;">
-              <button type="button" class="btn btn-secondary">Transaction</button>
+              {{-- <button type="button" class="btn btn-secondary">Transaction</button> --}}
             </div>
           </div>
           

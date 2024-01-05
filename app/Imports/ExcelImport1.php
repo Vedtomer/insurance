@@ -18,58 +18,56 @@ class ExcelImport1 implements ToModel , WithHeadingRow
           $existingRecord->fill([
      
 
-        'branch'=> $row['branch'], 
-        'userid'=> $row['userid'], 
-        // 'policy_link'=> $row['policy_link'],
-        'policy'=> $row['policy'], 
-        'prody666yhuct'=> $row['prody666yhuct'], 
-        'covernotenumber'=> $row['covernotenumber'], 
-        'covernoteissuedate'=> $row['covernoteissuedate'], 
-        'creationdate' => Carbon::createFromFormat('d/m/Y H:i:s', $row['creationdate']),
-
-        'lastmodifiedby'=> $row['lastmodifiedby'], 
-        'lastmodifiedtime'=> $row['lastmodifiedtime'], 
-        'businessstatus'=> $row[ 'businessstatus'], 
-        'policyholder'=> $row['policyholder'], 
-        'oacode'=> $row['oacode'], 
-        'inceptiondate'=> $row['inceptiondate'], 
-        'expirydate'=> $row['expirydate'], 
-        'make'=> $row['make'], 
-        'model'=> $row['model'], 
-        'chassisno'=> $row['chassisno'], 
-        'engineno'=> $row['engineno'], 
-        'registrationnumber'=> $row['registrationnumber'], 
-        'contractnumber'=> $row['contractnumber'], 
-        'policypremium'=> $row['policypremium'], 
-        'idv'=> $row['idv'], 
-        'loading'=> $row['loading'], 
-        'oddiscount'=> $row['oddiscount'], 
-        'covpremium'=> $row['covpremium'], 
-        'ncd'=> $row['ncd'], 
-        'assettype'=> $row['assettype'], 
-        'vehicle_inspection_report'=> $row['vehicle_inspection_report'], 
-        'inspection_date'=> $row['inspection_date'], 
-        'service_providername'=> $row['service_providername'], 
-        'vir_number'=> $row['vir_number'], 
-        'fraud_indicator'=> $row['fraud_indicator'], 
-        'fraud_reason'=> $row['fraud_reason'], 
-        'receipt_number'=> $row['receipt_number'], 
-        'policy_type'=> $row['policy_type'], 
-        'enginecapacity'=> $row['enginecapacity'], 
-        'engine_capacity_slab'=> $row['engine_capacity_slab'], 
-        'vehicle_fuel_type'=> $row['vehicle_fuel_type'], 
-        'vehicleage'=> $row['vehicleage'], 
-        'vehicle_slab'=> $row['vehicle_slab'], 
-        'business_type'=> $row['business_type'], 
-        'channel'=> $row['channel'],
-        'gst' => $row['policypremium'] * 0.152,
-        'net_amount'=> $row['policypremium'] - $row['policypremium'] * 0.152,
-        // 'agent_id'=> $row['agent_id'],
-           
+            'branch' => $row['branch'] ?? null,
+            'userid' => $row['userid'] ?? null,
+            'policy' => $row['policy'] ?? null,
+            'prody666yhuct' => $row['prody666yhuct'] ?? null,
+            'covernotenumber' => $row['covernotenumber'] ?? null,
+            'covernoteissuedate' => $row['covernoteissuedate'] ?? null,
+            'creationdate' => isset($row['creationdate']) ? Carbon::createFromFormat('d/m/Y H:i:s', $row['creationdate']) : null,
+            'lastmodifiedby' => $row['lastmodifiedby'] ?? null,
+            'lastmodifiedtime' => $row['lastmodifiedtime'] ?? null,
+            'businessstatus' => $row['businessstatus'] ?? null,
+            'policyholder' => $row['policyholder'] ?? null,
+            'oacode' => $row['oacode'] ?? null,
+            'inceptiondate' => $row['inceptiondate'] ?? null,
+            'expirydate' => $row['expirydate'] ?? null,
+            'make' => $row['make'] ?? null,
+            'model' => $row['model'] ?? null,
+            'chassisno' => $row['chassisno'] ?? null,
+            'engineno' => $row['engineno'] ?? null,
+            'registrationnumber' => $row['registrationnumber'] ?? null,
+            'contractnumber' => $row['contractnumber'] ?? null,
+            'policypremium' => $row['policypremium'] ?? null,
+            'idv' => $row['idv'] ?? null,
+            'loading' => $row['loading'] ?? null,
+            'oddiscount' => $row['oddiscount'] ?? null,
+            'covpremium' => $row['covpremium'] ?? null,
+            'ncd' => $row['ncd'] ?? null,
+            'assettype' => $row['assettype'] ?? null,
+            'vehicle_inspection_report' => $row['vehicle_inspection_report'] ?? null,
+            'inspection_date' => $row['inspection_date'] ?? null,
+            'service_providername' => $row['service_providername'] ?? null,
+            'vir_number' => $row['vir_number'] ?? null,
+            'fraud_indicator' => $row['fraud_indicator'] ?? null,
+            'fraud_reason' => $row['fraud_reason'] ?? null,
+            'receipt_number' => $row['receipt_number'] ?? null,
+            'policy_type' => $row['policy_type'] ?? null,
+            'enginecapacity' => $row['enginecapacity'] ?? null,
+            'engine_capacity_slab' => $row['engine_capacity_slab'] ?? null,
+            'vehicle_fuel_type' => $row['vehicle_fuel_type'] ?? null,
+            'vehicleage' => $row['vehicleage'] ?? null,
+            'vehicle_slab' => $row['vehicle_slab'] ?? null,
+            'business_type' => $row['business_type'] ?? null,
+            'channel' => $row['channel'] ?? null,
+            'gst' => isset($row['policypremium']) ? $row['policypremium'] * 0.152 : null,
+            'net_amount' => isset($row['policypremium']) ? $row['policypremium'] - $row['policypremium'] * 0.152 : null,
+            // 'agent_id'=> $row['agent_id'],
         ]);
 
     
-
+        $existingRecord->save();
+        
     $TransactionRecord = Transaction::firstOrNew(['policy_no' => $row['policy']]);
 
 
@@ -82,7 +80,7 @@ class ExcelImport1 implements ToModel , WithHeadingRow
         'net_amount'=> $row['policypremium'] - $row['policypremium'] * 0.152,
 
     ]);
-    $existingRecord->save();
+  
     $TransactionRecord->save();
 
     return $existingRecord;
