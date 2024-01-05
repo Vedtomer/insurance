@@ -8,7 +8,7 @@
 <div class="app-header header-shadow">
     <div class="app-header__logo">
         <div class="logo-src">
-            <img src="{{ asset('images/logo.jpeg') }}" style="height: auto; width: 200px; "  alt="">
+            <img src="{{ asset('images/logo.png') }}" style="height: auto; width: 200px; "  alt="">
         </div>
         <div class="header__pane ml-auto">
             <div>
