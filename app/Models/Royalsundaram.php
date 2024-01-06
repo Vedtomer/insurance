@@ -69,9 +69,15 @@ class Royalsundaram extends Model
 
     public function getPolicyLinkAttribute($value)
     {   
-        $assetsPath = asset('storage/policy');
-        return $assetsPath . '/' . $value;
+        if (!empty($value)) {
+            $assetsPath = asset('storage/policy');
+            return $assetsPath . '/' . $value;
+        }
+    
+        
+        return '';
     }
+    
     public function transaction()
     {
         return $this->belongsTo(Transaction::class, 'id', 'policy_id');
