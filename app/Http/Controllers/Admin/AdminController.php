@@ -510,6 +510,10 @@ class AdminController extends Controller
             $royal->policy_link = $customFileName;
         }
 
+        $transation = Transaction::where('policy_id',$royal->id)->first();
+        $transation->agent_id = $agent_id;
+        $transation->save();
+
         $royal->save();
 
         return redirect()->route('royalsundaram')->with('success', 'Agent and Policy updated successfully!');
@@ -877,7 +881,7 @@ class AdminController extends Controller
         if (empty($id)) {
             $users = Transaction::orderBy('created_at', 'desc')->get();
         } else {
-            $users = Transaction::where('id', $id)->get();
+            $users = Transaction::where('agent_id', $id)->get();
         }
         return view('admin.transaction', ['data' => $users]);
     }
