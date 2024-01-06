@@ -141,7 +141,7 @@
                         <input type="file" name="policy_file">
                     </form>
                     @else
-                    <a href="{{ Storage::url('policy/' . $user->policy_link) }}" download="{{$user->policy_link}}" ><i class="fa fa-download"> Download</i></a>
+                    <a href="{{( $user->policy_link) }}" download="{{$user->policy_link}}" ><i class="fa fa-download"> Download</i></a>
                     @endif
                 </td>
                 
