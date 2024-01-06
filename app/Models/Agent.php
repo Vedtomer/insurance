@@ -68,9 +68,9 @@ class Agent extends Authenticatable implements MustVerifyEmail
             } else {
                 $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
             }
-            $royalData = Royalsundaram::whereBetween('creationdate', [$startDate, $endDate])
-                ->select('agent_id', 'policy as policy_no', 'creationdate as policy_start_date', 'expirydate as policy_end_date', 'policyholder as customername', 'policypremium as premium','agent_commission')
-                ->get();
+          $agent_id =  auth()->guard('api')->user()->id;
+          
+            $royalData = Royalsundaram::whereBetween('creationdate', [$startDate, $endDate])->where('agent_id', $agent_id) ->select('agent_id', 'policy as policy_no', 'creationdate as policy_start_date', 'expirydate as policy_end_date', 'policyholder as customername', 'policypremium as premium','agent_commission', 'policy_link')->get();
     
             $shriramData = Shriramgi::whereBetween('policy_start_date', [$startDate, $endDate])
                 ->select('agent_id', 'policy_no', 'policy_start_date', 'policy_end_date', 'insured_name as customername', 'net_premium as premium','agent_commission')

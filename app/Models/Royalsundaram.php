@@ -66,6 +66,12 @@ class Royalsundaram extends Model
     {
         return $this->belongsTo(Agent::class, 'agent_id', 'id');
     }
+
+    public function getPolicyLinkAttribute($value)
+    {   
+        $assetsPath = asset('storage/policy');
+        return $assetsPath . '/' . $value;
+    }
     public function transaction()
     {
         return $this->belongsTo(Transaction::class, 'id', 'policy_id');

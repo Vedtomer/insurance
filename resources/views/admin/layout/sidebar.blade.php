@@ -48,14 +48,14 @@
                     </a>
                 </li> --}}
                 <li>
-                    <a href="user">
+                    <a href="{{route('admin.user')}}">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Agent List
                     </a>
                 </li>
                
                 <li>
-                    <a href="excel">
+                    <a href="{{route('show.upload.form')}}">
                         <i class="metismenu-icon pe-7s-graph2"></i>
                         Import Excel
                     </a>
@@ -89,7 +89,7 @@
                        
                     
                     <li>
-                        <a href="transaction">
+                        <a href="{{ route('transaction') }}">
                             <i class="metismenu-icon pe-7s-display2"></i>
                             Transaction
                         </a>
