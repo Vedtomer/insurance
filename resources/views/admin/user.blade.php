@@ -3,7 +3,7 @@
 @section('section')
 
 <style>
-    body {
+    /* body {
         font-family: Arial, sans-serif;
     }
 
@@ -13,10 +13,10 @@
         background-color: #fff;
         border-radius: 5px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
+    } */
 
     /* Styles for the modal container */
-    .modal-container {
+    /* .modal-container {
         display: none;
         position: fixed;
         top: 0;
@@ -26,25 +26,25 @@
         background: rgba(0, 0, 0, 0.5);
         justify-content: center;
         align-items: center;
-    }
+    } */
 
     /* Styles for the modal content */
-    .modal-content {
+    /* .modal-content {
         background: #fff;
         padding: 20px;
         border-radius: 5px;
         width: 300px;
         text-align: center;
-    }
+    } */
 
     /* Styles for the form inside the modal */
-    form {
+    /* form {
         display: flex;
         flex-direction: column;
-    }
+    } */
 
     /* Style for the close button */
-    .close-btn {
+    /* .close-btn {
         cursor: pointer;
         position: absolute;
         top: 10px;
@@ -70,7 +70,7 @@
 
     .btn {
         border-radius: 0px;
-    }
+    } */
 </style>
 
 
@@ -84,17 +84,13 @@
     @endforeach
     @endif
 </div>
-<div class="login-container">
+
+{{-- <div class="login-container"> --}}
 
 
 
 
-    <div class="add" style="display: flex; align-items: center;">
-    
-        <div class="btns" style="margin-left: auto;">
-            <a id="openModalBtn" href="{{ route('useradd') }}" class="btn btn-secondary">Add Agent</a>
-        </div>
-    </div>
+   
     {{-- <div class="btns" style="margin-left: auto;">
 
 
@@ -102,19 +98,19 @@
 
     {{-- <h5 class="card-title">Table responsive</h5> --}}
     <!-- Modal container -->
-    <div class="modal-container" id="myModal">
+    {{-- <div class="modal-container" id="myModal"> --}}
 
         <!-- Modal content -->
-        <div class="modal-content">
+        {{-- <div class="modal-content"> --}}
             <!-- Close button -->
-            <span class="close-btn " onclick="closeModal()">&times;</span>
+            {{-- <span class="close-btn " onclick="closeModal()">&times;</span> --}}
         
 
             <!-- Form inside the modal -->
-
-            <div class="container">
+{{-- 
+            <div class="container"> --}}
               
-                <form action="{{ route('user.save') }}" method="post">
+                {{-- <form action="{{ route('user.save') }}" method="post">
 
                     @csrf
                     <div class="mb-3">
@@ -143,7 +139,7 @@
                     </div>
                     <div class="mb-3">
                         {{-- <label for="commission">Commission Type:</label> --}}
-                        <select class="form-control" id="commission" name="commission_type" required>
+                        {{-- <select class="form-control" id="commission" name="commission_type" required>
                             <option value="" disabled selected>Commission Type</option>
                             <option value="fixed">Fixed</option>
                             <option value="percentage">Percentage</option>
@@ -156,43 +152,49 @@
                 
                 
                     <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                </form>  --}}
                 
-            </div>
-        </div>
+            {{-- </div> --}}
+        {{-- </div> --}}
 
 
         {{-- <h2>Agent data</h2> --}}
 
-    </div>
+    {{-- </div> --}}
 
     {{-- @php
     print_r($userdata);
     @endphp
     {{-- --}}
     {{-- @if(count($data) > 0) --}}
-
-    <div class="table-responsive">
-        {{-- <h2>Agent List</h2> --}}
-       @if(isset($data) && count($data) > 0)
-            <table class="mb-0 table table-striped table-bordered">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+        <div class="card-body">
+            <div class="add" style="display: flex; align-items: center;">
+                {{-- <h5 class="card-title">TRANSACTION</h5> --}}
+                <div class="btns" style="margin-left: auto;">
+                    <a id="openModalBtn" href="{{ route('useradd') }}" class="btn btn-secondary mb-2">Add Agent</a>
+                </div>
+              </div>
+              
+    
+        <div class="table-responsive">
+            <table class="mb-0 table table-striped table-bordered table-responsive">
                 <thead>
                     <tr>
                         <th style="width: 5%" scope="col">ID</th>
                         <th style="width: 20%" scope="col">Name</th>
                         <th style="width: 20%" scope="col">Email</th>
-                        {{-- <th style="width: 20%" scope="col">password</th> --}}
-                        <th style="width: 20%" scope="col">state</th>
-                        <th style="width: 20%" scope="col">city</th>
-                        <th style="width: 20%" scope="col">address</th>
-                        <th style="width: 20%" scope="col">moblie-number</th>
-                        <th style="width: 20%" scope="col">comission</th>
-                        <th style="width: 20%" scope="col">comission-type</th>
-                     
-                        {{-- <th style="width: 10%" scope="col">View</th> --}}
+                        <th style="width: 20%" scope="col">State</th>
+                        <th style="width: 20%" scope="col">City</th>
+                        <th style="width: 20%" scope="col">Address</th>
+                        <th style="width: 20%" scope="col">Mobile Number</th>
+                        {{-- <th style="width: 20%" scope="col">Commission</th>
+                        <th style="width: 20%" scope="col">Commission Type</th> --}}
+                        {{-- <th style="width: 20%" scope="col">V</th> --}}
+                        <th style="width: 20%" scope="col">Commission</th>
+                        <th style="width: 20%" scope="col">Transaction</th>
                         <th style="width: 15%" scope="col">Action</th>
-                        {{-- <th style="width: 15%" scope="col">Delete</th> --}}
-                        <!-- Adjust the widths as needed -->
                     </tr>
                 </thead>
                 <tbody>
@@ -201,24 +203,34 @@
                             <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            {{-- <td>{{ $user->password }}</td> --}}
                             <td>{{ $user->state }}</td>
                             <td>{{ $user->city }}</td>
                             <td>{{ $user->address }}</td>
                             <td>{{ $user->mobile_number}}</td>
-                            <td>{{ $user->commission }}</td>
-                            <td>{{ $user->commission_type }}</td>
-                            <td><a class="btn btn-success" href="{{route('useredit',$user->id)}}">Update</a></td>
-                            {{-- <td><a class="btn btn-danger" href="{{route('userdelete',$user->id)}}">Delete</a></td> --}}
-                            <!-- Add more columns as needed -->
+                            {{-- <td>{{ $user->commission }}</td>
+                            <td>{{ $user->commission_type }}</td> --}}
+                            <td >
+                                <a class="btn  mr-2" href="{{ route('admin.commission', $user->id) }}"><i class="fa fa-edit" style="font-size:24px"></i>
+                                </a>
+                                {{-- <a class="btn btn-secondary mr-2" href="{{ route('admin.commission', $user->commission->id) }}">View
+                                </a> --}}
+                            </td>
+                            <td>
+                                <a class="btn  mr-2" href="{{ route('transaction', $user->id) }}"><i class="metismenu-icon pe-7s-look" title="Download" style="font-size:30px;text-align: center;"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn " href="{{ route('useredit', $user->id) }}"><i class="fa fa-edit" style="font-size:24px"></i></a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        @else
-            <p>No users found.</p>
-        @endif
-    </div>
+        </div>
+        </div>
+        </div>
+        </div>
+    
     
     
                     {{-- <th>{{$user->id}}</th>

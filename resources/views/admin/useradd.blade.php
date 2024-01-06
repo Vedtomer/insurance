@@ -49,10 +49,10 @@
                 <label for="">Mobile Number</label>
                 <input type="text" class="form-control" name="mobile_number" placeholder="Enter mobile number" required>
             </div>
-            <div class="mb-3">
-                <label for="">Commission Type</label>
+            {{-- <div class="mb-3">
+                <label for="">Commission Type</label> --}}
                 {{-- <label for="commission">Commission Type:</label> --}}
-                <select class="form-control" id="commission" name="commission_type" required>
+                {{-- <select class="form-control" id="commission" name="commission_type" required>
                     <option value="" disabled selected>Commission Type</option>
                     <option value="fixed">Fixed</option>
                     <option value="percentage">Percentage</option>
@@ -62,7 +62,7 @@
             <div class="mb-3">
                 <label for="">Commission</label>
                 <input type="text" class="form-control" name="commission" placeholder="Enter commission" required>
-            </div>
+            </div> --}}
         
             <div class="text-center">
             <button type="submit" class="btn btn-primary">Submit</button>

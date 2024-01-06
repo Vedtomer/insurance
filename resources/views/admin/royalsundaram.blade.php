@@ -153,7 +153,7 @@
                     @if (optional($user->agent)->name)
                         {{ $user->agent->name }}
                     @else
-                        <select onchange="location = this.value;">
+                        <select onchange="confirmAgentChange(this);" onchange="location = this.value;">
                             <option value="" selected disabled>Select Agent</option>
                             @foreach ($dat as $agent)
                                 @if ($agent && $agent->status == 1)
@@ -236,15 +236,30 @@
   });
 </script> --}}
 {{-- </html> --}}
-
+<!-- Include SweetAlert from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    function submitForm(form) {
-        if (form instanceof HTMLFormElement) {
-            form.submit();
-        }
+    function confirmAgentChange(selectElement) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You are about to Select the agent. Do you want to proceed?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Update Agent",
+            cancelButtonText: "No, cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If the user clicks "Yes," redirect to the selected agent
+                window.location.href = selectElement.value;
+            } else {
+                // If the user clicks "No," reset the selected option to the default
+                selectElement.selectedIndex = 0;
+            }
+        });
     }
 </script>
+
 @endsection
 
 

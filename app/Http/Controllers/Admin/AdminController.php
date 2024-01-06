@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 use DataTables;
 use App\Models\Shriramgi;
+use App\Models\Commission;
 use App\Models\Royalsundaram;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -181,7 +182,7 @@ class AdminController extends Controller
 
     public function user()
     {
-        $users = Agent::orderBy('created_at', 'desc')->get();
+        $users = Agent::with('commission')->orderBy('created_at', 'desc')->get();
 
         return view('admin.user', ['data' => $users]);
     }
@@ -200,8 +201,8 @@ class AdminController extends Controller
             // 'city' => 'string|max:255',
             // 'address' => 'string|max:255',
             'mobile_number' => 'required|string|max:10|min:10',
-            'commission' => 'required|string',
-            'commission_type' => 'required|in:fixed,percentage', // ENUM ke liye 'in' rule ka istemal kiya gaya hai
+            // 'commission' => 'required|string',
+            // 'commission_type' => 'required|in:fixed,percentage', // ENUM ke liye 'in' rule ka istemal kiya gaya hai
             // ENUM ke liye 'in' rule ka istemal kiya gaya hai
         ]);
 
@@ -217,15 +218,16 @@ class AdminController extends Controller
 
         $userdata->address = $request->address;
         $userdata->mobile_number = $request->mobile_number;
-        $userdata->commission = $request->commission;
-        $userdata->commission_type = $request->commission_type;
+        // $userdata->commission = $request->commission;
+        // $userdata->commission_type = $request->commission_type;
 
 
         $userdata->save();
 
         session()->flash('success', 'Agent created successfully.');
-        return redirect()->route('admin.user');
+        return redirect()->route('admin.commission');
     }
+
 
     //     public function displayUsers()
     // {
@@ -374,26 +376,70 @@ class AdminController extends Controller
         return view('admin.royalsundaram', ['data' => $users, 'dat' => $data]);
     }
 
-    public function updatetransaction(Request $request ,$transaction_id){
-    //    return $request;
-    $user = Transaction::find($transaction_id);
-    if ($request->isMethod('post')) {
-        $user->payment_by = $request->payment_by;
-        $user->is_payment_done = $request->is_payment_done;
-        $user->is_agent_paid_premium_amount = $request->is_agent_paid_premium_amount;
-        if($request->is_agent_paid_premium_amount == 1){
-            $user->is_payment_done = 1;
+    public function updatetransaction(Request $request, $transaction_id)
+    {
+        //    return $request;
+        $user = Transaction::find($transaction_id);
+        if ($request->isMethod('post')) {
+            $user->payment_by = $request->payment_by;
+            $user->is_payment_done = $request->is_payment_done;
+            $user->is_agent_paid_premium_amount = $request->is_agent_paid_premium_amount;
+            if ($request->is_agent_paid_premium_amount == 1) {
+                $user->is_payment_done = 1;
+            }
+            $user->save();
+            return redirect(route('royalsundaram'));
         }
-        $user->save();
-        return redirect (route('royalsundaram'));
-    }
 
 
-       
+
         return view('admin.updatetransaction', ['data' => $user]);
     }
+    // $validate = $request->validate([
+    //     'commission' => 'required|max:100',
+    //     'commission_type' => 'required|:agent',
 
+    // ]);
+    // public function commission(Request $request , $id){
+    //     $data = Agent::find($id);
+    // if ( $request->isMethod('post')) {
 
+    //     $commission = new Commission();
+
+    //     $commission->commission =  $request->commission;
+    //     $commission->commission_type = $request->commission_type;
+    //     $commission->save();
+    //     return redirect (route('user'));
+    // }
+    //     return view('admin.commission', compact('data'));
+    //     // return view('admin.commission');
+    // }
+
+    public function commission(Request $request, $id)
+    {
+        $data = Agent::find($id);
+        $commissiondata = Commission::where('agent_id', $id)->get();
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'commission.*' => 'required',
+                'commission_type.*' => 'required|in:fixed,percentage',
+            ]);
+            $commissions = $request->input('commission');
+            $commissionTypes = $request->input('commission_type');
+            $commissionsData = [];
+            Commission::where('agent_id', $id)->delete();
+            foreach ($commissions as $key => $commissionValue) {
+                $commission = new Commission();
+                $commission->agent_id = $id;
+                $commission->commission_type = $commissionTypes[$key];
+                $commission->commission = $commissionValue;
+                $commission->save();
+            }
+            return redirect()->route('admin.user')->with('success', 'Commission added successfully');
+        }
+
+        return view('admin.commission', compact('data', 'commissiondata'));
+    }
     // public function updateagentid(Request $request,  $royalsundaram_id=null , $agent_id=null)
     // {
     //     //  return $request;
@@ -418,16 +464,44 @@ class AdminController extends Controller
         }
 
         if (!empty($agent_id)) {
-             $agent = Agent::find($agent_id);
-            if ($agent->commission_type == 'percentage') {
-                $commissionPercentage = $agent->commission;
-                $netAmount = $royal->net_amount;
-                $commissionAmount = $netAmount * ($commissionPercentage / 100);
-                $royal->agent_commission = $commissionAmount;
-            }else{
-                $royal->agent_commission = $agent->commission;
+
+            $agent = Agent::find($agent_id);
+            $commission = Commission::where('agent_id', $agent_id)->get();
+            if (empty($agent->commission)) {
+                return redirect()->route('admin.commission', $agent->id)->with('error', 'Update Commission of ' . $agent->name);
             }
-            $royal->agent_id = $agent_id;
+            if ($request->isMethod('post')) {
+                $commissionid = $request->commission_id;
+                $commission = Commission::find($commissionid);
+
+                if ($commission->commission_type == 'percentage') {
+                    $commissionPercentage = $commission->commission;
+                    $netAmount = $royal->net_amount;
+                    $commissionAmount = $netAmount * ($commissionPercentage / 100);
+                    $royal->agent_commission = $commissionAmount;
+                } else {
+                    $royal->agent_commission = $commission->commission;
+                }
+                $royal->agent_id = $agent_id;
+            }
+
+
+            if ($request->isMethod('get')) {
+                if (count($commission) == 1) {
+
+                    if ($commission[0]->commission_type == 'percentage') {
+                        $commissionPercentage = $commission[0]->commission;
+                        $netAmount = $royal->net_amount;
+                        $commissionAmount = $netAmount * ($commissionPercentage / 100);
+                        $royal->agent_commission = $commissionAmount;
+                    } else {
+                        $royal->agent_commission = $commission[0]->commission;
+                    }
+                    $royal->agent_id = $agent_id;
+                } else {
+                    return view('admin.selectcommission', compact('commission', 'agent', 'royal'));
+                }
+            }
         }
         if ($request->hasFile('policy_file')) {
             $file = $request->file('policy_file');
@@ -438,7 +512,7 @@ class AdminController extends Controller
 
         $royal->save();
 
-        return redirect()->back()->with('success', 'Agent and Policy updated successfully!');
+        return redirect()->route('royalsundaram')->with('success', 'Agent and Policy updated successfully!');
     }
     // public function uploadPolicy(Request $request, $royalsundaram_id)
     // {
@@ -797,12 +871,17 @@ class AdminController extends Controller
         return view('admin.profile');
     }
 
-    public function  transaction()
+    public function  transaction($id = null)
     {
-        $users = Transaction::orderBy('id','desc')->get();
-
+        // $users = Transaction::orderBy('id','desc')->get();
+        if (empty($id)) {
+            $users = Transaction::orderBy('created_at', 'desc')->get();
+        } else {
+            $users = Transaction::where('id', $id)->get();
+        }
         return view('admin.transaction', ['data' => $users]);
     }
+
     public function  home()
     {
         return view('admin.home');

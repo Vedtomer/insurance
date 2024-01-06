@@ -58,7 +58,7 @@ Route::prefix('admin')->group(function () {
         route::get('newedit/{id}', [AdminController::class, 'edit'])->name('newedit');
         Route::post('newupdate/{id}', [AdminController::class, 'newupdate'])->name('newupdate');
         route::get('delete/{id}', [AdminController::class, 'delete'])->name('delete');
-        route::get('transaction', [AdminController::class, 'transaction'])->name('transaction');
+        route::get('transaction/{id?}', [AdminController::class, 'transaction'])->name('transaction');
 
         route::get('newhome', [AdminController::class, 'newhome']);
         route::get('main', [AdminController::class, 'newheader']);
@@ -71,13 +71,17 @@ Route::prefix('admin')->group(function () {
 
         Route::match(['get', 'post'], '/updateagentid/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'updateagentid'])
             ->name('updateagentid');
+            Route::match(['get', 'post'], '/selectcommission/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'selectcommission'])
+            ->name('selectcommission');
 
         // Route::get('updateagentid/{agent_id?}{royalsundaram_id?}', [AdminController::class, 'updateagentid'])->name('updateagentid');
 
         Route::match(['get', 'post'], '/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])
             ->name('updatetransaction');
         // Route::get('/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])->name('updatetransaction');  
-
+        Route::match(['get', 'post'], '/commission/{id?}', [AdminController::class, 'commission'])
+        ->name('admin.commission');
+        // Route::get('commission/{id?}', [AdminController::class, 'commission'])->name('admin.commission');
 
         Route::get('/royalsundaram/{id?}', [AdminController::class, 'royalsundaram'])->name('royalsundaram');
         // Route::get('/royalsundaram', [AdminController::class,'royalsundaramsave'])->name('royalsundaramsave');
@@ -88,7 +92,7 @@ Route::prefix('admin')->group(function () {
         Route::get('shriramgiedit', [AdminController::class, 'shriramgiedit'])->name('shriramgiedit');
         // Route::post('shriramgiupdate/{id}', [AdminController::class, 'shriramgiupdate'])->name('shriramgiupdate');
         Route::get('/useradd', [AdminController::class, 'useradd'])->name('useradd');
-
+       
         // Route::get('useradd', [AdminController::class, 'useradd'])->name('admin.useradd');
         Route::get('user', [AdminController::class, 'user'])->name('admin.user');
         Route::post('user', [AdminController::class, 'usersave'])->name('user.save');

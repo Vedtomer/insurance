@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Commission;
 use Illuminate\Support\Facades\Auth;
 class Agent extends Authenticatable implements MustVerifyEmail
 {
@@ -47,6 +48,12 @@ class Agent extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function commission()
+    {
+        return $this->belongsTo(Commission::class, 'id', 'agent_id');
+    }
 
     public function getPoliciesCount($request = null)
     {

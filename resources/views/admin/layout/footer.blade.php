@@ -8,6 +8,23 @@
 
 {{-- <script src="{{ asset('script.js') }}"></script> --}}
 <script>
+
+    function allowOnlyNumbers(event) {
+      const charCode = (event.which) ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 37 && charCode !== 39) {
+          event.preventDefault();
+      }
+     
+    }
+    </script>
+    <script>
+        function submitForm(form) {
+            if (form instanceof HTMLFormElement) {
+                form.submit();
+            }
+        }
+    </script>
+<script>
     @if(session('error'))
         toastr.error("{{ session('error') }}");
     @endif

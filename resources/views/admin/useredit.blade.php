@@ -44,12 +44,12 @@
            
             <div class="mb-3">
               <label >Mobile - Number</label>
-              <input type="text" class="form-control" name="mobile_number" value="{{$data->mobile_number}}" >
+              <input type="text" class="form-control" name="mobile_number" value="{{$data->mobile_number}}" onkeypress="allowOnlyNumbers(event)" >
             </div>
            
-            <div class="mb-3">
+            {{-- <div class="mb-3">
               <label >Commision</label>
-              <input type="text" class="form-control" name="commission" value="{{$data->commission}}" >
+              <input type="text" class="form-control" name="commission" value="{{$data->commission}}" onkeypress="allowOnlyNumbers(event)">
             </div>
           
             <div class="mb-3">
@@ -58,7 +58,7 @@
                   <option value="fixed" {{ $data->commission_type === 'fixed' ? 'selected' : '' }}>Fixed</option>
                   <option value="percentage" {{ $data->commission_type === 'percentage' ? 'selected' : '' }}>Percentage</option>
               </select>
-          </div>
+          </div> --}}
           
             
 
