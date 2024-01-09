@@ -515,6 +515,11 @@ class AdminController extends Controller
                     return view('admin.selectcommission', compact('commission', 'agent', 'royal'));
                 }
             }
+
+            $transation = Transaction::where('policy_id', $royal->id)->first();
+            $transation->agent_id = $agent_id;
+            $transation->save();
+            $royal->save();
         }
         if ($request->hasFile('policy_file')) {
             $file = $request->file('policy_file');
@@ -523,11 +528,7 @@ class AdminController extends Controller
             $royal->policy_link = $customFileName;
         }
 
-        $transation = Transaction::where('policy_id',$royal->id)->first();
-        $transation->agent_id = $agent_id;
-        $transation->save();
 
-        $royal->save();
 
         return redirect()->route('royalsundaram')->with('success', 'Agent and Policy updated successfully!');
     }
