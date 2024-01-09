@@ -74,30 +74,25 @@ Route::prefix('admin')->group(function () {
             Route::match(['get', 'post'], '/selectcommission/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'selectcommission'])
             ->name('selectcommission');
 
-        // Route::get('updateagentid/{agent_id?}{royalsundaram_id?}', [AdminController::class, 'updateagentid'])->name('updateagentid');
-
         Route::match(['get', 'post'], '/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])
             ->name('updatetransaction');
-        // Route::get('/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])->name('updatetransaction');  
+
         Route::match(['get', 'post'], '/commission/{id?}', [AdminController::class, 'commission'])
         ->name('admin.commission');
-        // Route::get('commission/{id?}', [AdminController::class, 'commission'])->name('admin.commission');
 
         Route::get('/royalsundaram/{id?}', [AdminController::class, 'royalsundaram'])->name('royalsundaram');
-        // Route::get('/royalsundaram', [AdminController::class,'royalsundaramsave'])->name('royalsundaramsave');
-        route::get('royalsundaramedit/{id}', [AdminController::class, 'royalsundaramedit'])->name('royalsundaramedit');
-        Route::post('royalsundaramupdate/{id}', [AdminController::class, 'royalsundaramupdate'])->name('royalsundaramupdate');
-        // Route::get('shriramgi', [AdminController::class, 'shriramgi']);
+
+        route::get('royalsundaramedit/{id?}', [AdminController::class, 'royalsundaramedit'])->name('royalsundaramedit');
+        Route::post('royalsundaramupdate/{id?}', [AdminController::class, 'royalsundaramupdate'])->name('royalsundaramupdate');
+
         Route::get('/shriramgi', [AdminController::class, 'shriramgi'])->name('shriramgi');
         Route::get('shriramgiedit', [AdminController::class, 'shriramgiedit'])->name('shriramgiedit');
-        // Route::post('shriramgiupdate/{id}', [AdminController::class, 'shriramgiupdate'])->name('shriramgiupdate');
+
         Route::get('/useradd', [AdminController::class, 'useradd'])->name('useradd');
        
-        // Route::get('useradd', [AdminController::class, 'useradd'])->name('admin.useradd');
+
         Route::get('user', [AdminController::class, 'user'])->name('admin.user');
         Route::post('user', [AdminController::class, 'usersave'])->name('user.save');
-        // Route::get('user', [AdminController::class, 'displayUsers'])->name('user.list');
-        // Route::get('admin/user', [AdminController::class, 'displayUsers'])->name('admin.user');
 
         route::get('useredit/{id}', [AdminController::class, 'useredit'])->name('useredit');
         Route::post('userupdate/{id}', [AdminController::class, 'userupdate'])->name('userupdate');

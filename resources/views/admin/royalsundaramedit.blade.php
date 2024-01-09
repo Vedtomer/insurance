@@ -6,13 +6,15 @@
     {{ session('success') }}
 </div>
 @endif
-      <div class="container">
+<div class="col-lg-6">
+  <div class="main-card mb-3 card">
+  <div class="card-body">
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                   
         <form method="post" action="{{route('newupdate' , $data->id)}}" enctype="multipart/form-data">
             @csrf
-            <h1>form data</h1>
+            {{-- <h1>form data</h1> --}}
 
             <div class="mb-3">
                 <label >branch</label>
@@ -239,12 +241,17 @@
               <br><br>
 
 
-            
-            <button type="submit" class="btn btn-primary">update</button>
-            <a class="btn btn-primary" href=" {{route('userdata') }} ">show all data</a>
+              <div class="text-center">
+              <button type="submit" class="btn btn-primary">update</button>
+              {{-- <a class="btn btn-primary" href=" {{route('userlist') }} ">show all data</a> --}}
+            </div>
+         
           </form>
             </div>
         </div>
       </div>
+  </div>
+</div>
+
    
       @endsection

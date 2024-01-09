@@ -215,7 +215,6 @@ class AdminController extends Controller
         $userdata->city = $request->city;
 
 
-
         $userdata->address = $request->address;
         $userdata->mobile_number = $request->mobile_number;
         // $userdata->commission = $request->commission;
@@ -225,7 +224,7 @@ class AdminController extends Controller
         $userdata->save();
 
         session()->flash('success', 'Agent created successfully.');
-        return redirect()->route('admin.commission');
+        return redirect()->route('admin.user');
     }
 
 
@@ -260,8 +259,8 @@ class AdminController extends Controller
             'city' => $request->city,
             'address' => $request->address,
             'mobile_number' => $request->mobile_number,
-            'commission' => $request->commission,
-            'commission_type' => $request->commission_type,
+            // 'commission' => $request->commission,
+            // 'commission_type' => $request->commission_type,
 
 
         ]);
@@ -519,15 +518,16 @@ class AdminController extends Controller
             $transation = Transaction::where('policy_id', $royal->id)->first();
             $transation->agent_id = $agent_id;
             $transation->save();
-            $royal->save();
+          
         }
         if ($request->hasFile('policy_file')) {
+        
             $file = $request->file('policy_file');
             $customFileName = $royal->policy . '.' . $file->getClientOriginalExtension();
             $filePath = $file->storeAs('public/policy', $customFileName);
             $royal->policy_link = $customFileName;
         }
-
+        $royal->save();
 
 
         return redirect()->route('royalsundaram')->with('success', 'Agent and Policy updated successfully!');
@@ -767,10 +767,11 @@ class AdminController extends Controller
 
 
 
-    public function royalsundaramedit()
+    public function royalsundaramedit($id)
     {
-        $users = Shriramgi::all();
-        return view('admin.royalsundaram', ['dataa' => $users]);
+        // $users = Shriramgi::all();
+        $users = Royalsundaram::find($id);
+        return view('admin.royalsundaramedit', ['data' => $users]);
     }
 
     public function royalsundaramupdate(Request $request)
