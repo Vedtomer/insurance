@@ -415,31 +415,44 @@ class AdminController extends Controller
     //     // return view('admin.commission');
     // }
 
-    public function commission(Request $request, $id)
+    public function commission(Request $request, $id = null)
     {
-        $data = Agent::find($id);
-        $commissiondata = Commission::where('agent_id', $id)->get();
+
+        $data = $id ? Agent::find($id) : new Agent();
+
+        if ($id === null) {
+        }
+
+        if ($data === null) {
+            return redirect()->route('admin.user')->with('error', 'Agent not found');
+        }
+
+        $commissiondata = Commission::where('agent_id', $data->id)->get();
+
         if ($request->isMethod('post')) {
+
             $request->validate([
                 'commission.*' => 'required',
                 'commission_type.*' => 'required|in:fixed,percentage',
             ]);
+
+            Commission::where('agent_id', $data->id)->delete();
+
             $commissions = $request->input('commission');
             $commissionTypes = $request->input('commission_type');
-            $commissionsData = [];
-            Commission::where('agent_id', $id)->delete();
+
             foreach ($commissions as $key => $commissionValue) {
                 $commission = new Commission();
-                $commission->agent_id = $id;
+                $commission->agent_id = $data->id;
                 $commission->commission_type = $commissionTypes[$key];
                 $commission->commission = $commissionValue;
                 $commission->save();
             }
             return redirect()->route('admin.user')->with('success', 'Commission added successfully');
         }
-
         return view('admin.commission', compact('data', 'commissiondata'));
     }
+    
     // public function updateagentid(Request $request,  $royalsundaram_id=null , $agent_id=null)
     // {
     //     //  return $request;

@@ -7,9 +7,7 @@
         float:right;
         margin-bottom: 8px;
     }
-    .btn{
-        border-radius: 0px;
-    }
+ 
 </style>
 <div class="col-lg-12">
     <div class="main-card mb-3 card">
@@ -18,6 +16,7 @@
             <h5 class="card-title">TRANSACTION</h5>
             <div class="btns" style="margin-left: auto;">
               {{-- <button type="button" class="btn btn-secondary">Transaction</button> --}}
+              {{-- <a  href="{{ route('admin.user') }}" class="btn btn-secondary ml-2">Back</a> --}}
             </div>
           </div>
           

@@ -69,8 +69,9 @@
 
             
             
-            <div>
+            <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary">Update</button>
+                <a  href="{{ route('royalsundaram') }}" class="btn btn-secondary ml-2">Back</a>
             </div>
           </form>
 

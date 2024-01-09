@@ -13,7 +13,7 @@
     <div class="main-card mb-3 card">
     <div class="card-body">
 
-        <form action="{{ route('admin.commission', ['id' => $data->id])}}" method="POST" id="fix">
+        <form action="{{ $data ? route('admin.commission', ['id' => $data->id]) : '#' }}" method="POST" id="fix">
             @csrf
                 <input type="hidden" class="form-control" name="id">
                  <div class="add" style="display: flex; align-items: center;">
