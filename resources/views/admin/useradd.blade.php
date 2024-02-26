@@ -47,7 +47,7 @@
             </div>
             <div class="mb-3">
                 <label for="">Mobile Number</label>
-                <input type="text" class="form-control" name="mobile_number" placeholder="Enter mobile number" required>
+                <input type="text" class="form-control" name="mobile_number" onkeypress="allowOnlyNumbers(event)" placeholder="Enter mobile number" required>
             </div>
             {{-- <div class="mb-3">
                 <label for="">Commission Type</label> --}}

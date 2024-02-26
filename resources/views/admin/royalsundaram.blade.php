@@ -186,8 +186,8 @@
                 {{-- <td>{{ $user->mobile_number}}</td>
                 <td>{{ $user->commission }}</td>
                 <td>{{ $user->commission_type }}</td> --}}
-                {{-- <td><a class="btn btn-success" href="{{route('useredit',$user->id)}}">Update</a></td> --}}
-                {{-- <td><a class="btn btn-danger" href="{{route('userdelete',$user->id)}}">Delete</a></td> --}}
+                {{-- <td><a class="btn btn-success" href="{{route('royalsundaramedit',$user->id)}}">Update</a></td> --}}
+                {{-- <td><a class="btn btn-danger" href="{{route('royalsundaramdelete',$user->id)}}">Delete</a></td> --}}
                 <!-- Add more columns as needed -->
             </tr>
         @endforeach

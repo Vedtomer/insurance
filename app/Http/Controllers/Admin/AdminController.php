@@ -215,7 +215,6 @@ class AdminController extends Controller
         $userdata->city = $request->city;
 
 
-
         $userdata->address = $request->address;
         $userdata->mobile_number = $request->mobile_number;
         // $userdata->commission = $request->commission;
@@ -225,7 +224,7 @@ class AdminController extends Controller
         $userdata->save();
 
         session()->flash('success', 'Agent created successfully.');
-        return redirect()->route('admin.commission');
+        return redirect()->route('admin.user');
     }
 
 
@@ -260,8 +259,8 @@ class AdminController extends Controller
             'city' => $request->city,
             'address' => $request->address,
             'mobile_number' => $request->mobile_number,
-            'commission' => $request->commission,
-            'commission_type' => $request->commission_type,
+            // 'commission' => $request->commission,
+            // 'commission_type' => $request->commission_type,
 
 
         ]);
@@ -415,31 +414,44 @@ class AdminController extends Controller
     //     // return view('admin.commission');
     // }
 
-    public function commission(Request $request, $id)
+    public function commission(Request $request, $id = null)
     {
-        $data = Agent::find($id);
-        $commissiondata = Commission::where('agent_id', $id)->get();
+
+        $data = $id ? Agent::find($id) : new Agent();
+
+        if ($id === null) {
+        }
+
+        if ($data === null) {
+            return redirect()->route('admin.user')->with('error', 'Agent not found');
+        }
+
+        $commissiondata = Commission::where('agent_id', $data->id)->get();
+
         if ($request->isMethod('post')) {
+
             $request->validate([
                 'commission.*' => 'required',
                 'commission_type.*' => 'required|in:fixed,percentage',
             ]);
+
+            Commission::where('agent_id', $data->id)->delete();
+
             $commissions = $request->input('commission');
             $commissionTypes = $request->input('commission_type');
-            $commissionsData = [];
-            Commission::where('agent_id', $id)->delete();
+
             foreach ($commissions as $key => $commissionValue) {
                 $commission = new Commission();
-                $commission->agent_id = $id;
+                $commission->agent_id = $data->id;
                 $commission->commission_type = $commissionTypes[$key];
                 $commission->commission = $commissionValue;
                 $commission->save();
             }
             return redirect()->route('admin.user')->with('success', 'Commission added successfully');
         }
-
         return view('admin.commission', compact('data', 'commissiondata'));
     }
+    
     // public function updateagentid(Request $request,  $royalsundaram_id=null , $agent_id=null)
     // {
     //     //  return $request;
@@ -506,15 +518,16 @@ class AdminController extends Controller
             $transation = Transaction::where('policy_id', $royal->id)->first();
             $transation->agent_id = $agent_id;
             $transation->save();
-            $royal->save();
+          
         }
         if ($request->hasFile('policy_file')) {
+        
             $file = $request->file('policy_file');
             $customFileName = $royal->policy . '.' . $file->getClientOriginalExtension();
             $filePath = $file->storeAs('public/policy', $customFileName);
             $royal->policy_link = $customFileName;
         }
-
+        $royal->save();
 
 
         return redirect()->route('royalsundaram')->with('success', 'Agent and Policy updated successfully!');
@@ -754,10 +767,11 @@ class AdminController extends Controller
 
 
 
-    public function royalsundaramedit()
+    public function royalsundaramedit($id)
     {
-        $users = Shriramgi::all();
-        return view('admin.royalsundaram', ['dataa' => $users]);
+        // $users = Shriramgi::all();
+        $users = Royalsundaram::find($id);
+        return view('admin.royalsundaramedit', ['data' => $users]);
     }
 
     public function royalsundaramupdate(Request $request)
