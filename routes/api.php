@@ -13,7 +13,7 @@ Route::prefix('agent')->group(function () {
     Route::middleware(['auth:api'])->group(function () {
         Route::post('logout', [LoginController::class, 'agentlogout']);
        
-        Route::get('/home', [ApiController::class, 'index']);
+        Route::match(['get', 'post'],'/home', [ApiController::class, 'index']);
      
      Route::match(['get', 'post'], '/getPolicy', [LoginController::class, 'getPolicy']);
      Route::match(['get', 'post'], '/transaction/{id?}', [ApiController::class, 'Transaction']);
