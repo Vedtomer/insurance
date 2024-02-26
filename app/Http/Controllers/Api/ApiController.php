@@ -11,9 +11,9 @@ class ApiController extends Controller
     public function index(){
         $dummyData = [
             'total_commission' => 1500.00,
-            'current_month_commission' => 500.00,
+            // 'current_month_commission' => 500.00,
             'total_policy' => 100,
-            'current_month_policy' => 20,
+            // 'current_month_policy' => 20,
             'total_premium_paid' => 5000.00,
             'pending_premium' => 1500.00,
         ];
