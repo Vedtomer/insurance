@@ -25,7 +25,7 @@
             </div>
             <div class="mb-3">
                 <label for="">Email</label>
-                <input type="email" class="form-control" autocomplete="OFF" name="email" placeholder="Enter email" required>
+                <input type="email" class="form-control" autocomplete="OFF" name="email" placeholder="Enter email" >
             </div>
             
             <div class="mb-3">

@@ -35,9 +35,15 @@ public function agentlogin(Request $request)
             }
         
         
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::guard('agent')->attempt($credentials)) {        
+            $credentials = $request->only('email', 'password');
+            $emailCredentials = $credentials;
+            $mobileCredentials = [
+                'mobile_number' => $credentials['email'], // Assuming 'email' field contains either email or mobile number
+                'password' => $credentials['password']
+            ];
+            
+            if (Auth::guard('agent')->attempt($emailCredentials) || Auth::guard('agent')->attempt($mobileCredentials)) {
+                
             $user = Auth::guard('agent')->user();
             if(!$user->status) {
                 return response()->json(['message' => 'your account is not active' , 'status' => false , 'data' => []], 400);
