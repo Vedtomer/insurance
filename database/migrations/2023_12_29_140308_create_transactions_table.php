@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->float('net_amount')->nullable();
-            $table->float('gst')->nullable();
-            $table->float('total_amount')->nullable();
-            $table->boolean('is_payment_done')->default(false);
-            $table->string('payment_by')->nullable();
-            $table->boolean('is_agent_paid_premium_amount')->default(false);
-            $table->string('policy_no')->nullable();
+            $table->float('amount')->nullable();
+            $table->float('agent_id')->nullable();
+            $table->string('payment_mode')->nullable();
+            $table->string('payment_transaction_id')->nullable();
             $table->timestamps();
         });
     }

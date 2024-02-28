@@ -1,18 +1,22 @@
 @extends('admin.layout.main')
 @section('section')
 
-@if(session('error'))
-<div class="alert alert-danger">
-    {{ session('error') }}
+<div class="errors">
+  @if ($errors->any())
+      @foreach ($errors->all() as $error)
+          <div class="alert alert-danger">
+              {{ $error }}
+          </div>
+      @endforeach
+  @endif
 </div>
-@endif
       
 <div class="col-lg-6">
   <div class="main-card mb-3 card">
   <div class="card-body">
             {{-- <div class="col-6"> --}}
                   
-        <form method="post" action="{{route('userupdate' , $data->id)}}" enctype="multipart/form-data">
+        <form method="post" action="{{route('agent.edit' , $data->id)}}" enctype="multipart/form-data">
             @csrf
             {{-- <h1>form data</h1> --}}
 
@@ -47,27 +51,11 @@
               <input type="text" class="form-control" name="mobile_number" value="{{$data->mobile_number}}" onkeypress="allowOnlyNumbers(event)" >
             </div>
            
-            {{-- <div class="mb-3">
-              <label >Commision</label>
-              <input type="text" class="form-control" name="commission" value="{{$data->commission}}" onkeypress="allowOnlyNumbers(event)">
-            </div>
           
-            <div class="mb-3">
-              <label>Commision-Type</label>
-              <select class="form-control" name="commission_type">
-                  <option value="fixed" {{ $data->commission_type === 'fixed' ? 'selected' : '' }}>Fixed</option>
-                  <option value="percentage" {{ $data->commission_type === 'percentage' ? 'selected' : '' }}>Percentage</option>
-              </select>
-          </div> --}}
-          
-            
-
-       
-
             
           <div class="text-center">
             <button type="submit" class="btn btn-primary">Update</button>
-            <a  href="{{ route('admin.user') }}" class="btn btn-secondary">Back</a>
+            <a  href="{{ route('agent.list') }}" class="btn btn-secondary">Back</a>
         </div>
             {{-- <a class="btn btn-primary" href=" {{route('user') }} ">show all data</a> --}}
           </form>

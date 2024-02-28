@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Agent;
+
 use App\Models\User;
 
-// use App\Models\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,13 +18,11 @@ use App\Models\Royalsundaram;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
-use App\Imports\ExcelImport1;
-use App\Imports\ExcelImport2;
-use Illuminate\Support\Facades\Storage;
-// use App\Imports\ExcelImport;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Transaction;
 
+use Illuminate\Support\Facades\Storage;
+
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Validator;
 
 
 class AdminController extends Controller
@@ -180,93 +177,13 @@ class AdminController extends Controller
 
 
 
-    public function user()
-    {
-        $users = Agent::with('commission')->orderBy('created_at', 'desc')->get();
+  
 
-        return view('admin.user', ['data' => $users]);
-    }
-
-    public function useradd()
-    {
-        return view('admin.useradd');
-    }
-    public function usersave(Request $request)
-    {
-        $validate = $request->validate([
-            'name' => 'required|string|max:100',
-            // 'email' => 'required|email|unique:agent',
-            'password' => 'required|min:8',
-            // 'state' => 'string|max:255',
-            // 'city' => 'string|max:255',
-            // 'address' => 'string|max:255',
-            'mobile_number' => 'required|string|max:10|min:10',
-            // 'commission' => 'required|string',
-            // 'commission_type' => 'required|in:fixed,percentage', // ENUM ke liye 'in' rule ka istemal kiya gaya hai
-            // ENUM ke liye 'in' rule ka istemal kiya gaya hai
-        ]);
+   
 
 
-        $userdata = new Agent();
-        $userdata->name = $request->name;
-        $userdata->email = $request->email;
-        $userdata->password = ($request->password);
-        $userdata->state = $request->state;
-        $userdata->city = $request->city;
 
-
-        $userdata->address = $request->address;
-        $userdata->mobile_number = $request->mobile_number;
-        // $userdata->commission = $request->commission;
-        // $userdata->commission_type = $request->commission_type;
-
-
-        $userdata->save();
-
-        session()->flash('success', 'Agent created successfully.');
-        return redirect()->route('admin.user');
-    }
-
-
-    //     public function displayUsers()
-    // {
-    //     $users = Agent::all(); // Sabhi users ki data fetch karein
-
-    //     // return view('admin.user', ['data' => $users]);
-    //     return view('admin.user', ['data' => $users]);
-    // }
-    // public function displayUsers()
-    // {
-    //     $users = User::all();
-    //     dd($users); // Check karne ke liye
-    //     // return view('admin.user', ['data' => $users]);
-    // }
-
-
-    public function useredit(string $id)
-    {
-        $userdata = DB::table('agent')->where('id', $id)->first();
-        return view('admin.useredit', ['data' => $userdata]);
-    }
-
-    public function userupdate(Request $request, $id)
-    {
-        $USER = DB::table('agent')->where('id', $id)->update([
-
-            'name' => $request->name,
-            'email' => $request->email,
-            'state' => $request->state,
-            'city' => $request->city,
-            'address' => $request->address,
-            'mobile_number' => $request->mobile_number,
-            // 'commission' => $request->commission,
-            // 'commission_type' => $request->commission_type,
-
-
-        ]);
-        return redirect()->route('admin.user')->with('success', 'update successfully.');
-        // ]);
-    }
+  
     public function userdelete(string $id)
     {
         $userdata = DB::table('agent')->where('id', $id)->delete();
@@ -274,49 +191,8 @@ class AdminController extends Controller
     }
 
 
-    public function showForm()
-    {
-        return view('admin.excel');
-    }
+   
 
-    // public function uploadExcel(Request $request)
-    // {
-    //     $request->validate([
-    //         'excelFile' => 'required|mimes:xlsx,xls',
-    //     ]);
-
-    //     // $file = $request->file('file');
-    //     $items = $request->file('excelFile')->store('temp');
-
-    //      Excel::import(new ExcelImport1, $items);
-    //     // Excel::import(new ExcelImport, 'path/to/your/excel/file.xlsx', null, \Maatwebsite\Excel\Excel::XLSX);
-
-
-    //     return redirect()->back()->with('success', 'Data imported successfully!');
-    // }
-
-    public function uploadExcel(Request $request)
-    {
-        $request->validate([
-            'excelFile' => 'required|mimes:xlsx,xls',
-            'importType' => 'required|in:ExcelImport1,ExcelImport2',
-        ]);
-
-
-
-        // Decide which ExcelImport class to use based on the selected import type
-        if ($request->importType == 'ExcelImport1') {
-            $importClass = new ExcelImport1;
-        } elseif ($request->importType == 'ExcelImport2') {
-            $importClass = new ExcelImport2;
-        }
-
-        // Store the uploaded file and import using the selected ExcelImport class
-        $items = $request->file('excelFile')->store('temp');
-        Excel::import($importClass, $items);
-
-        return redirect()->back()->with('success', 'Data imported successfully!');
-    }
 
 
     // public function excel()
@@ -414,44 +290,8 @@ class AdminController extends Controller
     //     // return view('admin.commission');
     // }
 
-    public function commission(Request $request, $id = null)
-    {
+   
 
-        $data = $id ? Agent::find($id) : new Agent();
-
-        if ($id === null) {
-        }
-
-        if ($data === null) {
-            return redirect()->route('admin.user')->with('error', 'Agent not found');
-        }
-
-        $commissiondata = Commission::where('agent_id', $data->id)->get();
-
-        if ($request->isMethod('post')) {
-
-            $request->validate([
-                'commission.*' => 'required',
-                'commission_type.*' => 'required|in:fixed,percentage',
-            ]);
-
-            Commission::where('agent_id', $data->id)->delete();
-
-            $commissions = $request->input('commission');
-            $commissionTypes = $request->input('commission_type');
-
-            foreach ($commissions as $key => $commissionValue) {
-                $commission = new Commission();
-                $commission->agent_id = $data->id;
-                $commission->commission_type = $commissionTypes[$key];
-                $commission->commission = $commissionValue;
-                $commission->save();
-            }
-            return redirect()->route('admin.user')->with('success', 'Commission added successfully');
-        }
-        return view('admin.commission', compact('data', 'commissiondata'));
-    }
-    
     // public function updateagentid(Request $request,  $royalsundaram_id=null , $agent_id=null)
     // {
     //     //  return $request;
@@ -466,72 +306,7 @@ class AdminController extends Controller
     // }
 
 
-    public function updateagentid(Request $request, $royalsundaram_id = null, $agent_id = null)
-    {
-        // return $request;
-        $royal = Royalsundaram::find($royalsundaram_id);
-
-        if (!$royal) {
-            return redirect()->back()->with('error', 'Royalsundaram record not found.');
-        }
-
-        if (!empty($agent_id)) {
-
-            $agent = Agent::find($agent_id);
-            $commission = Commission::where('agent_id', $agent_id)->get();
-            if (empty($agent->commission)) {
-                return redirect()->route('admin.commission', $agent->id)->with('error', 'Update Commission of ' . $agent->name);
-            }
-            if ($request->isMethod('post')) {
-                $commissionid = $request->commission_id;
-                $commission = Commission::find($commissionid);
-
-                if ($commission->commission_type == 'percentage') {
-                    $commissionPercentage = $commission->commission;
-                    $netAmount = $royal->net_amount;
-                    $commissionAmount = $netAmount * ($commissionPercentage / 100);
-                    $royal->agent_commission = $commissionAmount;
-                } else {
-                    $royal->agent_commission = $commission->commission;
-                }
-                $royal->agent_id = $agent_id;
-            }
-
-
-            if ($request->isMethod('get')) {
-                if (count($commission) == 1) {
-
-                    if ($commission[0]->commission_type == 'percentage') {
-                        $commissionPercentage = $commission[0]->commission;
-                        $netAmount = $royal->net_amount;
-                        $commissionAmount = $netAmount * ($commissionPercentage / 100);
-                        $royal->agent_commission = $commissionAmount;
-                    } else {
-                        $royal->agent_commission = $commission[0]->commission;
-                    }
-                    $royal->agent_id = $agent_id;
-                } else {
-                    return view('admin.selectcommission', compact('commission', 'agent', 'royal'));
-                }
-            }
-
-            $transation = Transaction::where('policy_id', $royal->id)->first();
-            $transation->agent_id = $agent_id;
-            $transation->save();
-          
-        }
-        if ($request->hasFile('policy_file')) {
-        
-            $file = $request->file('policy_file');
-            $customFileName = $royal->policy . '.' . $file->getClientOriginalExtension();
-            $filePath = $file->storeAs('public/policy', $customFileName);
-            $royal->policy_link = $customFileName;
-        }
-        $royal->save();
-
-
-        return redirect()->route('royalsundaram')->with('success', 'Agent and Policy updated successfully!');
-    }
+   
     // public function uploadPolicy(Request $request, $royalsundaram_id)
     // {
     //     $request->validate([

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('commissions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('agent_id');
+            $table->string('commission_type');
+            $table->decimal('commission', 8, 2);
             $table->timestamps();
         });
     }

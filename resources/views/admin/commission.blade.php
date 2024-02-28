@@ -1,5 +1,5 @@
 @extends('admin.layout.main')
-@section('title', $data->name ?? 'Default Title')
+@section('title',"Add Commision of " . $data->name ?? 'Default Title')
 
 @section('section')
 
@@ -13,7 +13,7 @@
     <div class="main-card mb-3 card">
     <div class="card-body">
 
-        <form action="{{ $data ? route('admin.commission', ['id' => $data->id]) : '#' }}" method="POST" id="fix">
+        <form action="{{ $data ? route('agent.commission', ['id' => $data->id]) : '#' }}" method="POST" id="fix">
             @csrf
                 <input type="hidden" class="form-control" name="id">
                  <div class="add" style="display: flex; align-items: center;">
@@ -62,7 +62,7 @@
           </form>
           <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-primary" onclick="submitForm(fix)">submit</button>
-            <a  href="{{ route('admin.user') }}" class="btn btn-secondary ml-2">Back</a>
+            <a  href="{{ route('agent.list') }}" class="btn btn-secondary ml-2">Back</a>
         </div>
 
     </div>

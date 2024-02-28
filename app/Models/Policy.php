@@ -8,12 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Policy extends Model
 {
     use HasFactory;
-    protected $table = 'policy'; 
     protected $fillable = [
-        'agent_name',
-        'count_of_net',
-        'sum_of_incoming',
-        'sum_of_given_amount'
-       
+        'policy_no',
+        'policy_start_date',
+        'policy_end_date',
+        'customername',
+        'insurance_company',
+        'agent_id',
+        'premium',
+        'gst',
+        'agent_commission',
+        'net_amount',
+        'payment_by'
+        // Add other attributes here if needed
     ];
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class, 'agent_id', 'id');
+    }
 }

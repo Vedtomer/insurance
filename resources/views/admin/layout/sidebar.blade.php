@@ -48,16 +48,16 @@
                     </a>
                 </li> --}}
                 <li>
-                    <a href="{{route('admin.user')}}">
+                    <a href="{{route('agent.list')}}">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Agent List
                     </a>
                 </li>
                
                 <li>
-                    <a href="{{route('show.upload.form')}}">
+                    <a href="{{route('upload.policy')}}">
                         <i class="metismenu-icon pe-7s-graph2"></i>
-                        Import Excel
+                        Upload Policy
                     </a>
                 </li>
                 {{-- <li>
@@ -68,7 +68,7 @@
                     </a>
                 </li> --}}
                    <li>
-                    <a href="{{ route('royalsundaram') }}">
+                    <a href="{{ route('policy.list') }}">
                         <i class="metismenu-icon pe-7s-eyedropper">
                         </i>Policy List
                     </a>

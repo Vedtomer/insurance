@@ -14,7 +14,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'agent';
+
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +30,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
         'address',
         'mobile_number',
         'commission',
-        'status',
+        'status','agent_code'
     ];
 
     /**
