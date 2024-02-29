@@ -21,12 +21,12 @@ return new class extends Migration
         $table->decimal('agent_commission', 8, 2)->nullable(); 
         $table->unsignedBigInteger('agent_id')->nullable();
         $table->boolean('is_agent_commission_paid')->default(false);
-        $table->enum('status', ['Paid', 'Unpaid', 'Partial_Paid'])->default('Unpaid'); // Set default value
+        $table->enum('status', ['Paid', 'Unpaid', 'Partial_Paid'])->default('Unpaid'); 
         $table->decimal('net_amount', 8, 2);
         $table->decimal('gst', 8, 2);
         $table->decimal('premium', 8, 2);
         $table->string('insurance_company');
-        $table->enum('payment_by', ['AGENT', 'SELF'])->nullable();
+        $table->enum('payment_by', ['DEALER','SELF'])->nullable();
         $table->timestamps();
     });
 }
