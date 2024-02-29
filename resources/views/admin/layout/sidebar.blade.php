@@ -94,6 +94,12 @@
                             Transaction
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('policy.pdf.upload') }}">
+                            <i class="metismenu-icon pe-7s-diamond">
+                            </i>file Upload
+                        </a>
+                    </li>
                 {{-- <li>
                     <a href="">
                         <i class="metismenu-icon pe-7s-car"></i>
