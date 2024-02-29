@@ -28,9 +28,9 @@
         }
 
         /* tr{
-            border: 2px solid black;
-            
-        } */
+                border: 2px solid black;
+                
+            } */
     </style>
     {{-- @extends('admin.layout.main')
 @section('section') --}}
@@ -180,29 +180,17 @@
 
 
                                         <td>
-                                            <?php
-                                            $startDate = date_create_from_format('d-m-Y', $user->policy_start_date);
-                                            echo $startDate !== false ? date_format($startDate, 'M d Y') : 'Invalid date';
-                                            ?>
-
+                                            {{ date('M d, Y', strtotime($user->policy_start_date)) }}
                                         </td>
                                         <td>
-                                            <?php
-                                            $endDate = date_create_from_format('d-m-Y', $user->policy_end_date);
-                                            echo $endDate !== false ? date_format($endDate, 'M d Y') : 'Invalid date';
-                                            ?>
+                                            {{ date('M d, Y', strtotime($user->policy_end_date)) }}
                                         </td>
+                                        
+                                        
 
 
-                                        {{-- <td>{{ \Carbon\Carbon::createFromFormat('d/m/Y', $user->policy_end_date)->format('d M Y') }}</td> --}}
 
-                                        {{-- <td>{{ $user->expirydate }}</td> --}}
-                                        {{-- <td>{{ $user->mobile_number}}</td>
-                <td>{{ $user->commission }}</td>
-                <td>{{ $user->commission_type }}</td> --}}
-                                        {{-- <td><a class="btn btn-success" href="{{route('royalsundaramedit',$user->id)}}">Update</a></td> --}}
-                                        {{-- <td><a class="btn btn-danger" href="{{route('royalsundaramdelete',$user->id)}}">Delete</a></td> --}}
-                                        <!-- Add more columns as needed -->
+
                                     </tr>
                                 @endforeach
 

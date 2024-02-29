@@ -34,4 +34,5 @@ class Policy extends Model
         // For example, you can concatenate attributes to generate a link
         return 'http://example.com/policies/' . $this->id;
     }
+   
 }
