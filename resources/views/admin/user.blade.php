@@ -51,9 +51,9 @@
                             <td>{{ $user->city }}</td>
                             <td>{{ $user->address }}</td>
                             <td>{{ $user->mobile_number}}</td>
-                            <td>{{ $user->agentcommission->commission }}</td>
-                            {{-- <td>{{ $user->commission }}</td>
-                            <td>{{ $user->commission_type }}</td> --}}
+                            <td>{{ $user->commissions }}</td>
+                            {{-- <td>{{ $user->commission }}</td> --}}
+                            {{-- <td>{{ $user->commission_type }}</td>  --}}
                             <td >
                                 <a class="btn  mr-2" href="{{ route('agent.commission', $user->id) }}"><i class="fa fa-edit" style="font-size:24px"></i>
                                 </a>
