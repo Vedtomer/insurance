@@ -22,8 +22,16 @@ class Policy extends Model
         'payment_by'
         // Add other attributes here if needed
     ];
+    protected $appends = ['policy_link'];
     public function agent()
     {
         return $this->belongsTo(Agent::class, 'agent_id', 'id');
+    }
+
+    public function getPolicyLinkAttribute()
+    {
+        // Replace 'policy_link' with the logic to generate the link
+        // For example, you can concatenate attributes to generate a link
+        return 'http://example.com/policies/' . $this->id;
     }
 }

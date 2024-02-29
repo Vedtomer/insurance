@@ -90,12 +90,12 @@ class Agent extends Authenticatable implements MustVerifyEmail
             }
             $agent_id =  auth()->guard('api')->user()->id;
 
-            $royalData = Royalsundaram::whereBetween('creationdate', [$startDate, $endDate])->where('agent_id', $agent_id)->select('agent_id', 'policy as policy_no', 'creationdate as policy_start_date', 'expirydate as policy_end_date', 'policyholder as customername', 'policypremium as premium', 'agent_commission', 'policy_link')->get();
-
-            $shriramData = Shriramgi::whereBetween('policy_start_date', [$startDate, $endDate])
-                ->select('agent_id', 'policy_no', 'policy_start_date', 'policy_end_date', 'insured_name as customername', 'net_premium as premium', 'agent_commission')
-                ->get();
-
+            $royalData = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->select('agent_id', 'policy_no', 'policy_start_date', 'policy_end_date', 'customername', 'premium', 'agent_commission')
+            ->get()
+            ->append('policy_link');
+        
             $combinedData = collect();
 
             foreach ($royalData as $royalItem) {
@@ -114,23 +114,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
                 ]);
             }
 
-            foreach ($shriramData as $shriramItem) {
-
-                \Log::info('Shriram Item: ' . json_encode($shriramItem));
-
-                $combinedData->push([
-                    'policy_link' => $shriramItem->policy_link,
-                    'policy_no' => $shriramItem->policy_no,
-                    'policy_start_date' => $shriramItem->policy_start_date,
-                    'policy_end_date' => $shriramItem->policy_end_date,
-                    'customername' => $shriramItem->customername,
-                    'premium' => $shriramItem->premium,
-                    'agent_commission' => $royalItem->agent_commission,
-                    'insurance_company' => "Shriram",
-                ]);
-            }
-
-            \Log::info('Combined Data: ' . json_encode($combinedData));
+         
 
             return response([
                 'status' => true,
