@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Imports\ExcelImport;
 use App\Models\Policy;
 use App\Models\Agent;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -48,21 +49,35 @@ class PolicyController extends Controller
             return view('admin.policy_pdf_upload');
         }
     
-        $validator = Validator::make($request->all(), [
-            'pdfFile.*' => 'required|mimes:pdf',
-        ]);
+        $successFiles = [];
+        $failedFiles = [];
     
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        try {
+            $validator = Validator::make($request->all(), [
+                'files.*' => 'required|mimes:pdf',
+            ]);
     
-        foreach($request->file('pdfFile') as $key => $file)
-        {
-            $fileName = $file->getClientOriginalName(); // Use the original filename
-            Storage::disk('public')->put('policy/' . $fileName, file_get_contents($file));
-            $files[]['name'] = $fileName;
+            if ($validator->fails()) {
+                throw new \Exception('One or more files are invalid.');
+            }
+    
+            foreach ($request->file('files') as $file) {
+                $originalName = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $uniqueName = $originalName. '.' . $extension;
+    
+                try {
+                    $file->storeAs('public/policies', $uniqueName);
+                    $successFiles[] = $originalName;
+                } catch (\Exception $e) {
+                    $failedFiles[$originalName] = $e->getMessage();
+                }
+            }
+    
+            return view('admin.policy_pdf_upload', compact('successFiles', 'failedFiles'));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([$e->getMessage()])->withInput();
         }
-        
-        return redirect()->back()->with('success', 'Data imported successfully!');
     }
+    
 }
