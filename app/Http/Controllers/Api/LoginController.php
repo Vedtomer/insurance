@@ -67,7 +67,7 @@ public function agentlogin(Request $request)
 
         }
 
-        return response()->json(['message' => 'not found' , 'status' => false , 'data' => []]);
+        return response()->json(['message' => 'User not found' , 'status' => false , 'data' => []]);
     } catch (\Exception $e) {
         return response()->json(['message' => $e->getMessage() , 'status' => false , 'data' => [] ], 500);
     }
