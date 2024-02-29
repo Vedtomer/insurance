@@ -23,10 +23,7 @@
                     <label for="email">Email</label>
                     <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter email">
                 </div>
-                <div class="mb-3">
-                    <label for="password">Password</label>
-                    <input type="text" class="form-control" name="password" placeholder="Enter password" required>
-                </div>
+               
                 <div class="mb-3">
                     <label for="state">State</label>
                     <input type="text" class="form-control" name="state" value="{{ old('state') }}" placeholder="Enter state">

@@ -18,7 +18,6 @@ class AgentController extends Controller
         } elseif ($request->isMethod('post')) {
             $validate = $request->validate([
                 'name' => 'required|string|max:100',
-                'password' => 'required',
                 'mobile_number' => 'required|regex:/^[0-9]{10}$/',
             ]);
 
@@ -26,7 +25,7 @@ class AgentController extends Controller
             $agent = new Agent();
             $agent->name = $request->name;
             $agent->email = $request->email;
-            $agent->password = $request->password;
+            $agent->password = $request->mobile_number;
             $agent->state = $request->state;
             $agent->city = $request->city;
             $agent->address = $request->address;
