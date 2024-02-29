@@ -93,7 +93,7 @@ Route::prefix('admin')->group(function () {
         Route::match(['get', 'post'], '/agent', [AgentController::class, 'Agent'])->name('agent');
         Route::get('agent-list', [AgentController::class, 'AgentList'])->name('agent.list');
 
-        Route::match(['get', 'post'], '/policy-pdf-upload', [AgentController::class, 'policyUpload'])->name('policy.pdf.upload');
+        Route::match(['get', 'post'], '/policy-pdf-upload', [PolicyController::class, 'policyUpload'])->name('policy.pdf.upload');
         Route::match(['get', 'post'], '/commission/{id}', [AgentController::class, 'commission'])
         ->name('agent.commission');
         Route::match(['get', 'post'], 'agent-edit/{id}', [AgentController::class, 'AgentEdit'])->name('agent.edit');

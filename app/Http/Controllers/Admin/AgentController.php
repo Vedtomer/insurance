@@ -174,31 +174,5 @@ class AgentController extends Controller
         return redirect()->route('policy.list')->with('success', 'Agent and Policy updated successfully!');
     }
 
-    public function policyUpload(Request $request){
-
-        if ($request->isMethod('get')) {
-            return view('admin.policy_pdf_upload');
-        }
-
-        $validator = Validator::make($request->all(), [
-            'pdfFile' => 'required|mimes:pdf',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        foreach($request->file('pdfFile') as $key => $file)
-        {
-            $fileName = time().rand(1,99).'.'.$file->extension();  
-            $file->move(public_path('policy'), $fileName);
-            $files[]['name'] = $fileName;
-        }
-        
-        // $importClass = new ExcelImport;
-        // $items = $request->file('pdfFile')->store('policy');
-        // Pdf::import($importClass, $items);
-        return redirect()->back()->with('success', 'Data imported successfully!');
-
-    }
+   
 }
