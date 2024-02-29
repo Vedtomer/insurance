@@ -41,7 +41,7 @@ class AgentController extends Controller
 
     public function AgentList()
     {
-       $users = Agent::with('commissions')->orderBy('created_at', 'desc')->get();
+        $users = Agent::with('commissions')->orderBy('created_at', 'desc')->get();
 
         return view('admin.user', ['data' => $users]);
     }
@@ -110,7 +110,7 @@ class AgentController extends Controller
 
     public function updateagentid(Request $request, $royalsundaram_id = null, $agent_id = null)
     {
-      
+
         $royal = Policy::find($royalsundaram_id);
 
         if (!$royal) {
@@ -120,9 +120,10 @@ class AgentController extends Controller
         if (!empty($agent_id)) {
 
             $agent = Agent::find($agent_id);
-            $commission = Commission::where('agent_id', $agent_id)->get();
-            if (empty($agent->commission)) {
-                return redirect()->route('admin.commission', $agent->id)->with('error', 'Update Commission of ' . $agent->name);
+            $commissions = Commission::where('agent_id', $agent_id)->get();
+
+            if ($commissions->isEmpty()) {
+                return redirect()->route('agent.commission', $agent_id)->with('error', 'Update Commission of ' . $agent->name);
             }
             if ($request->isMethod('post')) {
                 $commissionid = $request->commission_id;
@@ -141,15 +142,15 @@ class AgentController extends Controller
 
 
             if ($request->isMethod('get')) {
-                if (count($commission) == 1) {
+                if (count($commissions) == 1) {
 
-                    if ($commission[0]->commission_type == 'percentage') {
-                        $commissionPercentage = $commission[0]->commission;
+                    if ($commissions[0]->commission_type == 'percentage') {
+                        $commissionPercentage = $commissions[0]->commission;
                         $netAmount = $royal->net_amount;
                         $commissionAmount = $netAmount * ($commissionPercentage / 100);
                         $royal->agent_commission = $commissionAmount;
                     } else {
-                        $royal->agent_commission = $commission[0]->commission;
+                        $royal->agent_commission = $commissions[0]->commission;
                     }
                     $royal->agent_id = $agent_id;
                 } else {
@@ -173,6 +174,4 @@ class AgentController extends Controller
 
         return redirect()->route('policy.list')->with('success', 'Agent and Policy updated successfully!');
     }
-
-   
 }

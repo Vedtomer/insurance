@@ -47,6 +47,6 @@ class ExcelImport implements ToModel, WithHeadingRow
     private function excelSerialToDate($excelSerialNumber)
     {
         $unixTimestamp = ($excelSerialNumber - 25569) * 86400;
-        return date("d-m-Y", $unixTimestamp);
+        return Carbon::createFromTimestamp($unixTimestamp)->format('Y-m-d H:i:s');
     }
 }
