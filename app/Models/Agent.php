@@ -59,23 +59,11 @@ class Agent extends Authenticatable implements MustVerifyEmail
     }
 
 
-    //     public function agentcommission(): BelongsTo
-    // {
-    //     return $this->belongsTo(Commission::class, 'id', 'agent_id');
-    // }
-    // public function agentcommission(): HasMany
-    // {
-    //     return $this->hasMany(Commission::class, 'id', 'agent_id');
-    // }
-
     public function getPoliciesCount($request = null)
     {
         try {
             $startDate = $request->start_date;
             $endDate = $request->end_date;
-
-            // \Log::info('start_date: ' . $startDate);
-            // \Log::info('end_date: ' . $endDate);
 
             if (empty($startDate)) {
                 $startDate = Carbon::now()->firstOfMonth();
@@ -95,30 +83,10 @@ class Agent extends Authenticatable implements MustVerifyEmail
             ->select('agent_id', 'policy_no', 'policy_start_date', 'policy_end_date', 'customername', 'premium', 'agent_commission')
             ->get()
             ->append('policy_link');
-        
-            $combinedData = collect();
-
-            foreach ($royalData as $royalItem) {
-
-                \Log::info('Royal Item: ' . json_encode($royalItem));
-
-                $combinedData->push([
-                    'policy_link' => $royalItem->policy_link,
-                    'policy_no' => $royalItem->policy_no,
-                    'policy_start_date' => $royalItem->policy_start_date,
-                    'policy_end_date' => $royalItem->policy_end_date,
-                    'customername' => $royalItem->customername,
-                    'premium' => $royalItem->premium,
-                    'agent_commission' => $royalItem->agent_commission,
-                    'insurance_company' => "Royal Sundaram",
-                ]);
-            }
-
-         
 
             return response([
                 'status' => true,
-                'data' => $combinedData,
+                'data' => $royalData,
                 'message' => 'Policy listing'
             ]);
         } catch (\Exception $e) {

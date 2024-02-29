@@ -18,7 +18,7 @@ class ExcelImport implements ToModel, WithHeadingRow
             'insurance_company' => $row['insurance_company'],
         ]);
 
-        // Convert policy_start_date and policy_end_date from Excel serial number to date
+     
         $existingRecord->policy_start_date = $this->excelSerialToDate($row['policy_start_date']);
         $existingRecord->policy_end_date = $this->excelSerialToDate($row['policy_end_date']);
 
@@ -47,6 +47,6 @@ class ExcelImport implements ToModel, WithHeadingRow
     private function excelSerialToDate($excelSerialNumber)
     {
         $unixTimestamp = ($excelSerialNumber - 25569) * 86400;
-        return date("Y-m-d", $unixTimestamp);
+        return date("d-m-Y", $unixTimestamp);
     }
 }
