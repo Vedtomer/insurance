@@ -43,7 +43,7 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $user)
-                                <tr>
+                           <tr @if ($user->commissions->isEmpty() || $user->commissions->sum('commission') == 0) style="background-color: #cb498533 ;" @endif>
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>

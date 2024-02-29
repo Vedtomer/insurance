@@ -35,6 +35,7 @@
                     <div class="col-md-6">
                         <label>Commision-Type</label>
                         <select class="form-control" name="commission_type[]" required>
+                            <option value=""  disabled>Select Type</option>
                             <option value="fixed" {{ $record->commission_type === 'fixed' ? 'selected' : '' }}>Fixed</option>
                             <option value="percentage" {{ $record->commission_type === 'percentage' ? 'selected' : '' }}>Percentage</option>
                         </select>
