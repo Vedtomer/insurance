@@ -181,14 +181,14 @@
 
                                         <td>
                                             <?php
-                                            $startDate = date_create_from_format('Y-m-d', $user->policy_start_date);
+                                            $startDate = date_create_from_format('d-m-Y', $user->policy_start_date);
                                             echo $startDate !== false ? date_format($startDate, 'M d Y') : 'Invalid date';
                                             ?>
 
                                         </td>
                                         <td>
                                             <?php
-                                            $endDate = date_create_from_format('Y-m-d', $user->policy_end_date);
+                                            $endDate = date_create_from_format('d-m-Y', $user->policy_end_date);
                                             echo $endDate !== false ? date_format($endDate, 'M d Y') : 'Invalid date';
                                             ?>
                                         </td>
