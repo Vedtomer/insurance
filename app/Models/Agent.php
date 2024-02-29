@@ -10,6 +10,9 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Commission;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Agent extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -49,11 +52,18 @@ class Agent extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-
-    public function commission()
+    public function agentcommission(): BelongsToMany
     {
-        return $this->belongsTo(Commission::class, 'id', 'agent_id');
+        return $this->belongsToMany(Commission::class)->using(Agent::class);
     }
+//     public function agentcommission(): BelongsTo
+// {
+//     return $this->belongsTo(Commission::class, 'id', 'agent_id');
+// }
+    // public function agentcommission(): HasMany
+    // {
+    //     return $this->hasMany(Commission::class, 'id', 'agent_id');
+    // }
 
     public function getPoliciesCount($request = null)
     {

@@ -35,6 +35,7 @@
                         <th style="width: 20%" scope="col">City</th>
                         <th style="width: 20%" scope="col">Address</th>
                         <th style="width: 20%" scope="col">Mobile Number</th>
+                        <th style="width: 20%" scope="col">Agentcommission</th>
                         <th style="width: 20%" scope="col">Commission</th>
                         <th style="width: 20%" scope="col">Transaction</th>
                         <th style="width: 15%" scope="col">Action</th>
@@ -50,6 +51,7 @@
                             <td>{{ $user->city }}</td>
                             <td>{{ $user->address }}</td>
                             <td>{{ $user->mobile_number}}</td>
+                            <td>{{ $user->agentcommission->commission }}</td>
                             {{-- <td>{{ $user->commission }}</td>
                             <td>{{ $user->commission_type }}</td> --}}
                             <td >

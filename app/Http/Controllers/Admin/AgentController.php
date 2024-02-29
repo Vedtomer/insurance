@@ -38,7 +38,7 @@ class AgentController extends Controller
 
     public function AgentList()
     {
-        $users = Agent::with('commission')->orderBy('created_at', 'desc')->get();
+    return   $users = Agent::with('agentcommission')->orderBy('created_at', 'desc')->get();
 
         return view('admin.user', ['data' => $users]);
     }
