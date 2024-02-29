@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 class Agent extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -33,7 +34,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
         'address',
         'mobile_number',
         'commission',
-        'status','agent_code'
+        'status', 'agent_code'
     ];
 
     /**
@@ -52,14 +53,16 @@ class Agent extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function agentcommission(): BelongsToMany
+    public function commissions(): HasMany
     {
-        return $this->belongsToMany(Commission::class)->using(Agent::class);
+        return $this->hasMany(Commission::class, 'agent_id');
     }
-//     public function agentcommission(): BelongsTo
-// {
-//     return $this->belongsTo(Commission::class, 'id', 'agent_id');
-// }
+
+
+    //     public function agentcommission(): BelongsTo
+    // {
+    //     return $this->belongsTo(Commission::class, 'id', 'agent_id');
+    // }
     // public function agentcommission(): HasMany
     // {
     //     return $this->hasMany(Commission::class, 'id', 'agent_id');
@@ -73,32 +76,32 @@ class Agent extends Authenticatable implements MustVerifyEmail
 
             // \Log::info('start_date: ' . $startDate);
             // \Log::info('end_date: ' . $endDate);
-    
+
             if (empty($startDate)) {
                 $startDate = Carbon::now()->firstOfMonth();
             } else {
                 $startDate = Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay();
             }
-    
+
             if (empty($endDate)) {
                 $endDate = Carbon::now();
             } else {
                 $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
             }
-          $agent_id =  auth()->guard('api')->user()->id;
-          
-            $royalData = Royalsundaram::whereBetween('creationdate', [$startDate, $endDate])->where('agent_id', $agent_id) ->select('agent_id', 'policy as policy_no', 'creationdate as policy_start_date', 'expirydate as policy_end_date', 'policyholder as customername', 'policypremium as premium','agent_commission', 'policy_link')->get();
-    
+            $agent_id =  auth()->guard('api')->user()->id;
+
+            $royalData = Royalsundaram::whereBetween('creationdate', [$startDate, $endDate])->where('agent_id', $agent_id)->select('agent_id', 'policy as policy_no', 'creationdate as policy_start_date', 'expirydate as policy_end_date', 'policyholder as customername', 'policypremium as premium', 'agent_commission', 'policy_link')->get();
+
             $shriramData = Shriramgi::whereBetween('policy_start_date', [$startDate, $endDate])
-                ->select('agent_id', 'policy_no', 'policy_start_date', 'policy_end_date', 'insured_name as customername', 'net_premium as premium','agent_commission')
+                ->select('agent_id', 'policy_no', 'policy_start_date', 'policy_end_date', 'insured_name as customername', 'net_premium as premium', 'agent_commission')
                 ->get();
-    
+
             $combinedData = collect();
-    
+
             foreach ($royalData as $royalItem) {
 
                 \Log::info('Royal Item: ' . json_encode($royalItem));
-    
+
                 $combinedData->push([
                     'policy_link' => $royalItem->policy_link,
                     'policy_no' => $royalItem->policy_no,
@@ -110,11 +113,11 @@ class Agent extends Authenticatable implements MustVerifyEmail
                     'insurance_company' => "Royal Sundaram",
                 ]);
             }
-    
+
             foreach ($shriramData as $shriramItem) {
 
                 \Log::info('Shriram Item: ' . json_encode($shriramItem));
-    
+
                 $combinedData->push([
                     'policy_link' => $shriramItem->policy_link,
                     'policy_no' => $shriramItem->policy_no,
@@ -126,22 +129,22 @@ class Agent extends Authenticatable implements MustVerifyEmail
                     'insurance_company' => "Shriram",
                 ]);
             }
-    
+
             \Log::info('Combined Data: ' . json_encode($combinedData));
-    
+
             return response([
                 'status' => true,
                 'data' => $combinedData,
                 'message' => 'Policy listing'
             ]);
         } catch (\Exception $e) {
- 
+
             \Log::error('Exception: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage(), 'status' => false, 'data' => []], 500);
         }
     }
-    
+
 
 
 
@@ -152,7 +155,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
     //     //    return $request;
 
     //     try {
-          
+
     //         $startDate = $request->start_date;
     //         $endDate = $request->end_date;
 
