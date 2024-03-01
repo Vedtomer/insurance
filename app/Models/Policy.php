@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\File;
+
+use function PHPUnit\Framework\returnSelf;
+
 class Policy extends Model
 {
     use HasFactory;
@@ -34,19 +37,13 @@ class Policy extends Model
 
     public function getPolicyLinkAttribute()
     {
-        
 
+        $data = ('/policies') . "/" . $this->policy_no . '.pdf';
 
-
-        $data = asset('/storage/policies') . "/" . $this->policy_no . '.pdf';
-        if (File::exists($data)) {
-            return $data;
+        if (Storage::disk('public')->has($data)) {
+            return asset('/policies') . "/" . $this->policy_no . '.pdf';
         } else {
-           
-            return "";
+            return "no";
         }
-   
     }
-   
 }
-// }
