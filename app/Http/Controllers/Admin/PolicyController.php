@@ -64,7 +64,7 @@ class PolicyController extends Controller
             foreach ($request->file('files') as $file) {
                 $originalName = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
-                $uniqueName = $originalName. '.' . $extension;
+                $uniqueName = $originalName;
     
                 try {
                     $file->storeAs('public/policies', $uniqueName);
