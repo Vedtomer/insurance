@@ -38,7 +38,7 @@ class PolicyController extends Controller
 
     public function PolicyList(Request $request)
     {
-      return  $users = Policy::with('agent')->orderBy('id', 'desc')->get();
+        $users = Policy::with('agent')->orderBy('id', 'desc')->get();
         $data = Agent::all();
         return view('admin.policy_list', ['data' => $users, 'dat' => $data]);
     }
