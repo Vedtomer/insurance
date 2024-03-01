@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use PHPUnit\TextUI\Configuration\File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Policy extends Model
 {
@@ -32,7 +36,40 @@ class Policy extends Model
     {
         // Replace 'policy_link' with the logic to generate the link
         // For example, you can concatenate attributes to generate a link
-        return 'http://example.com/policies/' . $this->id;
+        // if(!Storage::exists(asset('/storage/policies')."/".$this->policy_no.'.pdf')) {
+
+
+            // echo "not exists";
+            // return "";
+            //  return 'http://127.0.0.1:8001/admin/policies/' . $this->policy_no.".pdf.pdf"; 
+
+        // }else{
+
+        //  return   $data = asset('/storage/policies')."/".$this->policy_no.'.pdf';
+    //   if( Storage::exists( asset('/storage/policies')."/".$this->policy_no.'.pdf')){
+
+
+
+         $data =  asset('/storage/policies')."/".$this->policy_no.'.pdf';
+         if(File::exists($data)){
+            return $data;
+         }else{
+            return "";
+         }
+       
+    //   }
+
+       
+        // if (!file_exists($fileExists)) {
+        //  echo $fileExists ;
+    //    return "The file does not exist.";
+    //    }
+    //  else {
+        
+    //    return false;
+        // return $fileExists ;
+    //    }
     }
    
 }
+// }
