@@ -56,6 +56,7 @@ class PolicyController extends Controller
             $validator = Validator::make($request->all(), [
                 'files.*' => 'required|mimes:pdf',
             ]);
+            
     
             if ($validator->fails()) {
                 throw new \Exception('One or more files are invalid.');
