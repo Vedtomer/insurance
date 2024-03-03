@@ -58,7 +58,7 @@ class LoginController extends Controller
                     if ($commission->commission_type === 'percentage') {
                         $formattedCommission = $commission->commission . '%';
                     } elseif ($commission->commission_type === 'fixed') {
-                        $formattedCommission =  $commission->commission. '₹';
+                        $formattedCommission =  $commission->commission;
                     }
     
                     $record['commission'][] = $formattedCommission;
