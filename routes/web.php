@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\AgentController;
+use App\Http\Controllers\PagesController;
 
 
 
@@ -34,9 +35,10 @@ route::get('login', [LoginController::class, 'index']);
 route::get('dash', [LoginController::class, 'show']);
 route::get('user', [LoginController::class, 'usershow']);
 
-// route::get('/home', [AdminController::class, 'home']);
-
 route::get('table', [LoginController::class, 'table']);
+
+Route::get('/policies/privacy-policy', [PagesController::class, 'PrivacyPolicy'])->name('privacy.policy');
+
 // Admin Routes
 Route::prefix('admin')->group(function () {
     Route::get('/', function () {
