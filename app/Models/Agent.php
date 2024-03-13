@@ -87,7 +87,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
           $royalData = Policy::
                 whereBetween('policy_start_date', [$startDate, $endDate])
            ->where('agent_id', $agent_id)
-            ->select('policy_no', 'policy_start_date', 'policy_end_date', 'customername', 'premium', 'agent_commission')
+            ->select('policy_no', 'policy_start_date', 'policy_end_date', 'customername', 'premium', 'agent_commission','insurance_company')
             ->get()
             ->append('policy_link');
 
