@@ -32,56 +32,15 @@
                 
             } */
     </style>
-    {{-- @extends('admin.layout.main')
-@section('section') --}}
-
-    {{-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Laravel 10 Yajra Datatables Tutorial - ItSolutionStuff.com</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script> 
-</head>
-<body> --}}
-
-    {{-- <div class="container"> --}}
-    {{-- <h1>Laravel 10 Yajra Datatables Tutorial - ItSolutionStuff.com</h1> --}}
-    {{-- <table class="table table-bordered data-table"> --}}
-    {{-- <table> 
-        <thead>
-            <tr>
-                <th>branch</th>
-                <th>userid</th>
-                <th>policy</th>
-                <th>prody666yhuct</th>
-                <th>covernoteissuedate</th>
-                <th>creationdate</th>
-                <th>lastmodifiedby</th>
-                <th>lastmodifiedtime</th>
-
-                <th>businessstatus</th>
-                <th>policyholder</th>
-                <th>oacode</th>
-                <th>inceptiondate</th>
-                <th>expirydate</th>
-                <th>make</th>
-                <th>agent_id</th>
-                <th width="100px">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table> --}}
 
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-body">
+                <div  class="col-3 mb-4" id="reportrange"
+                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                <i class="fa fa-calendar"></i>&nbsp;
+                <span></span> <i class="fa fa-caret-down"></i>
+            </div>
                 <div class="add" style="display: flex; align-items: center;">
                     {{-- <h5 class="card-title">Royalsundaram</h5> --}}
                     <div class="btns" style="margin-left: auto;">

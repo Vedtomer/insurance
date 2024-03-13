@@ -3,14 +3,15 @@
 namespace App\Models;
 
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\File;
-
 use function PHPUnit\Framework\returnSelf;
+
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Policy extends Model
 {
@@ -30,11 +31,10 @@ class Policy extends Model
         // Add other attributes here if needed
     ];
     protected $appends = ['policy_link'];
-    public function agent()
+    public function agent(): BelongsTo
     {
-        return $this->belongsTo(Agent::class, 'agent_id', 'id');
+        return $this->belongsTo(Agent::class, 'agent_id');
     }
-
     public function getPolicyLinkAttribute()
     {
 

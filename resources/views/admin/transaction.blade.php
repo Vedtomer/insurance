@@ -12,6 +12,11 @@
 <div class="col-lg-12">
     <div class="main-card mb-3 card">
     <div class="card-body">
+        <div  class="col-3 mb-4" id="reportrange"
+        style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+        <i class="fa fa-calendar"></i>&nbsp;
+        <span></span> <i class="fa fa-caret-down"></i>
+    </div>
         <div class="add" style="display: flex; align-items: center;">
             <h5 class="card-title">TRANSACTION</h5>
             <div class="btns" style="margin-left: auto;">

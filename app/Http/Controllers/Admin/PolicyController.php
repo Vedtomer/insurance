@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Imports\ExcelImport;
-use App\Models\Policy;
+use Carbon\Carbon;
 use App\Models\Agent;
+use App\Models\Policy;
+use App\Imports\ExcelImport;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-
-
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class PolicyController extends Controller
 {
@@ -38,7 +39,22 @@ class PolicyController extends Controller
 
     public function PolicyList(Request $request)
     {
-        $users = Policy::with('agent')->orderBy('id', 'desc')->get();
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        if (empty($start_date)) {
+            $start_date = now()->startOfMonth();
+        } else {
+            $start_date = Carbon::parse($start_date)->startOfDay();
+        }
+
+        if (empty($end_date)) {
+            $end_date = now()->endOfDay();
+        } else {
+            $end_date = Carbon::parse($end_date)->endOfDay();
+        }
+        
+        $users = Policy::with('agent')->whereBetween('policy_start_date', [$start_date, $end_date])->orderBy('id', 'desc')->get();
         $data = Agent::all();
         return view('admin.policy_list', ['data' => $users, 'dat' => $data]);
     }

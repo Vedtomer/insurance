@@ -11,6 +11,7 @@ use App\Models\Policy;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf;
+use Carbon\Carbon;
 
 class AgentController extends Controller
 {
@@ -39,11 +40,51 @@ class AgentController extends Controller
         }
     }
 
-    public function AgentList()
+    public function AgentList(Request $request)
     {
-        $users = Agent::with('commissions')->orderBy('created_at', 'desc')->get();
+
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        if (empty($start_date)) {
+            $start_date = now()->startOfMonth();
+        } else {
+            $start_date = Carbon::parse($start_date)->startOfDay();
+        }
+
+        if (empty($end_date)) {
+            $end_date = now()->endOfDay();
+        } else {
+            $end_date = Carbon::parse($end_date)->endOfDay();
+        }
+    
+        $users = Agent::with(['commissions', 'Policy' => function ($query) use ($start_date, $end_date) {
+            $query->whereBetween('policy_start_date', [$start_date, $end_date]);
+        }])->orderBy('created_at', 'desc')->get();
 
         return view('admin.user', ['data' => $users]);
+    }
+
+    public function filtereddata(Request $request)
+    {
+        // return "abs";
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        if (empty($start_date)) {
+            $start_date = now()->startOfDay();
+        } else {
+            $start_date = Carbon::parse($start_date)->startOfDay();
+        }
+        if (empty($end_date)) {
+            $end_date = now()->endOfDay();
+        } else {
+            $end_date = Carbon::parse($end_date)->endOfDay();
+        }
+        $data = Agent::whereBetween('created_at', [$start_date, $end_date])
+            ->get();
+
+        return view('admin.user',  compact('data'));
     }
 
     public function commission(Request $request, $id)
