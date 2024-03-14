@@ -39,25 +39,42 @@ class PolicyController extends Controller
 
     public function PolicyList(Request $request)
     {
+        // return $id;
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
+        $agent_id = $request->input('agent_id');
 
-        if (empty($start_date)) {
+        if (empty($start_date) || $start_date =="null") {
             $start_date = now()->startOfMonth();
         } else {
             $start_date = Carbon::parse($start_date)->startOfDay();
         }
 
-        if (empty($end_date)) {
+        if (empty($end_date) ||  $end_date =="null") {
             $end_date = now()->endOfDay();
         } else {
             $end_date = Carbon::parse($end_date)->endOfDay();
         }
-        
-        $users = Policy::with('agent')->whereBetween('policy_start_date', [$start_date, $end_date])->orderBy('id', 'desc')->get();
-        $data = Agent::all();
-        return view('admin.policy_list', ['data' => $users, 'dat' => $data]);
+
+        if(empty($agent_id) ||  $agent_id =="null") {
+            $users = Policy::with('agent')->whereBetween('policy_start_date', [$start_date, $end_date])->orderBy('id', 'desc')->get();
+        } else {
+           $users = Policy::where('agent_id' , $agent_id)->with('agent')->whereBetween('policy_start_date', [$start_date, $end_date])->orderBy('id', 'desc')->get();
+        }
+
+        $agent = Agent::get();
+        return view('admin.policy_list', ['data' => $users,  'agent' => $agent ]);
     }
+
+    // public function  policyshow( Request $request ,string $id){
+    //     if ($request->isMethod('get')) {
+    //     return view('admin.policyshow');
+    //     }
+
+    //     if ($request->isMethod('post')){
+    //       $users = Agent::with('commissions', 'Policy')->orderBy('created_at', 'desc')->get();
+    //     }
+    // }
 
     public function policyUpload(Request $request){
 

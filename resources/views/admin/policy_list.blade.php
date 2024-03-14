@@ -3,7 +3,6 @@
 @section('section')
 
 
-
     <style>
         td {
             border: 1px solid black;
@@ -32,19 +31,37 @@
                 
             } */
     </style>
+    
 
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <div  class="col-3 mb-4" id="reportrange"
-                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                <i class="fa fa-calendar"></i>&nbsp;
-                <span></span> <i class="fa fa-caret-down"></i>
-            </div>
+       <div class="top" style="display: flex;">
+        <div  class="col-3 mb-4 mr-5" id="reportrange"
+        style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; margin-right: 50rem !important;
+    }">
+        <i class="fa fa-calendar"></i>&nbsp;
+        <span></span> <i class="fa fa-caret-down"></i>
+    </div>
+    <div class="left ml-5">
+        <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
+
+            <optgroup label="Group 1">
+                @foreach ($agent as $user)
+                <option value="{{ $user->id }}" > {{ $user->name }}</option>
+                
+                @endforeach
+            </optgroup>
+        </select>
+    </div>
+       </div>
+            
+          
+
                 <div class="add" style="display: flex; align-items: center;">
                     {{-- <h5 class="card-title">Royalsundaram</h5> --}}
                     <div class="btns" style="margin-left: auto;">
-                        {{-- <button type="button" class="btn btn-secondary">Transaction</button> --}}
+                     
                     </div>
                 </div>
 
@@ -144,62 +161,26 @@
                                         <td>
                                             {{ date('M d, Y', strtotime($user->policy_end_date)) }}
                                         </td>
-                                        
-                                        
-
-
-
-
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     @else
                         <p>No Policy Found.</p>
                     @endif
                 </div>
+            
             </div>
         </div>
     </div>
-    {{-- </div> --}}
 
-    </body>
 
-    {{-- <script type="text/javascript">
-  $(function () {
-      
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('royalsundaram') }}",
-        columns: [
-            { data: 'branch', name: 'branch' },
-            { data: 'userid', name: 'userid' },
-            { data: 'policy', name: 'policy' },
-            { data: 'prody666yhuct', name: 'prody666yhuct' },
-            { data: 'covernoteissuedate', name: 'covernoteissuedate' },
-                { data: 'creationdate', name: 'creationdate' },
-                { data: 'lastmodifiedby', name: 'lastmodifiedby' },
-                { data: 'lastmodifiedtime', name: 'lastmodifiedtime' },
-                { data: 'businessstatus', name: 'businessstatus' },
-                { data: 'policyholder', name: 'policyholder' },
-                { data: 'oacode', name: 'oacode' },
-                { data: 'inceptiondate', name: 'inceptiondate' },
-                { data: 'expirydate', name: 'expirydate' },
-                { data: 'make', name: 'make' },
-                { data: 'agent_id', name: 'agent_id' },
-                {data: 'action', name: 'action', orderable: false, searchable: false},
-                
-            ]
-    });
-      
-  });
-</script> --}}
-    {{-- </html> --}}
+
+
+    
     <!-- Include SweetAlert from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script></script>
     <script>
         function confirmAgentChange(selectElement) {
             Swal.fire({
@@ -211,10 +192,10 @@
                 cancelButtonText: "No, cancel",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If the user clicks "Yes," redirect to the selected agent
+                
                     window.location.href = selectElement.value;
                 } else {
-                    // If the user clicks "No," reset the selected option to the default
+             
                     selectElement.selectedIndex = 0;
                 }
             });

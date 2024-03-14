@@ -11,6 +11,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
 
@@ -57,13 +58,14 @@
     // Retrieve start_date and end_date from the URL parameters
     const startDateParam = urlParams.get('start_date');
     const endDateParam = urlParams.get('end_date');
+    const agent_id = urlParams.get('agent_id');
     
     // Set default start and end dates
     var start = moment().startOf('month');
     var end = moment();
     
     // If start_date and end_date parameters are present in the URL, use them
-    if (startDateParam && endDateParam) {
+    if (startDateParam && endDateParam && startDateParam !="null") {
         start = moment(startDateParam);
         end = moment(endDateParam);
     }
@@ -85,7 +87,7 @@
             }
         }, function(start, end, label) {
             var currentUrl = "{{ URL::current() }}"; 
-        var dynamicRoute =  currentUrl + '?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD');
+        var dynamicRoute =  currentUrl + '?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD')+'&agent_id='+agent_id;
         window.location.href = dynamicRoute;
     });
     
@@ -93,3 +95,23 @@
     
     });
     </script>
+
+
+<script>
+    $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
+
+
+function filterAgent(agentId){
+    var currentUrl = "{{ URL::current() }}"; 
+    const urlParams = new URLSearchParams(window.location.search);
+    const startDateParam = urlParams.get('start_date');
+    const endDateParam = urlParams.get('end_date');
+
+    var dynamicRoute =  currentUrl + '?start_date=' + startDateParam + '&end_date=' + endDateParam+'&agent_id='+agentId;
+    window.location.href = dynamicRoute;
+
+}
+
+</script>

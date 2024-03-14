@@ -80,7 +80,8 @@ Route::prefix('admin')->group(function () {
             ->name('updatetransaction');
 
 
-            Route::get('/policy-list', [PolicyController::class, 'PolicyList'])->name('policy.list');
+            Route::match(['get', 'post'],'/policy-list', [PolicyController::class, 'PolicyList'])->name('policy.list');
+            // Route::match(['get', 'post'],'/policyshow/{id}', [PolicyController::class, 'policyshow'])->name('policyshow');
             Route::get('/royalsundaram/{id?}', [AdminController::class, 'royalsundaram'])->name('royalsundaram');
 
         // Route::get('/royalsundaram/{id?}', [AdminController::class, 'royalsundaram'])->name('royalsundaram');
