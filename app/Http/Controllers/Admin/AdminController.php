@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Shriramgi;
 use App\Models\Commission;
 use App\Models\Transaction;
+use App\Models\Agent;
 use Illuminate\Http\Request;
 use App\Models\Royalsundaram;
 use Illuminate\Support\Collection;
@@ -53,7 +54,7 @@ class AdminController extends Controller
 
     public function logout()
     {
-        $guard = Auth::getDefaultDriver(); 
+        $guard = Auth::getDefaultDriver();
         Auth::guard($guard)->logout();
         $redirectRoute = ($guard == 'admin') ? 'admin.login' : 'agent.login';
         return redirect()->route($redirectRoute);
@@ -77,17 +78,17 @@ class AdminController extends Controller
     {
         $validate = $request->validate([
 
-            'name' => 'required|string|max:100',  
+            'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
 
         ]);
 
-// POLICY COUNT , premium , PENDDING premium , POINTS , 
+        // POLICY COUNT , premium , PENDDING premium , POINTS , 
         $userdata = new User();
         $userdata->name = $request->name;
         $userdata->email = $request->email;
-        $userdata->password = $request->password; 
+        $userdata->password = $request->password;
 
         $userdata->save();
 
@@ -115,7 +116,6 @@ class AdminController extends Controller
 
         ]);
         return redirect()->route('userdata')->with('error', 'update successfully.');
-      
     }
     public function header()
     {
@@ -160,7 +160,7 @@ class AdminController extends Controller
     {
         return view('admin.layout.main');
     }
-  
+
     public function userdelete(string $id)
     {
         $userdata = DB::table('agent')->where('id', $id)->delete();
@@ -240,7 +240,7 @@ class AdminController extends Controller
 
         return view('admin.updatetransaction', ['data' => $user]);
     }
- 
+
 
     public function royalsundaramedit($id)
     {
@@ -358,30 +358,70 @@ class AdminController extends Controller
         return view('admin.profile');
     }
 
-    public function  transaction(Request  $request ,$id = null)
+
+
+    public function Transaction(Request $request, $id = null)
+{
+    
+    $start_date = $request->input('start_date', now()->startOfMonth());
+    $end_date = $request->input('end_date', now()->endOfDay());
+    $payment_mode = ($request->input('payment_mode') === 'null') ? '' : $request->input('payment_mode');
+
+    $agent_id =($request->input('agent_id') === 'null') ? '' : $request->input('agent_id'); 
+    
+    if (empty($start_date) || $start_date == "null") {
+        $start_date = now()->startOfMonth();
+    } else {
+        $start_date = Carbon::parse($start_date)->startOfDay();
+    }
+
+    if (empty($end_date) || $end_date == "null") {
+        $end_date = now()->endOfDay();
+    } else {
+        $end_date = Carbon::parse($end_date)->endOfDay();
+    }
+
+    $query = Transaction::whereBetween('created_at', [$start_date, $end_date])->orderBy('created_at', 'desc');
+
+    if (!empty($payment_mode) ) {
+       
+        if ($payment_mode === 'cash') {
+            $query->where('payment_mode', 'cash');
+        } else {
+            $query->where('payment_mode',"!=", 'cash');
+        }
+    }
+
+    if (!empty($agent_id) ) {
+        $query->where('agent_id', $agent_id);
+    }
+
+    $users = $query->get();
+    $agents = Agent::all();
+
+    return view('admin.transaction', ['data' => $users, 'agent' => $agents]);
+}
+
+
+
+
+    public function AddTransaction(Request $request)
     {
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
-
-        if (empty($start_date)) {
-            $start_date = now()->startOfMonth();
-        } else {
-            $start_date = Carbon::parse($start_date)->startOfDay();
+        if ($request->isMethod('get')) {
+            $agents = Agent::orderBy('created_at', 'desc')->get();
+            return view('admin.transactionadd', ['data' => $agents]);
         }
 
-        if (empty($end_date)) {
-            $end_date = now()->endOfDay();
-        } else {
-            $end_date = Carbon::parse($end_date)->endOfDay();
+        if ($request->isMethod('post')) {
+            $transaction = new Transaction();
+            $transaction->agent_id = $request->agent_id;
+            $transaction->payment_mode = $request->payment_mode;
+            $transaction->transaction_id = $request->transaction_id;
+            $transaction->amount = $request->amount;
+            $transaction->payment_date = $request->payment_date;
+            $transaction->save();
+            return redirect()->route('transaction')->with('success', 'Transaction Add Successfully.');
         }
-        
-        // $users = Transaction::orderBy('id','desc')->get();
-        if (empty($id)) {
-            $users = Transaction::whereBetween('created_at', [$start_date, $end_date])->orderBy('created_at', 'desc')->get();
-        } else {
-            $users = Transaction::where('agent_id', $id)->get();
-        }
-        return view('admin.transaction', ['data' => $users]);
     }
 
     public function  home()
@@ -392,5 +432,4 @@ class AdminController extends Controller
     {
         return view('admin.layout.newhome');
     }
-  
 }

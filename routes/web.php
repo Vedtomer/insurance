@@ -61,10 +61,9 @@ Route::prefix('admin')->group(function () {
         // route::get('newedit/{id}', [AdminController::class, 'edit'])->name('newedit');
         // Route::post('newupdate/{id}', [AdminController::class, 'newupdate'])->name('newupdate');
         // route::get('delete/{id}', [AdminController::class, 'delete'])->name('delete');
-        route::get('transaction/{id?}', [AdminController::class, 'transaction'])->name('transaction');
-
-        // route::get('newhome', [AdminController::class, 'newhome']);
-        // route::get('main', [AdminController::class, 'newheader']);
+        route::get('transaction/{id?}', [AdminController::class, 'Transaction'])->name('transaction');
+        Route::match(['get', 'post'], '/add-transaction', [AdminController::class, 'AddTransaction'])
+        ->name('add.transaction');
        
 
         Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');

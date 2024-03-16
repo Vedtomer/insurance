@@ -12,18 +12,52 @@
 <div class="col-lg-12">
     <div class="main-card mb-3 card">
     <div class="card-body">
-        <div  class="col-3 mb-4" id="reportrange"
-        style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+        <div class="top" style="display: flex;">
+        <div  class="col-3 mb-4 mr-5" id="reportrange"
+        style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; margin-right: 18rem !important;">
         <i class="fa fa-calendar"></i>&nbsp;
         <span></span> <i class="fa fa-caret-down"></i>
     </div>
-        <div class="add" style="display: flex; align-items: center;">
-            <h5 class="card-title">TRANSACTION</h5>
+    <div class="left ml-5 mr-5">
+        <select class="form-select js-example-basic-single select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
+            <option disabled>Select Agent</option>
+            @foreach ($agent as $user)
+            <option value="{{ $user->id }}" @if(isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif>{{ $user->name }}</option>
+
+            @endforeach
+        </select>
+        
+    </div>
+
+    <div class="left ml-5 mr-5">
+
+        <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterPayment(this.value)">
+
+            <optgroup>
+                <option selected disabled>Select Payment Mode</option>
+                <option value="cash" @if(isset($_GET['payment_mode']) && $_GET['payment_mode'] === "cash") selected @endif>Cash</option>
+
+                <option value="online" @if(isset($_GET['payment_mode']) && $_GET['payment_mode'] === "online") selected @endif>Online</option>
+
+                {{-- <option value="{{ $data->id }}" > {{ $data->payment_mode }}</option> --}}
+                
+            
+            </optgroup>
+        </select>
+    </div>
+    
+
+        <div class="add ml-5" style="display: flex; align-items: center;">
+           
             <div class="btns" style="margin-left: auto;">
-              {{-- <button type="button" class="btn btn-secondary">Transaction</button> --}}
-              {{-- <a  href="{{ route('admin.user') }}" class="btn btn-secondary ml-2">Back</a> --}}
+                <a id="openModalBtn" href="{{ route('add.transaction') }}" class="btn btn-secondary mb-2">Add Transaction</a>
+              {{-- <a  href="{{ route('admin.user') }}" class="btn btn-secondattry ml-2">Back</a> --}}
             </div>
           </div>
+      
+    </div>
+</div>
+        {{-- <h5 class="card-title">TRANSACTION</h5> --}}
           
 
     <div class="table-responsive">
@@ -31,15 +65,14 @@
     <thead>
     <tr>
     <th>S No</th>
-    <th>Policy No</th>
-    <th>Net Amount</th>
-    <th>Gst</th>
-    <th>Total Amount</th>
-    <th>Payment By</th>
-    <th>Payment Done</th>
-    <th>Agent Clear Payment</th>
-    <th>Updated Date</th>
-    <th>Updated Time</th>
+    <th>Agent Id</th>
+    <th>payment_mode</th>
+    <th>transaction_id</th>
+    <th>amount</th>
+    <th>payment_date </th>
+
+    {{-- <th>Updated Date</th>
+    <th>Updated Time</th> --}}
    
     {{-- <th></th> --}}
    
@@ -50,50 +83,19 @@
         <tr>
             
             <td>{{ $loop->index + 1 }}</td>
-            <td>{{ $user->policy_no }}</td>
-            <td>{{ $user->net_amount }}</td>
-            <td>{{ $user->gst }}</td>
-            <td>{{ $user->total_amount }}</td>
+            <td>{{ $user->agent->name }}</td>
+            <td>{{ $user->payment_mode }}</td>
+            <td>{{ $user->transaction_id }}</td>
+            <td>{{ $user->amount }}</td>
             
-            <td>{{ $user->payment_by }}</td>
+            <td>{{ $user->payment_date }}</td>
           
 
-            {{-- <td>
-                @if ($user->payment_bypayme == 0 )
-                    
-                @else
-               
-                @endif
-            </td> --}}
-            <td>
-                @if ($user->is_payment_done == 0)
-                    <span class="badge badge-danger ml-2">No</span>
-                @else
-                    @if ($user->is_payment_done == 1)
-                        <span class="badge badge-success ml-2">Yes</span>
-                    @endif
-                @endif
-            </td>
-            
-
-            {{-- <td>{{ $user->is_payment_done }}</td> --}}
-    
           
-            {{-- <td>{{ $user->is_agent_paid_premium_amount }}</td> --}}
-            <td>
-                @if ($user->is_agent_paid_premium_amount == 0)
-                    <span class="badge badge-danger ml-2">No</span>
-                @else
-                    @if ($user->is_agent_paid_premium_amount == 1)
-                        <span class="badge badge-success ml-2">Yes</span>
-                    @endif
-                @endif
-            </td>
-            
             {{-- <td>{{ $user->updated_at->format('Y-m-d H:i:s') }}</td>
             <td>{{ $user->updated_at->toDateString() }}</td> --}}
-            <td>{{ \Carbon\Carbon::parse($user->updated_at)->format('d M Y h' ) }}</td>
-            <td>{{ \Carbon\Carbon::parse($user->updated_at)->format('H:i:s' ) }}</td>
+            {{-- <td>{{ \Carbon\Carbon::parse($user->updated_at)->format('d M Y h' ) }}</td> --}}
+            {{-- <td>{{ \Carbon\Carbon::parse($user->updated_at)->format('H:i:s' ) }}</td> --}}
 
 
 

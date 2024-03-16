@@ -2,21 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaction extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'net_amount',
-        'gst',
-        'total_amount',
-        'policy_no',
-        'policy_id'
+        'agent_id',
+        'payment_mode',
+        'transaction_id',
+        'amount',
+        'payment_date'
 
     ];
 
 
+    public function agent(): BelongsTo
+    {
+        return $this->belongsTo(Agent::class, 'agent_id');
+    }
 }

@@ -46,9 +46,10 @@
     <div class="left ml-5">
         <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
 
-            <optgroup label="Group 1">
+            <optgroup>
+                <option selected disabled>Select Agent</option>
                 @foreach ($agent as $user)
-                <option value="{{ $user->id }}" > {{ $user->name }}</option>
+                <option value="{{ $user->id }}" @if(isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif> {{ $user->name }}</option>
                 
                 @endforeach
             </optgroup>

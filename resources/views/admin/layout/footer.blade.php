@@ -59,6 +59,8 @@
     const startDateParam = urlParams.get('start_date');
     const endDateParam = urlParams.get('end_date');
     const agent_id = urlParams.get('agent_id');
+    const payment_mode = urlParams.get('payment_mode');
+   
     
     // Set default start and end dates
     var start = moment().startOf('month');
@@ -87,7 +89,7 @@
             }
         }, function(start, end, label) {
             var currentUrl = "{{ URL::current() }}"; 
-        var dynamicRoute =  currentUrl + '?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD')+'&agent_id='+agent_id;
+        var dynamicRoute =  currentUrl + '?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD')+'&agent_id='+agent_id +'&payment_mode='+payment_mode;
         window.location.href = dynamicRoute;
     });
     
@@ -99,7 +101,9 @@
 
 <script>
     $(document).ready(function() {
-    $('.js-example-basic-single').select2();
+    $('.js-example-basic-single').select2({placeholder: "Select a Agent"});
+    
+    
 });
 
 
@@ -108,8 +112,31 @@ function filterAgent(agentId){
     const urlParams = new URLSearchParams(window.location.search);
     const startDateParam = urlParams.get('start_date');
     const endDateParam = urlParams.get('end_date');
+    const payment_mode = urlParams.get('payment_mode');
 
-    var dynamicRoute =  currentUrl + '?start_date=' + startDateParam + '&end_date=' + endDateParam+'&agent_id='+agentId;
+    var dynamicRoute =  currentUrl + '?start_date=' + startDateParam + '&end_date=' + endDateParam + '&payment_mode='+payment_mode +'&agent_id='+agentId ;
+    window.location.href = dynamicRoute;
+
+}
+
+</script>
+
+<script>
+    $(document).ready(function() {
+    $('.js-example-basic-single').select2({placeholder: "Select a Agent"});
+    
+    
+});
+
+
+function filterPayment(payment_mode){
+    var currentUrl = "{{ URL::current() }}"; 
+    const urlParams = new URLSearchParams(window.location.search);
+    const startDateParam = urlParams.get('start_date');
+    const endDateParam = urlParams.get('end_date');
+    const agent_id = urlParams.get('agent_id');
+
+    var dynamicRoute =  currentUrl + '?start_date=' + startDateParam + '&end_date=' + endDateParam+'&agent_id='+agent_id+'&payment_mode='+payment_mode;
     window.location.href = dynamicRoute;
 
 }

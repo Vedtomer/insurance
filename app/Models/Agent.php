@@ -55,7 +55,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
 
     public function commissions(): HasMany
     {
-        return $this->hasMany(Commission::class, 'agent_id');
+        return $this->hasMany(Commission::class, 'id');
     }
 
     public function Policy(): HasMany
@@ -63,6 +63,10 @@ class Agent extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Policy::class, 'agent_id');
     }
 
+    public function Transaction(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'agent_id');
+    }
 
     public function getPoliciesCount($request = null)
     {
