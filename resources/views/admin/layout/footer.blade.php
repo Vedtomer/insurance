@@ -142,3 +142,61 @@ function filterPayment(payment_mode){
 }
 
 </script>
+
+
+<script>
+    function toggleStatus(button) {
+        var sliderId = $(button).data('id');
+        var status = $(button).data('status');
+        
+        // Toggle the status
+        status = !status;
+
+        $.ajax({
+            url: "sliders/" + sliderId + "/toggle-status", // Use correct route
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                // Update the UI
+                if (response.status) {
+                    $(button).html('<span class="badge badge-success">Active</span>');
+                } else {
+                    $(button).html('<span class="badge badge-danger">Inactive</span>');
+                }
+                // Update the status attribute
+                $(button).data('status', response.status);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+</script>
+
+<script>
+    function copyCommissionCode(code) {
+        // Create a textarea element
+        var textarea = document.createElement('textarea');
+
+        // Set the value of the textarea to the commission code
+        textarea.value = code;
+
+        // Append the textarea to the document body
+        document.body.appendChild(textarea);
+
+        // Select the content of the textarea
+        textarea.select();
+
+        // Copy the selected text to the clipboard
+        document.execCommand('copy');
+
+        // Remove the textarea from the document body
+        document.body.removeChild(textarea);
+
+        // Alert the user that the commission code has been copied
+        toastr.success("Commission code copied: " + code);
+      
+    }
+</script>

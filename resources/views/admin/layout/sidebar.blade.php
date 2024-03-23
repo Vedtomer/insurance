@@ -100,6 +100,13 @@
                             </i>file Upload
                         </a>
                     </li>
+
+                    <li>
+                        <a href="{{ route('sliders.index') }}">
+                            <i class="metismenu-icon pe-7s-diamond">
+                            </i>App Slider
+                        </a>
+                    </li>
                 {{-- <li>
                     <a href="">
                         <i class="metismenu-icon pe-7s-car"></i>
