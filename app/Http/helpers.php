@@ -24,3 +24,15 @@ if (!function_exists('getCommission')) {
         return null;
     }
 }
+
+if (!function_exists('getAgentId')) {
+    function getAgentId($commission_code)
+    {
+
+        if (!empty($commission_code)) {
+            $commission = Commission::where('commission_code', $commission_code)->first();
+            return $commission->agent_id;
+        }
+    }
+    return null;
+}
