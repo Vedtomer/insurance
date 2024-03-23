@@ -55,7 +55,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
 
     public function commissions(): HasMany
     {
-        return $this->hasMany(Commission::class, 'id');
+        return $this->hasMany(Commission::class, 'agent_id');
     }
 
     public function Policy(): HasMany
