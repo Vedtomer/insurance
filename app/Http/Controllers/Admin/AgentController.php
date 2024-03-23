@@ -57,7 +57,7 @@ class AgentController extends Controller
         } else {
             $end_date = Carbon::parse($end_date)->endOfDay();
         }
-    
+
         $users = Agent::with(['commissions', 'Policy' => function ($query) use ($start_date, $end_date) {
             $query->whereBetween('policy_start_date', [$start_date, $end_date]);
         }])->orderBy('created_at', 'desc')->get();
@@ -105,21 +105,27 @@ class AgentController extends Controller
                 'commission.*' => 'required',
                 'commission_type.*' => 'required|in:fixed,percentage',
             ]);
-
+        
             Commission::where('agent_id', $data->id)->delete();
-
+        
             $commissions = $request->input('commission');
             $commissionTypes = $request->input('commission_type');
-
+        
             foreach ($commissions as $key => $commissionValue) {
                 $commission = new Commission();
                 $commission->agent_id = $data->id;
                 $commission->commission_type = $commissionTypes[$key];
                 $commission->commission = $commissionValue;
+    
+                $commission->save();
+                $commissionValue = intval($commissionValue);
+                $commissionCode = strtoupper(substr($commissionTypes[$key], 0, 1)) . $commissionValue . "IN" . $commission->id;
+                $commission->commission_code = $commissionCode;
                 $commission->save();
             }
             return redirect()->route('agent.list')->with('success', 'Commission added successfully');
         }
+
         return view('admin.commission', compact('data', 'commissiondata'));
     }
 

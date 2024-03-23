@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\PagesController;
 
+use App\Http\Controllers\SliderController;
 
 
 /*
@@ -52,7 +53,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 
-       
+
 
         // Route::get('/userdata', [AdminController::class, 'userdata'])->name('userdata');
         // Route::post('/userdata', [AdminController::class, 'userstore'])->name('userdata.store');
@@ -63,8 +64,8 @@ Route::prefix('admin')->group(function () {
         // route::get('delete/{id}', [AdminController::class, 'delete'])->name('delete');
         route::get('transaction/{id?}', [AdminController::class, 'Transaction'])->name('transaction');
         Route::match(['get', 'post'], '/add-transaction', [AdminController::class, 'AddTransaction'])
-        ->name('add.transaction');
-       
+            ->name('add.transaction');
+
 
         Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::match(['get', 'post'], '/upload-policy', [PolicyController::class, 'upload'])->name('upload.policy');
@@ -72,32 +73,33 @@ Route::prefix('admin')->group(function () {
             ->name('updateagentid');
 
 
-            Route::match(['get', 'post'], '/selectcommission/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'selectcommission'])
+        Route::match(['get', 'post'], '/selectcommission/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'selectcommission'])
             ->name('selectcommission');
 
         Route::match(['get', 'post'], '/updatetransaction/{transaction_id?}', [AdminController::class, 'updatetransaction'])
             ->name('updatetransaction');
 
 
-            Route::match(['get', 'post'],'/policy-list', [PolicyController::class, 'PolicyList'])->name('policy.list');
-            // Route::match(['get', 'post'],'/policyshow/{id}', [PolicyController::class, 'policyshow'])->name('policyshow');
-            Route::get('/royalsundaram/{id?}', [AdminController::class, 'royalsundaram'])->name('royalsundaram');
+        Route::match(['get', 'post'], '/policy-list', [PolicyController::class, 'PolicyList'])->name('policy.list');
+        Route::get('/royalsundaram/{id?}', [AdminController::class, 'royalsundaram'])->name('royalsundaram');
 
-        // Route::get('/royalsundaram/{id?}', [AdminController::class, 'royalsundaram'])->name('royalsundaram');
 
-        // route::get('royalsundaramedit/{id?}', [AdminController::class, 'royalsundaramedit'])->name('royalsundaramedit');
-        // Route::post('royalsundaramupdate/{id?}', [AdminController::class, 'royalsundaramupdate'])->name('royalsundaramupdate');
 
-        // Route::get('/shriramgi', [AdminController::class, 'shriramgi'])->name('shriramgi');
-        // Route::get('shriramgiedit', [AdminController::class, 'shriramgiedit'])->name('shriramgiedit');
-
-    
         Route::match(['get', 'post'], '/agent', [AgentController::class, 'Agent'])->name('agent');
         Route::get('agent-list', [AgentController::class, 'AgentList'])->name('agent.list');
 
+        #Slider Routes
+        Route::get('/sliders', [SliderController::class, 'index'])->name('sliders.index');
+        Route::post('/sliders/{slider}/toggle-status', [SliderController::class, 'toggleStatus'])->name('sliders.toggleStatus');
+        Route::get('/sliders/create', [SliderController::class, 'create'])->name('sliders.create');
+        Route::post('/sliders', [SliderController::class, 'store'])->name('sliders.store');
+        Route::delete('/sliders/{slider}', [SliderController::class, 'destroy'])->name('sliders.destroy');
+
+
+
         Route::match(['get', 'post'], '/policy-pdf-upload', [PolicyController::class, 'policyUpload'])->name('policy.pdf.upload');
         Route::match(['get', 'post'], '/commission/{id}', [AgentController::class, 'commission'])
-        ->name('agent.commission');
+            ->name('agent.commission');
         Route::match(['get', 'post'], 'agent-edit/{id}', [AgentController::class, 'AgentEdit'])->name('agent.edit');
 
 
@@ -110,4 +112,3 @@ Route::prefix('admin')->group(function () {
         Route::post('/change-password', [AdminController::class, 'changePassword'])->name('change.password');
     });
 });
-

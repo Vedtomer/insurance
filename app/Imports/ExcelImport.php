@@ -37,7 +37,7 @@ class ExcelImport implements ToModel, WithHeadingRow
             'agent_id' => $row['agent_id'] ?? null,
             'premium' => $row['premium'] ?? null,
             'gst' => isset($row['premium']) ? $row['premium'] * 0.1525 : null,
-            'agent_commission' => isset($row['agent_id']) ? getCommission($row['agent_id'], $row['premium']) : null,
+            'agent_commission' => isset($row['commission_code']) ? getCommission($row['commission_code'], $row['premium']) : null,
             'net_amount' => isset($row['premium']) ? $row['premium'] - $row['premium'] * 0.1525 : null,
         ]);
 
