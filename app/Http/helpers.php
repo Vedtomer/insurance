@@ -6,11 +6,11 @@ use  App\Models\Commission;
 
 if (!function_exists('getCommission')) {
 
-    function getCommission($agent_id, $premium)
+    function getCommission($commission_code, $premium)
     {
 
-        if (!empty($agent_id) && !empty($premium)) {
-            $commission = Commission::where('agent_id', $agent_id)->get();
+        if (!empty($commission_code) && !empty($premium)) {
+            $commission = Commission::where('commission_code', $commission_code)->get();
             if ($commission->count() === 1) {
                 $commission = $commission->first();
                 if ($commission->commission_type === 'fixed') {
