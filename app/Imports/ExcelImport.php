@@ -11,6 +11,13 @@ use App\Models\Transaction;
 
 class ExcelImport implements ToModel, WithHeadingRow
 {
+    protected $importDate;
+
+    public function __construct($importDate)
+    {
+        $this->importDate = $importDate;
+    }
+
     public function model(array $row)
     {
         $existingRecord = Policy::firstOrNew([
@@ -19,8 +26,8 @@ class ExcelImport implements ToModel, WithHeadingRow
         ]);
 
      
-        $existingRecord->policy_start_date = $this->excelSerialToDate($row['policy_start_date']);
-        $existingRecord->policy_end_date = $this->excelSerialToDate($row['policy_end_date']);
+        $existingRecord->policy_start_date = Carbon::parse($this->importDate);
+        $existingRecord->policy_end_date = Carbon::parse($this->importDate)->addYear();
 
         $existingRecord->fill([
             'policy_no' => $row['policy_no'] ?? null,
@@ -44,9 +51,4 @@ class ExcelImport implements ToModel, WithHeadingRow
         return 1;
     }
 
-    private function excelSerialToDate($excelSerialNumber)
-    {
-        $unixTimestamp = ($excelSerialNumber - 25569) * 86400;
-        return Carbon::createFromTimestamp($unixTimestamp)->format('Y-m-d H:i:s');
-    }
 }

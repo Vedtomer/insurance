@@ -19,6 +19,7 @@ class PolicyController extends Controller
 {
     public function upload(Request $request)
     {
+        
         if ($request->isMethod('get')) {
             return view('admin.upload');
         }
@@ -31,7 +32,7 @@ class PolicyController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $importClass = new ExcelImport;
+        $importClass = new ExcelImport($request->date); 
         $items = $request->file('excelFile')->store('temp');
         Excel::import($importClass, $items);
         return redirect()->back()->with('success', 'Data imported successfully!');

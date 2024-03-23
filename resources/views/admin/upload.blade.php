@@ -12,6 +12,13 @@
     
                 <form method="POST" action="{{ route('upload.policy') }}" enctype="multipart/form-data">
                     @csrf
+
+                    <div class="mb-3">
+                        <label class="form-label">Select Date of Policy </label>
+                        <input type="date" class="form-control" name="date"  required>
+                        
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label">Upload Excel <a href="/sample/sample-policy.xls" download>Download sample file</a></label>
                         <input type="file" class="form-control" name="excelFile" id="excelFile" accept=".xls,.xlsx">
