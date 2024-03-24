@@ -106,13 +106,13 @@ class AgentController extends Controller
                 'commission_type.*' => 'required|in:fixed,percentage',
             ]);
         
-            Commission::where('agent_id', $data->id)->delete();
+            // Commission::where('agent_id', $data->id)->delete();
         
             $commissions = $request->input('commission');
             $commissionTypes = $request->input('commission_type');
         
             foreach ($commissions as $key => $commissionValue) {
-                $commission = new Commission();
+                $commission = Commission::firstOrNew(['id' => $id[$key]]);
                 $commission->agent_id = $data->id;
                 $commission->commission_type = $commissionTypes[$key];
                 $commission->commission = $commissionValue;
