@@ -110,6 +110,7 @@ class AgentController extends Controller
         
             $commissions = $request->input('commission');
             $commissionTypes = $request->input('commission_type');
+            $id = $request->input('id');
         
             foreach ($commissions as $key => $commissionValue) {
                 $commission = Commission::firstOrNew(['id' => $id[$key]]);
