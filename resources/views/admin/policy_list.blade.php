@@ -140,14 +140,14 @@
                                                 <select onchange="confirmAgentChange(this);"
                                                     onchange="location = this.value;">
                                                     <option value="" selected disabled>Select Agent</option>
-                                                    @foreach ($dat as $agent)
+                                                    {{-- @foreach ($dat as $agent)
                                                         @if ($agent && $agent->status == 1)
                                                             <option
                                                                 value="{{ route('updateagentid', ['agent_id' => $agent->id, 'royalsundaram_id' => $user->id]) }}">
                                                                 {{ $agent->name }}
                                                             </option>
                                                         @endif
-                                                    @endforeach
+                                                    @endforeach --}}
                                                 </select>
                                             @endif
                                         </td>

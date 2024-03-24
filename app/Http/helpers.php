@@ -2,7 +2,8 @@
 
 use  App\Models\Agent;
 use  App\Models\Commission;
-
+use Illuminate\Support\Facades\Log;
+use PgSql\Lob;
 
 if (!function_exists('getCommission')) {
 
@@ -28,11 +29,13 @@ if (!function_exists('getCommission')) {
 if (!function_exists('getAgentId')) {
     function getAgentId($commission_code)
     {
-
         if (!empty($commission_code)) {
             $commission = Commission::where('commission_code', $commission_code)->first();
-            return $commission->agent_id;
+            if ($commission && !empty($commission->agent_id)) {
+                return $commission->agent_id;
+            }
         }
+        return null;
     }
-    return null;
 }
+
