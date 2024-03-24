@@ -40,32 +40,25 @@ class PolicyController extends Controller
 
     public function PolicyList(Request $request)
     {
-        // return $id;
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
-        $agent_id = $request->input('agent_id');
-
-        if (empty($start_date) || $start_date =="null") {
-            $start_date = now()->startOfMonth();
-        } else {
-            $start_date = Carbon::parse($start_date)->startOfDay();
+        $start_date = $request->input('start_date', null);
+        $end_date = $request->input('end_date', null);
+        $agent_id = $request->input('agent_id', null);
+    
+        $start_date = $start_date ? Carbon::parse($start_date)->startOfDay() : now()->startOfMonth();
+        $end_date = $end_date ? Carbon::parse($end_date)->endOfDay() : now()->endOfDay();
+    
+        $query = Policy::with('agent')->whereBetween('policy_start_date', [$start_date, $end_date])->orderBy('id', 'desc');
+    
+        if ($agent_id) {
+            $query->where('agent_id', $agent_id);
         }
-
-        if (empty($end_date) ||  $end_date =="null") {
-            $end_date = now()->endOfDay();
-        } else {
-            $end_date = Carbon::parse($end_date)->endOfDay();
-        }
-
-        if(empty($agent_id) ||  $agent_id =="null") {
-            $users = Policy::with('agent')->whereBetween('policy_start_date', [$start_date, $end_date])->orderBy('id', 'desc')->get();
-        } else {
-           $users = Policy::where('agent_id' , $agent_id)->with('agent')->whereBetween('policy_start_date', [$start_date, $end_date])->orderBy('id', 'desc')->get();
-        }
-
-        $agent = Agent::get();
-        return view('admin.policy_list', ['data' => $users,  'agent' => $agent ]);
+    
+        $data = $query->get();
+        $agents = Agent::get();
+    
+        return view('admin.policy_list', ['data' => $data, 'agents' => $agents]);
     }
+    
 
     // public function  policyshow( Request $request ,string $id){
     //     if ($request->isMethod('get')) {
