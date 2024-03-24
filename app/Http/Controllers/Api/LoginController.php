@@ -4,7 +4,6 @@
 namespace App\Http\Controllers\Api;
 use DB;
 use Validator;
-use App\Models\Agent;
 use App\Imports\ExcelImport;
 use Illuminate\Http\Request;
 
@@ -93,17 +92,7 @@ public function agentlogout()
     }
 }
 
-public function getPolicy(Request $request)
-{
-    // return $request;
-    try {
-        $agent = new Agent();
-        $result = $agent->getPoliciesCount($request);
-        return $result;
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-}
+
 
 
 
