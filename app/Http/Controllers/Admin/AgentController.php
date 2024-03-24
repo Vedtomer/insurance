@@ -105,19 +105,21 @@ class AgentController extends Controller
                 'commission.*' => 'required',
                 'commission_type.*' => 'required|in:fixed,percentage',
             ]);
-        
+
             // Commission::where('agent_id', $data->id)->delete();
-        
+
             $commissions = $request->input('commission');
             $commissionTypes = $request->input('commission_type');
             $id = $request->input('id');
-        
+
             foreach ($commissions as $key => $commissionValue) {
-                $commission = Commission::firstOrNew(['id' => $id[$key]]);
+                $commission = !empty($id[$key]) 
+                ? Commission::firstOrNew(['id' => $id[$key]]) 
+                : new Commission();
                 $commission->agent_id = $data->id;
                 $commission->commission_type = $commissionTypes[$key];
                 $commission->commission = $commissionValue;
-    
+
                 $commission->save();
                 $commissionValue = intval($commissionValue);
                 $commissionCode = strtoupper(substr($commissionTypes[$key], 0, 1)) . $commissionValue . "IN" . $commission->id;
@@ -221,5 +223,16 @@ class AgentController extends Controller
 
 
         return redirect()->route('policy.list')->with('success', 'Agent and Policy updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $commission = Commission::findOrFail($id);
+
+        // Additional authorization checks if required
+
+        $commission->delete();
+
+        return redirect()->back()->with('success', 'Commission record deleted successfully');
     }
 }

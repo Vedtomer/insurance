@@ -28,34 +28,27 @@
                         </div>
                     </div>
                     @if (count($commissiondata) > 0)
-                        @foreach ($commissiondata as $record)
-                            <div id="commissionContainer" class="mb-3 row">
-
-                                <input type="hidden" class="form-control" name="id[]" value="{{ $record->id }}"
-                                    required>
-
-                                <div class="col-md-5">
-                                    <label>Commision</label>
-                                    <input type="text" class="form-control" name="commission[]"
-                                        value="{{ $record->commission }}" onkeypress="allowOnlyNumbers(event)" required>
-                                </div>
-                                <div class="col-md-5">
-                                    <label>Commision-Type</label>
-                                    <select class="form-control" name="commission_type[]" required>
-                                        <option value="" disabled>Select Type</option>
-                                        <option value="fixed" {{ $record->commission_type === 'fixed' ? 'selected' : '' }}>
-                                            Fixed</option>
-                                        <option value="percentage"
-                                            {{ $record->commission_type === 'percentage' ? 'selected' : '' }}>Percentage
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2" style="display: inline-block;">
-                                    <a>Delete</a>
-                                </div>
+                    @foreach ($commissiondata as $record)
+                        <div class="commissionContainer mb-3 row">
+                            <input type="hidden" class="form-control" name="id[]" value="{{ $record->id }}" required>
+                            <div class="col-md-5">
+                                <label>Commission</label>
+                                <input type="text" class="form-control" name="commission[]" value="{{ $record->commission }}" onkeypress="allowOnlyNumbers(event)" required>
                             </div>
-                        @endforeach
-                    @else
+                            <div class="col-md-5">
+                                <label>Commission-Type</label>
+                                <select class="form-control" name="commission_type[]" required>
+                                    <option value="" disabled>Select Type</option>
+                                    <option value="fixed" {{ $record->commission_type === 'fixed' ? 'selected' : '' }}>Fixed</option>
+                                    <option value="percentage" {{ $record->commission_type === 'percentage' ? 'selected' : '' }}>Percentage</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <a href="{{ route('delete.commission', ['id' => $record->id]) }}" class="text-danger">Delete</a>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
                         <div id="commissionContainer" class="mb-3 row">
 
                             <div class="col-md-6">
