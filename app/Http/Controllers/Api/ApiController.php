@@ -33,7 +33,6 @@ class ApiController extends Controller
 
     $totalPremiumPaid = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
         ->where('agent_id', $agent_id)
-        ->where('payment_by', 'dealer')
         ->sum('premium');
 
     $transaction = Transaction::where('agent_id', $agent_id)
@@ -48,7 +47,7 @@ class ApiController extends Controller
     $dummyData = [
         'total_commission' => $totalCommission,
         'total_policy' => $totalPolicy,
-        'total_premium_paid' => $totalPremiumPaid + $transaction, // Include transaction amount
+        'total_premium_paid' => $totalPremiumPaid, // Include transaction amount
         'pending_premium' => $pendingPremium - $transaction, // Subtract transaction amount
         'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
     ];
