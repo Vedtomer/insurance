@@ -84,16 +84,16 @@
 
                 <ul>
                     
-                    {{-- <li>
-                        <a href="{{ route('points.index') }}">
+                    <li>
+                        <a href="{{ route('points.redem.request') }}">
                             <i class="metismenu-icon pe-7s-eyedropper">
-                            </i>Reedem  Request
+                            </i>Redem  Request
                         </a>
-                    </li> --}}
+                    </li>
                     <li>
                         <a href="{{ route('points.index') }}">
                             <i class="metismenu-icon pe-7s-eyedropper">
-                            </i>Reedem Proceeded
+                            </i>Redem Proceeded
                         </a>
                     </li>
                 </ul>

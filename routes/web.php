@@ -114,6 +114,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/change-password', [AdminController::class, 'changePassword'])->name('change.password');
 
 
-        Route::get('/points/redemption', [PointRedemptionController::class, 'index'])->name('points.index');;
+        Route::get('/points/redemption', [PointRedemptionController::class, 'index'])->name('points.index');
+        Route::get('/points/redemRequest', [PointRedemptionController::class, 'ReedemRequest'])->name('points.redem.request');
+        Route::post('/redeem/success/{pointId?}', [PointRedemptionController::class, 'redeemSuccess'])->name('redeem.success');
     });
 });
