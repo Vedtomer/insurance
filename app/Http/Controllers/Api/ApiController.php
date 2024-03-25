@@ -13,15 +13,50 @@ use App\Models\PointRedemption;
 
 class ApiController extends Controller
 {
-    public function index()
+    use Carbon\Carbon;
+
+    public function index(Request $request)
     {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        if (empty($startDate)) {
+            $startDate = Carbon::now()->firstOfMonth();
+        } else {
+            $startDate = Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay();
+        }
+
+        if (empty($endDate)) {
+            $endDate = Carbon::now();
+        } else {
+            $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
+        }
+
+        $agent_id = auth()->guard('api')->user()->id;
+
+        $totalCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->sum('agent_commission');
+
+        $totalPolicy = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->count();
+
+        $totalPremiumPaid = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->where('status', 'dealer') 
+            ->sum('premium');
+
+            $pendingPremium = Policy::where('status', 'self')
+            ->where('agent_id', $agent_id)
+            ->whereBetween('policy_start_date', [$startDate, $endDate]) 
+            ->sum('premium');
+
         $dummyData = [
-            'total_commission' => 1500.00,
-            // 'current_month_commission' => 500.00,
-            'total_policy' => 100,
-            // 'current_month_policy' => 20,
-            'total_premium_paid' => 5000.00,
-            'pending_premium' => 1500.00,
+            'total_commission' => $totalCommission,
+            'total_policy' => $totalPolicy,
+            'total_premium_paid' => $totalPremiumPaid,
+            'pending_premium' => $pendingPremium,
             'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
         ];
 
@@ -31,6 +66,7 @@ class ApiController extends Controller
             'data' => $dummyData
         ]);
     }
+
 
     public function Transaction($id = null)
     {
@@ -184,8 +220,8 @@ class ApiController extends Controller
             ->where('agent_id', $agent_id)
             ->sum('agent_commission');
 
-        $totalInProgressCommission = PointRedemption::whereBetween('created_at', [$startDate, $endDate])
-            ->where('agent_id', $agent_id)
+        $totalInProgressCommission = PointRedemption::
+            where('agent_id', $agent_id)
             ->where('status', 'in_progress')
             ->sum('points');
 
