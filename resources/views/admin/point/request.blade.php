@@ -64,7 +64,7 @@
                             </tbody>
                         </table>
                     @else
-                        <p>No Record Found.</p>
+                        <p>No Redeem Request</p>
                     @endif
                 </div>
 

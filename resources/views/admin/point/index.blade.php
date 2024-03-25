@@ -17,14 +17,12 @@
                     <div class="left ml-5">
                         <select class="form-select js-example-basic-single  select2" data-control="select2"
                             data-placeholder="Select an option" onchange="filterAgent(this.value)">
-
-                            <optgroup>
                                 <option selected disabled>Select Agent</option>
                                 @foreach ($agents as $user)
                                     <option value="{{ $user->id }}" @if (isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif>
                                         {{ $user->name }}</option>
                                 @endforeach
-                            </optgroup>
+                            
                         </select>
                     </div>
                 </div>
@@ -80,9 +78,6 @@
 
 
 
-    <!-- Include SweetAlert from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script></script>
     <script>
         function confirmAgentChange(selectElement) {
             Swal.fire({
