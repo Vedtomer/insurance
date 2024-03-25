@@ -220,8 +220,8 @@ class ApiController extends Controller
             ->where('agent_id', $agent_id)
             ->sum('agent_commission');
 
-        $totalInProgressCommission = PointRedemption::
-            where('agent_id', $agent_id)
+        $totalInProgressCommission = PointRedemption::whereBetween('created_at', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
             ->where('status', 'in_progress')
             ->sum('points');
 
