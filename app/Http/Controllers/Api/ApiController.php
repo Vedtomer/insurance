@@ -106,7 +106,7 @@ class ApiController extends Controller
         ];
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors(), 'status' => false, 'data' => null]);
+            return response()->json(['message' => "Points are requireds", 'status' => false, 'data' => null]);
         }
         $points = $request->input('points');
         $agent_id =  auth()->guard('api')->user()->id;
