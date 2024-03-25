@@ -14,52 +14,52 @@ use App\Models\PointRedemption;
 class ApiController extends Controller
 {
     public function index(Request $request)
-    {
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
+{
+    $startDate = $request->start_date;
+    $endDate = $request->end_date;
 
-        $startDate = !empty($startDate) ? Carbon::createFromTimestamp($startDate)->startOfDay() : Carbon::now()->firstOfMonth();
-        $endDate = !empty($endDate) ? Carbon::createFromTimestamp($endDate)->endOfDay() : Carbon::now();
+    $startDate = !empty($startDate) ? Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay() : Carbon::now()->firstOfMonth();
+    $endDate = !empty($endDate) ? Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay() : Carbon::now();
 
-        $agent_id = auth()->guard('api')->user()->id;
+    $agent_id = auth()->guard('api')->user()->id;
 
-        $totalCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-            ->where('agent_id', $agent_id)
-            ->sum('agent_commission');
+    $totalCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+        ->where('agent_id', $agent_id)
+        ->sum('agent_commission');
 
-        $totalPolicy = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-            ->where('agent_id', $agent_id)
-            ->count();
+    $totalPolicy = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+        ->where('agent_id', $agent_id)
+        ->count();
 
-        $totalPremiumPaid = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-            ->where('agent_id', $agent_id)
-            ->where('payment_by', 'dealer')
-            ->sum('premium');
+    $totalPremiumPaid = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+        ->where('agent_id', $agent_id)
+        ->where('payment_by', 'dealer')
+        ->sum('premium');
 
-        $pendingPremium = Policy::where('payment_by', 'self')
-            ->where('agent_id', $agent_id)
-            ->whereBetween('policy_start_date', [$startDate, $endDate])
-            ->sum('premium');
+    $transaction = Transaction::where('agent_id', $agent_id)
+        ->whereBetween('created_at', [$startDate, $endDate])
+        ->sum('amount');
 
+    $pendingPremium = Policy::where('payment_by', 'self')
+        ->where('agent_id', $agent_id)
+        ->whereBetween('policy_start_date', [$startDate, $endDate])
+        ->sum('premium');
 
-        $transaction = Transaction::where('agent_id', $agent_id)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->sum('amount');
+    $dummyData = [
+        'total_commission' => $totalCommission,
+        'total_policy' => $totalPolicy,
+        'total_premium_paid' => $totalPremiumPaid + $transaction, // Include transaction amount
+        'pending_premium' => $pendingPremium - $transaction, // Subtract transaction amount
+        'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
+    ];
 
-        $dummyData = [
-            'total_commission' => $totalCommission,
-            'total_policy' => $totalPolicy,
-            'total_premium_paid' => $totalPremiumPaid + $transaction,
-            'pending_premium' => $pendingPremium-$transaction,
-            'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
-        ];
+    return response()->json([
+        'message' => 'Success',
+        'status' => true,
+        'data' => $dummyData
+    ]);
+}
 
-        return response()->json([
-            'message' => 'Success',
-            'status' => true,
-            'data' => $dummyData
-        ]);
-    }
 
 
     public function Transaction($id = null)
