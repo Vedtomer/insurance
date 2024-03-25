@@ -73,6 +73,31 @@
                         </i>Policy List
                     </a>
                 </li>
+
+
+                <li>
+                    <a href="#">
+                        <i class="metismenu-icon pe-7s-eyedropper">
+                        </i>Points
+                    </a>
+                </li>
+
+                <ul>
+                    
+                    {{-- <li>
+                        <a href="{{ route('points.index') }}">
+                            <i class="metismenu-icon pe-7s-eyedropper">
+                            </i>Reedem  Request
+                        </a>
+                    </li> --}}
+                    <li>
+                        <a href="{{ route('points.index') }}">
+                            <i class="metismenu-icon pe-7s-eyedropper">
+                            </i>Reedem Proceeded
+                        </a>
+                    </li>
+                </ul>
+
                 {{-- <li>
                     <a href="shriramgi">
                         <i class="metismenu-icon pe-7s-display2"></i>

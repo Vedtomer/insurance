@@ -18,6 +18,7 @@ Route::prefix('agent')->group(function () {
      
      Route::match(['get', 'post'], '/getPolicy', [ApiController::class, 'getPolicy']);
      Route::match(['get', 'post'], '/getPointsSummary', [ApiController::class, 'getPointsSummary']);
+     Route::match(['get', 'post'], '/pointsRedemption', [ApiController::class, 'pointsRedemption']);
      Route::match(['get', 'post'], '/transaction/{id?}', [ApiController::class, 'Transaction']);
     });
 

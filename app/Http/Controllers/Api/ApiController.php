@@ -81,71 +81,136 @@ class ApiController extends Controller
     {
         try {
 
-            $startDate = $request->start_date;
-            $endDate = $request->end_date;
-
-            if (empty($startDate)) {
-                $startDate = Carbon::now()->firstOfMonth();
-            } else {
-                $startDate = Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay();
-            }
-
-            if (empty($endDate)) {
-                $endDate = Carbon::now();
-            } else {
-                $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
-            }
-            $agent_id =  auth()->guard('api')->user()->id;
-
-
-            $royalData = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-                ->where('agent_id', $agent_id)
-                ->select('policy_no', 'policy_start_date', 'policy_end_date', 'customername', 'premium', 'agent_commission', 'insurance_company')
-                ->get();
-
-
-
-            $totalAgentCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-                ->where('agent_id', $agent_id)
-                ->sum('agent_commission');
-
-            $totalInProgressCommission = PointRedemption::whereBetween('created_at', [$startDate, $endDate])
-                ->where('agent_id', $agent_id)
-                ->where('status', 'in_progress')
-                ->sum('points');
-
-
-            $totalCompletedCommission = PointRedemption::whereBetween('created_at', [$startDate, $endDate])
-                ->where('agent_id', $agent_id)
-                ->where('status', 'completed')
-                ->sum('points');
-
-            $total = Policy::where('agent_id', $agent_id)
-                ->sum('agent_commission');
-
-            $reedeemPoints = PointRedemption::where('agent_id', $agent_id)
-                ->whereIn('status', ['in_progress', 'completed'])
-                ->sum('points');
-
-
-            $remainingPoints = $total - $reedeemPoints;
-
-            $data=[
-                'remaining_points' => $remainingPoints,
-                'total_points' => $totalAgentCommission,
-                'total_completed_reedeem' => $totalCompletedCommission,
-                'total_in_progress_reedeem' => $totalInProgressCommission,
-                'policy' => $royalData,
-            ];
+            $data = $this->points($request);
 
             return response([
                 'status' => true,
                 'data' => $data,
                 'message' => 'Points History'
             ]);
-
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function pointsRedemption(Request $request)
+    {
+        $rules = [
+            'points' => 'required|numeric|min:0',
+        ];
+
+        $messages = [
+            'points.required' => 'Points are required.',
+            'points.numeric' => 'Points must be a number.',
+            'points.min' => 'Points must be at least :min.',
+        ];
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => false, 'data' => null]);
+        }
+        $points = $request->input('points');
+        $agent_id =  auth()->guard('api')->user()->id;
+
+        $inProgressRedemption = PointRedemption::where('agent_id', $agent_id)
+            ->where('status', 'in_progress')
+            ->exists();
+
+        if ($inProgressRedemption) {
+            return response()->json(['message' => 'You already have a redemption in progress.', 'status' => false, 'data' => null]);
+        }
+
+        $total = Policy::where('agent_id', $agent_id)
+            ->sum('agent_commission');
+
+
+        $redeemPoints = PointRedemption::where('agent_id', $agent_id)
+            ->whereIn('status', ['in_progress', 'completed'])
+            ->sum('points');
+
+        $remainingPoints = $total - $redeemPoints;
+
+        if ($points > $remainingPoints) {
+            return response()->json(['message' => 'Redeemed points cannot exceed remaining points.', 'status' => false, 'data' => null]);
+        }
+
+
+        $tds = 0.05 * $points;
+        $amountToBePaid = $points - $tds;
+
+        $pointRedemption = new PointRedemption();
+        $pointRedemption->agent_id = $agent_id;
+        $pointRedemption->points = $points;
+        $pointRedemption->status = 'in_progress';
+        $pointRedemption->tds = $tds;
+        $pointRedemption->amount_to_be_paid = $amountToBePaid;
+        $pointRedemption->save();
+
+        $data = $this->points($request);
+
+        return response([
+            'status' => true,
+            'data' => $data,
+            'message' => 'Points redeemed successfully'
+        ]);
+    }
+
+    public function points($request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        if (empty($startDate)) {
+            $startDate = Carbon::now()->firstOfMonth();
+        } else {
+            $startDate = Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay();
+        }
+
+        if (empty($endDate)) {
+            $endDate = Carbon::now();
+        } else {
+            $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
+        }
+        $agent_id =  auth()->guard('api')->user()->id;
+
+
+        $royalData = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->select('policy_no', 'policy_start_date', 'policy_end_date', 'customername', 'premium', 'agent_commission', 'insurance_company')
+            ->get();
+
+
+
+        $totalAgentCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->sum('agent_commission');
+
+        $totalInProgressCommission = PointRedemption::whereBetween('created_at', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->where('status', 'in_progress')
+            ->sum('points');
+
+
+        $totalCompletedCommission = PointRedemption::whereBetween('created_at', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->where('status', 'completed')
+            ->sum('points');
+
+        $total = Policy::where('agent_id', $agent_id)
+            ->sum('agent_commission');
+
+        $reedeemPoints = PointRedemption::where('agent_id', $agent_id)
+            ->whereIn('status', ['in_progress', 'completed'])
+            ->sum('points');
+
+
+        $remainingPoints = $total - $reedeemPoints;
+
+        return  $data = [
+            'remaining_points' => $remainingPoints,
+            'total_points' => $totalAgentCommission,
+            'total_completed_reedeem' => $totalCompletedCommission,
+            'total_in_progress_reedeem' => $totalInProgressCommission,
+            'policy' => $royalData,
+        ];
     }
 }

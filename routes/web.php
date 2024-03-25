@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\PagesController;
-
+use App\Http\Controllers\Admin\PointRedemptionController;
 use App\Http\Controllers\SliderController;
 
 
@@ -101,7 +101,7 @@ Route::prefix('admin')->group(function () {
         Route::match(['get', 'post'], '/commission/{id}', [AgentController::class, 'commission'])
             ->name('agent.commission');
 
-            Route::get('/delete-commission/{id}', [AgentController::class, 'destroy'])->name('delete.commission');
+        Route::get('/delete-commission/{id}', [AgentController::class, 'destroy'])->name('delete.commission');
         Route::match(['get', 'post'], 'agent-edit/{id}', [AgentController::class, 'AgentEdit'])->name('agent.edit');
 
 
@@ -112,5 +112,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/change-password', [AdminController::class, 'showChangePasswordForm'])->name('change-password');
         Route::post('/change-password', [AdminController::class, 'changePassword'])->name('change.password');
+
+
+        Route::get('/points/redemption', [PointRedemptionController::class, 'index'])->name('points.index');;
     });
 });

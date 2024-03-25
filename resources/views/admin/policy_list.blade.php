@@ -3,34 +3,7 @@
 @section('section')
 
 
-    <style>
-        td {
-            border: 1px solid black;
-
-        }
-
-        th {
-            border: 1px solid black;
-            border-bottom: 3px solid black;
-
-        }
-
-        .rig {
-            text-align: center;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            color: green;
-            font-weight: bolder;
-        }
-
-        /* tr{
-                border: 2px solid black;
-                
-            } */
-    </style>
+   
     
 
     <div class="col-lg-12">
@@ -43,18 +16,7 @@
         <i class="fa fa-calendar"></i>&nbsp;
         <span></span> <i class="fa fa-caret-down"></i>
     </div>
-    <div class="left ml-5">
-        <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
-
-            <optgroup>
-                <option selected disabled>Select Agent</option>
-                @foreach ($agent as $user)
-                <option value="{{ $user->id }}" @if(isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif> {{ $user->name }}</option>
-                
-                @endforeach
-            </optgroup>
-        </select>
-    </div>
+   
        </div>
             
           
@@ -68,13 +30,12 @@
 
 
                 <div class="table-responsive">
-                    @if (isset($data) && count($data) > 0)
+                   
                         <table class="mb-0 table">
                             <thead>
                                 <tr>
                                     <th>S No</th>
-                                    {{-- <th>tgr</th> --}}
-                                    {{-- <th>policy_link</th> --}}
+                                
                                     <th>Policy No.</th>
                                     <th>Customer Name</th>
                                     <th>Net Amount</th>
@@ -92,76 +53,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $user)
+                                @foreach ($points as $point)
                                     <tr>
 
                                         <td>{{ $loop->index + 1 }}</td>
-                                        <td>{{ $user->policy_no }}</td>
-                                        <td>{{ $user->customername }}</td>
+                                        <td>{{ $point->points }}</td>
+                                        <td>{{ $point->customername }}</td>
 
-                                        <td>{{ $user->net_amount }}</td>
-                                        <td>{{ $user->gst }}</td>
-                                        {{-- <td>{{ $user->password }}</td> --}}
-                                        <td>{{ $user->premium }}</td>
-                                        <td>{{ $user->agent_commission }}</td>
+                                        <td>{{ $point->net_amount }}</td>
+                                        
 
-                                        {{-- <td>
-                    @if (empty($user->policy_link)) --}}
-                                        {{-- <button>Add Button</button> --}}
-                                        {{-- <input type="file">
-                    @else
-                        {{ $user->policy_link }}
-                    @endif
-                </td> --}}
+                                      
 
-                                        <td>
-                                            @if (empty($user->policy_link))
-                                                <form
-                                                    action="{{ route('updateagentid', ['royalsundaram_id' => $user->id]) }}"
-                                                    method="post" enctype="multipart/form-data"
-                                                    onchange="submitForm(this)">
-                                                    @csrf
-                                                    <input type="file" name="policy_file">
-                                                </form>
-                                            @else
-                                                <a href="{{ $user->policy_link }}" download="{{ $user->policy_link }}"><i
-                                                        class="fa fa-download"> Download</i></a>
-                                            @endif
-                                        </td>
-
-
-
-                                        {{-- <td>{{ $user->agent_id }}</td> --}}
-                                        {{-- <td>{{ optional($user->agent)->name }}</td> --}}
-                                        <td>
-                                            @if (optional($user->agent)->name)
-                                                {{ $user->agent->name }}
-                                            @else
-                                                <select onchange="confirmAgentChange(this);"
-                                                    onchange="location = this.value;">
-                                                    <option value="" selected disabled>Select Agent</option>
-                                                    {{-- @foreach ($dat as $agent)
-                                                        @if ($agent && $agent->status == 1)
-                                                            <option
-                                                                value="{{ route('updateagentid', ['agent_id' => $agent->id, 'royalsundaram_id' => $user->id]) }}">
-                                                                {{ $agent->name }}
-                                                            </option>
-                                                        @endif
-                                                    @endforeach --}}
-                                                </select>
-                                            @endif
-                                        </td>
-                                        <td>{{ $user->payment_by }}</td>
-
-
-
-
-                                        <td>
-                                            {{ date('M d, Y', strtotime($user->policy_start_date)) }}
-                                        </td>
-                                        <td>
-                                            {{ date('M d, Y', strtotime($user->policy_end_date)) }}
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
