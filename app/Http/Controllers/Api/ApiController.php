@@ -13,10 +13,9 @@ use App\Models\PointRedemption;
 
 class ApiController extends Controller
 {
-    use Carbon\Carbon;
-
     public function index(Request $request)
     {
+
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
@@ -31,32 +30,15 @@ class ApiController extends Controller
         } else {
             $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
         }
+        $agent_id =  auth()->guard('api')->user()->id;
 
-        $agent_id = auth()->guard('api')->user()->id;
-
-        $totalCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-            ->where('agent_id', $agent_id)
-            ->sum('agent_commission');
-
-        $totalPolicy = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-            ->where('agent_id', $agent_id)
-            ->count();
-
-        $totalPremiumPaid = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-            ->where('agent_id', $agent_id)
-            ->where('status', 'dealer') 
-            ->sum('premium');
-
-            $pendingPremium = Policy::where('status', 'self')
-            ->where('agent_id', $agent_id)
-            ->whereBetween('policy_start_date', [$startDate, $endDate]) 
-            ->sum('premium');
+        
 
         $dummyData = [
-            'total_commission' => $totalCommission,
-            'total_policy' => $totalPolicy,
-            'total_premium_paid' => $totalPremiumPaid,
-            'pending_premium' => $pendingPremium,
+            'total_commission' => 1500.00,
+            'total_policy' => 100,
+            'total_premium_paid' => 5000.00,
+            'pending_premium' => 1500.00,
             'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
         ];
 
@@ -66,7 +48,6 @@ class ApiController extends Controller
             'data' => $dummyData
         ]);
     }
-
 
     public function Transaction($id = null)
     {
