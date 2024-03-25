@@ -15,30 +15,42 @@ class ApiController extends Controller
 {
     public function index(Request $request)
     {
-
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
-        if (empty($startDate)) {
-            $startDate = Carbon::now()->firstOfMonth();
-        } else {
-            $startDate = Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay();
-        }
+        $startDate = !empty($startDate) ? Carbon::createFromTimestamp($startDate)->startOfDay() : Carbon::now()->firstOfMonth();
+        $endDate = !empty($endDate) ? Carbon::createFromTimestamp($endDate)->endOfDay() : Carbon::now();
 
-        if (empty($endDate)) {
-            $endDate = Carbon::now();
-        } else {
-            $endDate = Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
-        }
-        $agent_id =  auth()->guard('api')->user()->id;
+        $agent_id = auth()->guard('api')->user()->id;
 
-        
+        $totalCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->sum('agent_commission');
+
+        $totalPolicy = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->count();
+
+        $totalPremiumPaid = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->where('payment_by', 'dealer')
+            ->sum('premium');
+
+        $pendingPremium = Policy::where('payment_by', 'self')
+            ->where('agent_id', $agent_id)
+            ->whereBetween('policy_start_date', [$startDate, $endDate])
+            ->sum('premium');
+
+
+        $transaction = Transaction::where('agent_id', $agent_id)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->sum('amount');
 
         $dummyData = [
-            'total_commission' => 1500.00,
-            'total_policy' => 100,
-            'total_premium_paid' => 5000.00,
-            'pending_premium' => 1500.00,
+            'total_commission' => $totalCommission,
+            'total_policy' => $totalPolicy,
+            'total_premium_paid' => $totalPremiumPaid + $transaction,
+            'pending_premium' => $pendingPremium-$transaction,
             'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
         ];
 
@@ -48,6 +60,7 @@ class ApiController extends Controller
             'data' => $dummyData
         ]);
     }
+
 
     public function Transaction($id = null)
     {
