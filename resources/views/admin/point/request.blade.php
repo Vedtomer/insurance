@@ -43,6 +43,7 @@
                                     <th>TDS(5%)</th>
                                     <th>Amount Pay</th>
                                     <th>Date</th>
+                                    <th>Status</th> 
                                     <th>Action</th> <!-- Add Action column -->
                                 </tr>
                             </thead>
@@ -55,9 +56,13 @@
                                         <td>{{ $point->tds }}</td>
                                         <td>{{ $point->amount_to_be_paid }}</td>
                                         <td>{{ date('M d, Y', strtotime($point->created_at)) }}</td>
-                                        <td> 
+                                        
+                                        <td>
                                             <button class="btn btn-warning"
-                                                onclick="redeemSuccess({{ $point->id }}, '{{ $point->points }}', '{{ $point->tds }}', '{{ $point->amount_to_be_paid }}','{{ $point->agent->name }}')">Approve Redeem</button>
+                                                onclick="redeemSuccess({{ $point->id }}, '{{ $point->points }}', '{{ $point->tds }}', '{{ $point->amount_to_be_paid }}','{{ $point->agent->name }}')">Approve
+                                                Redeem</button>
+                                            <button class="btn btn-danger"
+                                                onclick="cancelRedeem({{ $point->id }})">Cancel Redeem</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -78,8 +83,7 @@
         function redeemSuccess(pointId, points, tds, amountToBePaid, agent) {
             Swal.fire({
                 title: "Redeem Process Success",
-                html: 
-                    "Agent: <b>" + agent + "</b><br>" +
+                html: "Agent: <b>" + agent + "</b><br>" +
                     "Points: " + points + "<br>" +
                     "TDS: " + tds + "<br>" +
                     "Amount To Be Paid: " + amountToBePaid + "<br><br>" +
@@ -88,36 +92,21 @@
                 showCancelButton: true,
                 confirmButtonText: "Yes, Proceed",
                 cancelButtonText: "Cancel",
-                customClass: {
-                    title: 'text-right'
-                }
+
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Getting CSRF token
                     var token = '{{ csrf_token() }}';
-    
-                    // Making AJAX request using jQuery with named route and CSRF token
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': token
                         }
                     });
-    
+
                     $.post('/admin/redeem/success/' + pointId)
                         .done(function(response) {
-                            // Handle success response
-                            // Swal.fire({
-                            //     title: "Success",
-                            //     text: response.message,
-                            //     icon: "success",
-                            //     showConfirmButton: false,
-                            //     timer: 20000
-                            // });
-                            // Reload the page or perform other actions as needed
                             location.reload();
                         })
                         .fail(function(error) {
-                            // Handle error response
                             console.error(error);
                             Swal.fire({
                                 title: "Error",
@@ -130,7 +119,44 @@
                 }
             });
         }
+
+        function cancelRedeem(pointId) {
+            Swal.fire({
+                title: "Cancel Redeem",
+                text: "Are you sure you want to cancel this redemption request?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Cancel",
+                cancelButtonText: "No, Keep it",
+                // customClass: {
+                //     title: 'text-right'
+                // }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var token = '{{ csrf_token() }}';
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': token
+                        }
+                    });
+
+                    $.post('/admin/redeem/cancel/' + pointId)
+                        .done(function(response) {
+                            location.reload();
+                        })
+                        .fail(function(error) {
+                            console.error(error);
+                            Swal.fire({
+                                title: "Error",
+                                text: "An error occurred while canceling the request.",
+                                icon: "error",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        });
+                }
+            });
+        }
     </script>
-    
 
 @endsection

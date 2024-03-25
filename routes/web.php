@@ -117,5 +117,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/points/redemption', [PointRedemptionController::class, 'index'])->name('points.index');
         Route::get('/points/redemRequest', [PointRedemptionController::class, 'ReedemRequest'])->name('points.redem.request');
         Route::post('/redeem/success/{pointId?}', [PointRedemptionController::class, 'redeemSuccess'])->name('redeem.success');
+        Route::post('/redeem/cancel/{pointId}', [PointRedemptionController::class, 'cancelRedemption'])->name('redeem.cancel');
     });
 });

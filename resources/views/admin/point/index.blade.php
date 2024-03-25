@@ -48,6 +48,7 @@
                                     <th>TDS</th>
                                     <th>Amount Paid</th>
                                     <th>Date</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,8 +60,10 @@
                                         <td>{{ $point->tds }}</td>
                                         <td>{{ $point->amount_to_be_paid }}</td>
                                         <td>
-                                            {{ date('M d, Y', strtotime($point->created_at)) }}
+                                            {{ \Carbon\Carbon::parse($point->created_at)->isoFormat('MMM DD, YYYY h:mm A') }}
                                         </td>
+                                        
+                                        <td><span class="badge badge-{{ $point->status == 'completed' ? 'success' : ($point->status == 'rejected' ? 'danger' : 'secondary') }} title-case">{{ $point->status }}</span></td>
                                     </tr>
                                 @endforeach
                             </tbody>
