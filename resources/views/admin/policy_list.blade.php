@@ -137,20 +137,19 @@
                                             @if (optional($user->agent)->name)
                                                 {{ $user->agent->name }}
                                             @else
-                                                <select onchange="confirmAgentChange(this);"
-                                                    onchange="location = this.value;">
+                                                <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option"  onchange="confirmAgentChange(this); location = this.value;">
                                                     <option value="" selected disabled>Select Agent</option>
-                                                    {{-- @foreach ($dat as $agent)
-                                                        @if ($agent && $agent->status == 1)
-                                                            <option
-                                                                value="{{ route('updateagentid', ['agent_id' => $agent->id, 'royalsundaram_id' => $user->id]) }}">
+                                                    @foreach ($agent as $agent)
+                                                        @if ($agent && is_object($agent) && $agent->status == 1)
+                                                            <option value="{{ route('updateagentid', ['agent_id' => $agent->id ,'royalsundaram_id' => $user->id ]) }}">
                                                                 {{ $agent->name }}
                                                             </option>
                                                         @endif
-                                                    @endforeach --}}
+                                                    @endforeach
                                                 </select>
                                             @endif
                                         </td>
+                                        
                                         <td>{{ $user->payment_by }}</td>
 
 
