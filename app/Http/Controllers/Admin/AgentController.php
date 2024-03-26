@@ -43,8 +43,9 @@ class AgentController extends Controller
     public function AgentList(Request $request)
     {
 
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
+        $start_date = $request->input('start_date', null);
+        $end_date = $request->input('end_date', null);
+        $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
 
         if (empty($start_date)) {
             $start_date = now()->startOfMonth();
@@ -58,11 +59,18 @@ class AgentController extends Controller
             $end_date = Carbon::parse($end_date)->endOfDay();
         }
 
-        $users = Agent::with(['commissions', 'Policy' => function ($query) use ($start_date, $end_date) {
+        $query = Agent::with(['commissions', 'Policy' => function ($query) use ($start_date, $end_date) {
             $query->whereBetween('policy_start_date', [$start_date, $end_date]);
-        }])->orderBy('created_at', 'desc')->get();
+        }])->orderBy('created_at', 'desc');
+        
+        if (!empty($agent_id)) {
+            $query->where('id', $agent_id);
+        }
+    
+        $users = $query->get();
+        $agent = Agent::get();
 
-        return view('admin.user', ['data' => $users]);
+        return view('admin.user', ['data' => $users, 'agent' => $agent]);
     }
 
     public function filtereddata(Request $request)
