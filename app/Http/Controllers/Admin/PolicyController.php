@@ -40,8 +40,8 @@ class PolicyController extends Controller
 
     public function PolicyList(Request $request)
     {
-        $start_date = $request->input('start_date', null);
-        $end_date = $request->input('end_date', null);
+        $start_date = $request->input('start_date', "") ===  "null"  ? "" : $request->input('start_date');
+        $end_date = $request->input('end_date', "") ===  "null"  ? "" : $request->input('end_date');
        $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
 
     
