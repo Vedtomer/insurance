@@ -73,6 +73,18 @@ class AgentController extends Controller
         return view('admin.user', ['data' => $users, 'agent' => $agent]);
     }
 
+    public function commissionCode(Request $request)
+    {
+        $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
+        $query = Agent::with('commissions')->orderBy('created_at', 'desc');
+        if (!empty($agent_id)) {
+            $query->where('id', $agent_id);
+        }
+        $users = $query->get();
+        $agent = Agent::get();
+        return view('admin.commissioncode', ['data' => $users, 'agent' => $agent]);
+    }
+
     public function filtereddata(Request $request)
     {
         // return "abs";

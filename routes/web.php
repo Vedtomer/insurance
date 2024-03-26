@@ -87,6 +87,7 @@ Route::prefix('admin')->group(function () {
 
         Route::match(['get', 'post'], '/agent', [AgentController::class, 'Agent'])->name('agent');
         Route::get('agent-list', [AgentController::class, 'AgentList'])->name('agent.list');
+        Route::match(['get', 'post'], '/commission-code', [AgentController::class, 'commissionCode'])->name('commission.code');
 
         #Slider Routes
         Route::get('/sliders', [SliderController::class, 'index'])->name('sliders.index');

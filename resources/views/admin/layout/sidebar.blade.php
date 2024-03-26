@@ -60,13 +60,13 @@
                         Upload Policy
                     </a>
                 </li>
-                {{-- <li>
-                    <a href="">
+                <li>
+                    <a href="{{route('commission.code')}}">
                         <i class="metismenu-icon pe-7s-diamond"></i>
-                        Result
+                        Commission Code
                         
                     </a>
-                </li> --}}
+                </li>
                    <li>
                     <a href="{{ route('policy.list') }}">
                         <i class="metismenu-icon pe-7s-eyedropper">
