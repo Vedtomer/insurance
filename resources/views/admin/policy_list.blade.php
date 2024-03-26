@@ -137,7 +137,7 @@
                                             @if (optional($user->agent)->name)
                                                 {{ $user->agent->name }}
                                             @else
-                                                <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option"  onchange="confirmAgentChange(this); location = this.value;">
+                                                <select class="form-select js-example-basic-single select2" data-control="select2" data-placeholder="Select an option" onchange="confirmAgentChange(this); location = this.value;">
                                                     <option value="" selected disabled>Select Agent</option>
                                                     @foreach ($agent as $agent)
                                                         @if ($agent && is_object($agent) && $agent->status == 1)
@@ -147,6 +147,7 @@
                                                         @endif
                                                     @endforeach
                                                 </select>
+                                                
                                             @endif
                                         </td>
                                         
