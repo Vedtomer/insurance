@@ -144,7 +144,7 @@
                                                             <option value="{{ route('updateagentid', ['agent_id' => $record->id ,'royalsundaram_id' => $user->id ]) }}">
                                                                 {{ $record->name }}
                                                             </option>
-                                                        @endif
+                                                        {{-- @endif --}}
                                                     @endforeach
                                                 </select>
                                                 
