@@ -42,7 +42,7 @@
                     <div class="col-md-12">
                         <label>Select Commision</label>
                         <select class="form-control" name="commission_id" required>
-                            @foreach ($commission as $record)
+                            @foreach ($commissions as $record)
                             <option  value="{{ $record->id }}">{{ $record->commission_type  }} - {{ $record->commission }}</option>
                             @endforeach
                         </select>
@@ -51,7 +51,7 @@
 
                 <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-primary" >submit</button>
-            <a  href="{{ route('admin.user') }}" class="btn btn-secondary ml-2">Back</a>
+            <a  href="{{ route('policy.list') }}" class="btn btn-secondary ml-2">Back</a>
         </div>
           </form>
     </div>

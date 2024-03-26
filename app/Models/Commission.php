@@ -14,6 +14,7 @@ class Commission extends Model
         'agent_id',
         'commission_type',
         'commission',
+        'commission_code'
     ];
 
     public function agent(): BelongsTo

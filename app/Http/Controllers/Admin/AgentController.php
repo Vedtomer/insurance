@@ -212,7 +212,7 @@ class AgentController extends Controller
                     }
                     $royal->agent_id = $agent_id;
                 } else {
-                    return view('admin.selectcommission', compact('commission', 'agent', 'royal'));
+                    return view('admin.selectcommission', compact('commissions', 'agent', 'royal'));
                 }
             }
 
