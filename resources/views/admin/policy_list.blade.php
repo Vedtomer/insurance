@@ -140,7 +140,7 @@
                                                 <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option"  onchange="confirmAgentChange(this); location = this.value;">
                                                     <option value="" selected disabled>Select Agent</option>
                                                     @foreach ($agent as $agent)
-                                                        @if ($agent && is_object($agent) && $agent->status == 1)
+                                                        @if ($agent && is_array($agent) && $agent->status == 1)
                                                             <option value="{{ route('updateagentid', ['agent_id' => $agent->id ,'royalsundaram_id' => $user->id ]) }}">
                                                                 {{ $agent->name }}
                                                             </option>
