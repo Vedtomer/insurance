@@ -42,33 +42,27 @@ class PolicyController extends Controller
     {
         $start_date = $request->input('start_date', null);
         $end_date = $request->input('end_date', null);
-        $agent_id = $request->input('agent_id', null);
+       $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
+
     
         $start_date = $start_date ? Carbon::parse($start_date)->startOfDay() : now()->startOfMonth();
         $end_date = $end_date ? Carbon::parse($end_date)->endOfDay() : now()->endOfDay();
     
         $query = Policy::with('agent')->whereBetween('policy_start_date', [$start_date, $end_date])->orderBy('id', 'desc');
     
-        if ($agent_id) {
+        if (!empty($agent_id)) {
             $query->where('agent_id', $agent_id);
         }
     
         $data = $query->get();
-        $agents = Agent::get();
+        $agent = Agent::get();
     
-        return view('admin.policy_list', ['data' => $data, 'agent' => $agents]);
+        return view('admin.policy_list', ['data' => $data, 'agent' => $agent]);
     }
     
+    
 
-    // public function  policyshow( Request $request ,string $id){
-    //     if ($request->isMethod('get')) {
-    //     return view('admin.policyshow');
-    //     }
-
-    //     if ($request->isMethod('post')){
-    //       $users = Agent::with('commissions', 'Policy')->orderBy('created_at', 'desc')->get();
-    //     }
-    // }
+  
 
     public function policyUpload(Request $request){
 
