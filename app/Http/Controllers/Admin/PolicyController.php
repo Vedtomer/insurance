@@ -55,9 +55,9 @@ class PolicyController extends Controller
         }
     
         $data = $query->get();
-        $agent = Agent::get();
+        $agentData = Agent::get();
     
-        return view('admin.policy_list', ['data' => $data, 'agent' => $agent]);
+        return view('admin.policy_list', ['data' => $data, 'agentData' => $agentData]);
     }
     
     

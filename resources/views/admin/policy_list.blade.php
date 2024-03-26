@@ -48,7 +48,7 @@
 
             <optgroup>
                 <option selected disabled>Select Agent</option>
-                @foreach ($agent as $user)
+                @foreach ($agentData as $user)
                 <option value="{{ $user->id }}" @if(isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif> {{ $user->name }}</option>
                 
                 @endforeach
@@ -139,10 +139,10 @@
                                             @else
                                                 <select class="form-select js-example-basic-single select2" data-control="select2" data-placeholder="Select an option" onchange="confirmAgentChange(this); location = this.value;">
                                                     <option value="" selected disabled>Select Agent</option>
-                                                    @foreach ($agent as $agent)
-                                                        @if ($agent && is_object($agent) && $agent->status == 1)
-                                                            <option value="{{ route('updateagentid', ['agent_id' => $agent->id ,'royalsundaram_id' => $user->id ]) }}">
-                                                                {{ $agent->name }}
+                                                    @foreach ($agentData as $record)
+                                                        {{-- @if ($agent && is_object($agent) && $agent->status == 1) --}}
+                                                            <option value="{{ route('updateagentid', ['agent_id' => $record->id ,'royalsundaram_id' => $user->id ]) }}">
+                                                                {{ $record->name }}
                                                             </option>
                                                         @endif
                                                     @endforeach
