@@ -92,12 +92,22 @@ class AdminController extends Controller
        
     //   
        $policy = Policy::get();
+       $transaction = Transaction::get();
+
        $policyCount = $policy->count('policy_no');
-       
+       $amount = $transaction->sum('amount');
+       $status = $policy->pluck('payment_by');
+    //    if($status){
+        $premium = $policy->where('payment_by','SELF')->sum('premium'); 
+    //    }
+       $paymentby = $premium - $amount ;
+
+      
+
         $data = $query->get();
         $agent = Agent::get();
         
-        return view('admin.dashboard', compact('admin' , 'data' , 'agent' ,'policyCount'));
+        return view('admin.dashboard', compact('admin' , 'data' , 'agent' ,'policyCount' ,'paymentby'));
     }
     public function userdata()
     {
