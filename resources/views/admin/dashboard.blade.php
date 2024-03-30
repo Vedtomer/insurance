@@ -93,11 +93,11 @@
                                     <div class="card mb-3 widget-content bg-grow-early">
                                         <div class="widget-content-wrapper text-white">
                                             <div class="widget-content-left">
-                                                <div class="widget-heading">pending Premium</div>
+                                                <div class="widget-heading">Pending Premium</div>
                                                 {{-- <div class="widget-subheading">People Interested</div> --}}
                                             </div>
                                             <div class="widget-content-right">
-                                                <div class="widget-numbers text-white">  <span class="mb-2 mr-2"><i class="fa fa-user-circle-o" style="font-size:24px"></i> {{ $paymentby }}</span></div>
+                                                <div class="widget-numbers text-white">  <span class="mb-2 mr-2"><i class="fa fa-rupee" style="font-size:24px"></i> {{ $paymentby }}</span></div>
                                             </div>
                                         </div>
                                     </div>

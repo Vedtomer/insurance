@@ -64,50 +64,59 @@ class AdminController extends Controller
 
     public function dashboard(Request $request)
     {
+        
         $start_date = $request->input('start_date', "") ===  "null"  ? "" : $request->input('start_date');
         $end_date = $request->input('end_date', "") ===  "null"  ? "" : $request->input('end_date');
         $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
 
         if ($start_date !== null) {
-            $start_date = Carbon::parse($start_date)->startOfDay();
-        } else {
-            $start_date = now()->startOfMonth();
+            $start_date = Carbon::parse($start_date);
         }
     
         if ($end_date !== null) {
-            $end_date = Carbon::parse($end_date)->endOfDay();
-        } else {
-            $end_date = now()->endOfDay();
-        }
+            $end_date = Carbon::parse($end_date);
+        } 
 
         $admin = Auth::guard('admin')->user();
 
-        $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
-            $query->whereBetween('policy_start_date', [$start_date, $end_date]);
-        }])->orderBy('created_at', 'desc');
-        
-        // if (!empty($agent_id)) {
-        //     $query->where('id', $agent_id);
-        // }
-       
-    //   
-       $policy = Policy::get();
-       $transaction = Transaction::get();
+        // $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
+        //     $query->whereBetween('policy_start_date', [$start_date, $end_date]);
+        // }])->orderBy('created_at', 'desc');
+        $transactions = Transaction::orderBy( 'id','ASC');
+
+       $policy = Policy::orderBy( 'id','ASC');
+
+    
+       if(!empty($start_date) && !empty($end_date)){
+        $policy->whereBetween('policy_start_date', [$start_date, $end_date]);
+       }
+
+       if(!empty($start_date) && !empty($end_date)){
+        $transactions->whereBetween('payment_date', [$start_date, $end_date]);
+       }
+
+       if (!empty($agent_id)) {
+        $policy->where('agent_id', $agent_id);
+    }
+    if (!empty($agent_id)) {
+        $transactions->where('agent_id', $agent_id);
+    }
+    $transaction = $transactions->get();
+    
+    $policy = $policy->get();
 
        $policyCount = $policy->count('policy_no');
-       $amount = $transaction->sum('amount');
+       $amount = $transactions->sum('amount');
        $status = $policy->pluck('payment_by');
     //    if($status){
-        $premium = $policy->where('payment_by','SELF')->sum('premium'); 
+        $premium = $policy->where('payment_by','SELF')->whereBetween('policy_start_date', [$start_date, $end_date])->sum('premium'); 
     //    }
        $paymentby = $premium - $amount ;
 
-      
-
-        $data = $query->get();
+        //  $data = $query->get();
         $agent = Agent::get();
         
-        return view('admin.dashboard', compact('admin' , 'data' , 'agent' ,'policyCount' ,'paymentby'));
+        return view('admin.dashboard', compact('admin'  , 'agent' ,'policyCount' ,'paymentby'));
     }
     public function userdata()
     {
