@@ -52,7 +52,7 @@
                                     <div class="card mb-3 widget-content bg-midnight-bloom">
                                         <div class="widget-content-wrapper text-white">
                                             <div class="widget-content-left">
-                                                <div class="widget-heading">Policy Premium</div>
+                                                <div class="widget-heading">Total Policy Premium</div>
                                                 {{-- <div class="widget-subheading">Last year expenses</div> --}}
                                             </div>
                                             <div class="widget-content-right">
@@ -74,11 +74,17 @@
                                     <div class="card mb-3 widget-content bg-arielle-smile">
                                         <div class="widget-content-wrapper text-white">
                                             <div class="widget-content-left">
-                                                <div class="widget-heading">Clients</div>
+                                                <div class="widget-heading">Policy</div>
                                                 <div class="widget-subheading">Total Clients Profit</div>
                                             </div>
                                             <div class="widget-content-right">
-                                                <div class="widget-numbers text-white"><span>$ 568</span></div>
+                                                <div class="widget-numbers text-white"> 
+                                                    {{-- @php
+                                                    $policyCount = count($user->Policy);
+                                                @endphp --}}
+                                                <span class="mb-2 mr-2"><i class='fas fa-box' style='font-size:24px'></i> {{ $policyCount }}</span>
+
+                                            </div>
                                             </div>
                                         </div>
                                     </div>

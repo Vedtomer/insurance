@@ -16,6 +16,7 @@ use App\Models\Royalsundaram;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Policy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
@@ -88,11 +89,15 @@ class AdminController extends Controller
         // if (!empty($agent_id)) {
         //     $query->where('id', $agent_id);
         // }
-        
+       
+    //   
+       $policy = Policy::get();
+       $policyCount = $policy->count('policy_no');
+       
         $data = $query->get();
         $agent = Agent::get();
         
-        return view('admin.dashboard', compact('admin' , 'data' , 'agent'));
+        return view('admin.dashboard', compact('admin' , 'data' , 'agent' ,'policyCount'));
     }
     public function userdata()
     {
