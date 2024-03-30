@@ -49,7 +49,7 @@
                     <thead>
                         <tr>
                             <th style="width: 5%" scope="col">Sr. No.</th>
-                            <th style="width: 5%" scope="col">Commission Code</th>
+                            {{-- <th style="width: 5%" scope="col">Commission Code</th> --}}
                             <th style="width: 20%" scope="col">Name</th>
                             <th style="width: 20%" scope="col">Policy</th>
                             <th style="width: 20%" scope="col">Premium</th>
@@ -67,7 +67,7 @@
                             <tr @if ($user->commissions->isEmpty() || $user->commissions->sum('commission') == 0) style="background-color: #cb498533 ;" @endif
                                 @if (count($user->Policy) == 0) style="background-color: #ef9292 ;" @endif>
                                 <td>{{ $key + 1 }}</td>
-                                <td style=" ">
+                                {{-- <td style=" ">
                                     @foreach ($user->commissions as $commission)
                                         <div style="display: inline-block; margin-right: 10px; white-space: nowrap;">
                                             <button class="btn btn-secondary waves-effect waves-light"
@@ -79,7 +79,7 @@
                                         </div>
                                         <hr>
                                     @endforeach
-                                </td>
+                                </td> --}}
                                 <td>{{ $user->name }}</td>
                                 <td>
                                     @php

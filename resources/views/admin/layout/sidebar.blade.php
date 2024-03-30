@@ -53,13 +53,6 @@
                         Agent List
                     </a>
                 </li>
-               
-                <li>
-                    <a href="{{route('upload.policy')}}">
-                        <i class="metismenu-icon pe-7s-graph2"></i>
-                        Upload Policy
-                    </a>
-                </li>
                 <li>
                     <a href="{{route('commission.code')}}">
                         <i class="metismenu-icon pe-7s-diamond"></i>
@@ -67,6 +60,13 @@
                         
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('upload.policy')}}">
+                        <i class="metismenu-icon pe-7s-graph2"></i>
+                        Upload Policy
+                    </a>
+                </li>
+              
                    <li>
                     <a href="{{ route('policy.list') }}">
                         <i class="metismenu-icon pe-7s-eyedropper">
