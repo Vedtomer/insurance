@@ -67,7 +67,7 @@ Route::prefix('admin')->group(function () {
             ->name('add.transaction');
 
 
-        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::match(['get', 'post'],'dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::match(['get', 'post'], '/upload-policy', [PolicyController::class, 'upload'])->name('upload.policy');
         Route::match(['get', 'post'], '/updateagentid/{royalsundaram_id?}/{agent_id?}', [AgentController::class, 'updateagentid'])
             ->name('updateagentid');

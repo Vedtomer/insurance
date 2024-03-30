@@ -61,10 +61,38 @@ class AdminController extends Controller
     }
 
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
+        $start_date = $request->input('start_date', "") ===  "null"  ? "" : $request->input('start_date');
+        $end_date = $request->input('end_date', "") ===  "null"  ? "" : $request->input('end_date');
+        $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
+
+        if ($start_date !== null) {
+            $start_date = Carbon::parse($start_date)->startOfDay();
+        } else {
+            $start_date = now()->startOfMonth();
+        }
+    
+        if ($end_date !== null) {
+            $end_date = Carbon::parse($end_date)->endOfDay();
+        } else {
+            $end_date = now()->endOfDay();
+        }
+
         $admin = Auth::guard('admin')->user();
-        return view('admin.dashboard', compact('admin'));
+
+        $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
+            $query->whereBetween('policy_start_date', [$start_date, $end_date]);
+        }])->orderBy('created_at', 'desc');
+        
+        // if (!empty($agent_id)) {
+        //     $query->where('id', $agent_id);
+        // }
+        
+        $data = $query->get();
+        $agent = Agent::get();
+        
+        return view('admin.dashboard', compact('admin' , 'data' , 'agent'));
     }
     public function userdata()
     {
