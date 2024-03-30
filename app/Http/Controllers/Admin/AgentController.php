@@ -59,7 +59,7 @@ class AgentController extends Controller
             $end_date = now()->endOfDay();
         }
 
-        $query = Agent::with(['commissions', 'Policy' => function ($query) use ($start_date, $end_date) {
+        $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
             $query->whereBetween('policy_start_date', [$start_date, $end_date]);
         }])->orderBy('created_at', 'desc');
         
