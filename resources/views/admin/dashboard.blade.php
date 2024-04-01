@@ -61,7 +61,7 @@
                                                     @php
                                                     $totalagentpremium = $user->Policy->sum('premium');
                                                 @endphp
-                                                <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:24px"></i> {{ $totalagentpremium }}</span>
+                                                <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:24px"></i> {{ $premium }}</span>
                 
                                                 </div>
                                             </div>
