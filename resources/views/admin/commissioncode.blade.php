@@ -61,8 +61,7 @@
                     </thead>
                     <tbody>
                         @foreach ($data as $key => $user)
-                            <tr @if ($user->commissions->isEmpty() || $user->commissions->sum('commission') == 0) style="background-color: #cb498533 ;" @endif
-                                @if (count($user->Policy) == 0) style="background-color: #ef9292 ;" @endif>
+                            <tr @if ($user->commissions->isEmpty() || $user->commissions->sum('commission') == 0) style="background-color: #cb498533 ;" @endif >
                                 <td>{{ $key + 1 }}</td>
                                 <td style=" ">
                                     @foreach ($user->commissions as $commission)

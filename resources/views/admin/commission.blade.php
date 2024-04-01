@@ -33,7 +33,7 @@
                             <input type="hidden" class="form-control" name="id[]" value="{{ $record->id }}" required>
                             <div class="col-md-5">
                                 <label>Commission</label>
-                                <input type="text" class="form-control" name="commission[]" value="{{ $record->commission }}" onkeypress="allowOnlyNumbers(event)" required>
+                                <input type="number" class="form-control" name="commission[]" value="{{ $record->commission }}"  required>
                             </div>
                             <div class="col-md-5">
                                 <label>Commission-Type</label>
@@ -53,8 +53,8 @@
 
                             <div class="col-md-6">
                                 <label>Commision</label>
-                                <input type="text" class="form-control" name="commission[]"
-                                    value="{{ $data->commission }}" onkeypress="allowOnlyNumbers(event)" required>
+                                <input type="number" class="form-control" name="commission[]"
+                                    value="{{ $data->commission }}"  required>
                             </div>
                             <div class="col-md-6">
                                 <label>Commision-Type</label>

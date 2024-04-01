@@ -24,9 +24,7 @@
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span>Select date</span> <i class="fa fa-caret-down"></i>
                             </div>
-                            <div class="right ml-5" >
-                              
-                            </div>
+                          
                             <div class="add" style="display: flex; align-items: center;">
                                    
                                 <div class="btns" style="margin-left: auto;">
