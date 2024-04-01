@@ -19,7 +19,7 @@
                             <div class="card-body">
                     
                                <div class="mb-5" style="display: flex; align-items: center;">
-                                <div class="col-3 mr-5" id="reportrange"
+                                <div class="col-3 mr-5" id="report"
                                 style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; margin-right: 50rem !important; width: 100%">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span>Select date</span> <i class="fa fa-caret-down"></i>
@@ -122,6 +122,56 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    
+                    <script type="text/javascript">
+                        $(function() {
+                        
+                            const urlParams = new URLSearchParams(window.location.search);
+                        // Retrieve start_date and end_date from the URL parameters
+                        const startDateParam = urlParams.get('start_date');
+                        const endDateParam = urlParams.get('end_date');
+                        const agent_id = urlParams.get('agent_id');
+                        const payment_mode = urlParams.get('payment_mode');
+                       
+                        
+                        // Set default start and end dates
+                        var start 
+                        var end 
+                        
+                        // If start_date and end_date parameters are present in the URL, use them
+                        if (startDateParam && endDateParam && startDateParam !="null") {
+                            start = moment(startDateParam);
+                            end = moment(endDateParam);
+                        }
+                        
+                            function cb(start, end) {
+                                $('#report span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                            }
+                        
+                            $('#report').daterangepicker({
+                                startDate: start,
+                                endDate: end,
+                                ranges: {
+                                   'Today': [moment(), moment()],
+                                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                }
+                            }, function(start, end, label) {
+                                var currentUrl = "{{ URL::current() }}"; 
+                            var dynamicRoute =  currentUrl + '?start_date=' + start.format('YYYY-MM-DD') + '&end_date=' + end.format('YYYY-MM-DD')+'&agent_id='+agent_id +'&payment_mode='+payment_mode;
+                            window.location.href = dynamicRoute;
+                        });
+                        
+                            cb(start, end);
+                        
+                        });
+                        </script>
+                    
                     
 
 @endsection
