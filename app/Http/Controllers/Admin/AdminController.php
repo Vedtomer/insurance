@@ -109,9 +109,11 @@ class AdminController extends Controller
        $amount = $transactions->sum('amount');
        $status = $policy->pluck('payment_by');
     //    if($status){
-        $premium = $policy->where('payment_by','SELF')->whereBetween('policy_start_date', [$start_date, $end_date])->sum('premium'); 
+        $premium = $policy->where('payment_by','SELF')->sum('premium'); 
     //    }
-       $paymentby = $premium - $amount ;
+
+        $paymentby = $premium - $amount ;
+       
 
         //  $data = $query->get();
         $agent = Agent::get();

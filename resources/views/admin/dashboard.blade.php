@@ -22,7 +22,7 @@
                                 <div class="col-3 mr-5" id="reportrange"
                                 style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; margin-right: 50rem !important; width: 100%">
                                 <i class="fa fa-calendar"></i>&nbsp;
-                                <span></span> <i class="fa fa-caret-down"></i>
+                                <span>Select date</span> <i class="fa fa-caret-down"></i>
                             </div>
                             <div class="right ml-5" >
                               
