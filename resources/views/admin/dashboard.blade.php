@@ -95,7 +95,7 @@
                                                 {{-- <div class="widget-subheading">People Interested</div> --}}
                                             </div>
                                             <div class="widget-content-right">
-                                                <div class="widget-numbers text-white">  <span class="mb-2 mr-2"><i class="fa fa-rupee" style="font-size:24px"></i> {{ $paymentby }}</span></div>
+                                                <div class="widget-numbers text-white">  <a href="{{ route('agentpandding.blance') }}" class="mb-2 mr-2" style="color: white"><i class="fa fa-rupee" style="font-size:24px"></i> {{ $paymentby }}</a></div>
                                             </div>
                                         </div>
                                     </div>

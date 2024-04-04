@@ -72,6 +72,8 @@ Route::prefix('admin')->group(function () {
         Route::match(['get', 'post'], '/updateagentid/{royalsundaram_id?}/{agent_id?}', [AgentController::class, 'updateagentid'])
             ->name('updateagentid');
 
+         Route::match(['get', 'post'], '/agent_pandding_blance', [PolicyController::class, 'panddingblance'])->name('agentpandding.blance');
+
 
         Route::match(['get', 'post'], '/selectcommission/{royalsundaram_id?}/{agent_id?}', [AdminController::class, 'selectcommission'])
             ->name('selectcommission');

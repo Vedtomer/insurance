@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\Agent;
 use App\Models\Policy;
+use App\Models\Transaction;
 use App\Imports\ExcelImport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+
+
 use Maatwebsite\Excel\Facades\Excel;
-
-
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -100,6 +102,38 @@ class PolicyController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors([$e->getMessage()])->withInput();
         }
+    }
+
+    public function panddingblance(Request $request){
+
+        $start_date = $request->input('start_date', "") ===  "null"  ? "" : $request->input('start_date');
+        $end_date = $request->input('end_date', "") ===  "null"  ? "" : $request->input('end_date');
+         $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
+
+        if ($start_date !== null) {
+            $start_date = Carbon::parse($start_date);
+        }
+    
+        if ($end_date !== null) {
+            $end_date = Carbon::parse($end_date);
+        } 
+
+        //    $policy = Policy::where('payment_by','SELF')->whereBetween('policy_start_date', [$start_date, $end_date])->get();
+        //    $transactions = Transaction::get();
+
+       return $policy = DB::table('policies')->where('payment_by','SELF')
+            ->join('transactions', 'policies.agent_id', '=', 'transactions.agent_id')
+            ->select( 'transactions.agent_id')->groupBy('policies.agent_id') 
+          
+            ->get();
+
+        //   $amounts = $transactions->pluck('amount')->toArray();
+        //    $premium = $policy->pluck('premium')->toArray();
+           
+         
+           $agentData = Agent::get();
+           return view('admin.agent_pandding_blance' , compact('policy' , 'agentData'));
+      
     }
     
 }

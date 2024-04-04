@@ -27,8 +27,11 @@ class ExcelImport implements ToModel, WithHeadingRow
 
      
         $existingRecord->policy_start_date = Carbon::parse($this->importDate);
-        $existingRecord->policy_end_date = Carbon::parse($this->importDate)->addYear();
-
+        // if(empty($this->importDate)){
+        //     $existingRecord->policy_start_date =  date('Y-m-d H:i:s' , strtotime($row['policy_start_date']));
+        // }
+        $existingRecord->policy_end_date = Carbon::parse($existingRecord->policy_start_date)->addYear();
+       
         $existingRecord->fill([
             'policy_no' => $row['policy_no'] ?? null,
             'payment_by' => isset($row['payment_by']) ? strtoupper(trim($row['payment_by'])) : null,
