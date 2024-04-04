@@ -100,7 +100,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
+                                {{-- <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
                                     <div class="card mb-3 widget-content bg-premium-dark">
                                         <div class="widget-content-wrapper text-white">
                                             <div class="widget-content-left">
@@ -112,7 +112,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     
