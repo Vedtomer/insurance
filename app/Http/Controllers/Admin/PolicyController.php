@@ -27,7 +27,7 @@ class PolicyController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'excelFile' => 'required|mimes:xlsx,xls',
+            'excelFile' => 'required|mimetypes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.oasis.opendocument.spreadsheet',
         ]);
 
         if ($validator->fails()) {

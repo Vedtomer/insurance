@@ -7,7 +7,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Models\Policy;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use App\Models\Transaction;
 
 class ExcelImport implements ToModel, WithHeadingRow
 {
@@ -25,18 +24,17 @@ class ExcelImport implements ToModel, WithHeadingRow
             'insurance_company' => $row['insurance_company'],
         ]);
 
-     
-        $existingRecord->policy_start_date = Carbon::parse($this->importDate);
-        // if(empty($this->importDate)){
-        //     $existingRecord->policy_start_date =  date('Y-m-d H:i:s' , strtotime($row['policy_start_date']));
-        // }
-        $existingRecord->policy_end_date = Carbon::parse($existingRecord->policy_start_date)->addYear();
-       
+        Log::info($row);
+
+        if (!empty($this->importDate)) {
+            $existingRecord->policy_start_date = Carbon::parse($this->importDate);
+        } else {
+            $existingRecord->policy_start_date = $this->parseDate($row['policy_start_date']);
+        }
+        $existingRecord->policy_end_date = $existingRecord->policy_start_date->copy()->addYear();
         $existingRecord->fill([
-            'policy_no' => $row['policy_no'] ?? null,
             'payment_by' => isset($row['payment_by']) ? strtoupper(trim($row['payment_by'])) : null,
             'customername' => $row['customername'] ?? null,
-            'insurance_company' => isset($row['insurance_company']) ? trim($row['insurance_company']) : null,
             'agent_id' => isset($row['commission_code']) ? getAgentId($row['commission_code']) : null,
             'premium' => $row['premium'] ?? null,
             'gst' => isset($row['premium']) ? $row['premium'] * 0.1525 : null,
@@ -49,9 +47,20 @@ class ExcelImport implements ToModel, WithHeadingRow
         return $existingRecord;
     }
 
+    protected function parseDate($value)
+    {
+        if (is_numeric($value)) {
+            $excelBaseDate = strtotime('1899-12-30');
+            $dateInSeconds = ($value) * 24 * 60 * 60;
+            $unixTimestamp = $excelBaseDate + $dateInSeconds;
+            return Carbon::createFromTimestamp($unixTimestamp)->startOfDay();
+        } else {
+            return Carbon::createFromFormat('d/m/Y', $value)->startOfDay();
+        }
+    }
+
     public function headingRow(): int
     {
         return 1;
     }
-
 }
