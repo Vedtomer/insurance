@@ -6,52 +6,39 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Agent;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
-class AgentExport implements FromCollection
+class AgentExport implements FromCollection, WithHeadings
+
 {
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    protected $data;
+
+    public function __construct($data)
     {
-        return Agent::all();
-        // return $this->getActionItems();
+        $this->data = $data;
     }
 
-    // public function headings(): array
-    // {
-    //     $columns = [
-    //         'id',
-    //         'name',
-    //         'email',
-    //         'password',
-    //         'state',
-    //         'city',
-    //         'address',
-    //         'mobile_number' ,
-    //         'status',
-    //         'commission_id',
-    //     ];
-    //     return $columns;
-    // }
+    public function collection()
+    {
+        return $this->data;
+    }
 
-    // private function getActionItems()
-    // {
-    //     $select = 'id ,
-    //     name,
-    //     email,
-    //     password,
-    //     state,
-    //     city,
-    //     address,
-    //     mobile_number ,
-    //     status,
-    //     commission_id';
+    public function headings(): array
+    {
+        return [
+            // 'id',
+            'Agent Name',
+            'Policy',
+            'Premium',
+            'Earn Points',
+            'Email',
+            'City',
+            'Mobile',
+        ];
+    }
 
-    //     $query = DB::table('agents')->select(DB::raw($select));
-    //     $query->whereNull('agents.created_at');
 
-    //     $ai = $query->orderBy('id' ,'desc')->get();
-    //     return $ai;
-    // }
 }

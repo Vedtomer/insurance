@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 // use App\Exports\UsersImport;
 use App\Exports\AgentExport;
 
@@ -78,10 +79,31 @@ class AgentController extends Controller
 
  
 
-public function downloadExcel()
+public function downloadExcel(Request $request)
 {
-    // dd('export');
-    return Excel::download(new AgentExport, 'agents.xlsx');
+    // $data = Agent::with('Policy')->get();
+    DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+
+    $data = DB::table('agents')
+    ->leftJoin('policies', 'agents.id', '=', 'policies.agent_id')
+    ->leftJoin(DB::raw('(SELECT agent_id, SUM(amount) as total_amount FROM transactions GROUP BY agent_id) AS trans'), function ($join) {
+        $join->on('agents.id', '=', 'trans.agent_id');
+    })
+    // ->where('payment_by', 'SELF')
+    ->select(
+        'agents.name',
+        DB::raw('IFNULL(COUNT(policies.policy_no), 0) AS total_policy_no'),
+        // DB::raw('COUNT(CASE WHEN policies.policy_no IS NOT NULL THEN 1 ELSE NULL END) AS total_policy_no'),
+        DB::raw('COALESCE(SUM(premium), 0) AS totalPremium'),
+        DB::raw('COALESCE(SUM(policies.agent_commission), 0) AS total_agent_commission'),
+        'agents.email',
+        'agents.city',
+        'agents.mobile_number',
+    )
+    ->groupBy('agents.id', 'agents.name', 'agents.email', 'agents.city', 'agents.mobile_number')
+    // ->havingRaw('balance > 0') // Filter only where balance is greater than zero
+    ->get();
+    return Excel::download(new AgentExport($data), 'agents.xlsx');
  
 }
 
