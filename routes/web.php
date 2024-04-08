@@ -89,6 +89,9 @@ Route::prefix('admin')->group(function () {
 
         Route::match(['get', 'post'], '/agent', [AgentController::class, 'Agent'])->name('agent');
         Route::get('agent-list', [AgentController::class, 'AgentList'])->name('agent.list');
+        Route::get('/download-excel', [AgentController::class ,'downloadExcel'])->name('download.excel');
+        Route::get('/import-excel', [AgentController::class ,'importExcel'])->name('import.excel');
+
         Route::match(['get', 'post'], '/commission-code', [AgentController::class, 'commissionCode'])->name('commission.code');
 
         #Slider Routes

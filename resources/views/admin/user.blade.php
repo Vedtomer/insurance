@@ -34,8 +34,14 @@
                 </optgroup>
             </select>
         </div>
+        <div class="right ml-5" >
+            <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+        <label class="form-label">Download Excel <a href="{{ route('download.excel') }}" class="btn btn-primary">Download Excel</a>
+        </form>
+        </label>
            </div>
-         
+        </div>
 
             <div class="add" style="display: flex; align-items: center;">
                

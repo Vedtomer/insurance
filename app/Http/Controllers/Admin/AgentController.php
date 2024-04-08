@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+// use App\Exports\UsersImport;
+use App\Exports\AgentExport;
 
 class AgentController extends Controller
 {
@@ -73,6 +76,21 @@ class AgentController extends Controller
         return view('admin.user', ['data' => $users, 'agent' => $agent]);
     }
 
+ 
+
+public function downloadExcel()
+{
+    // dd('export');
+    return Excel::download(new AgentExport, 'agents.xlsx');
+ 
+}
+
+public function importExcel(Request $request)
+{
+    // dd('export');
+    // return Excel::download(new AgentExport, 'agents.xlsx');
+ 
+}
     public function commissionCode(Request $request)
     {
         $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
