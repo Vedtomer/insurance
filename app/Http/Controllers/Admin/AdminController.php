@@ -101,13 +101,16 @@ class AdminController extends Controller
     if (!empty($agent_id)) {
         $transactions->where('agent_id', $agent_id);
     }
-    $counts = Policy::whereIn('insurance_company', ['ROYAL', 'FUTURE' ,'TATA'])
+    $counts = Policy::whereIn('insurance_company', ['ROYAL', 'FUTURE' ,'TATA','tata'])
     ->selectRaw('insurance_company, COUNT(*) as count')
     ->groupBy('insurance_company')
     ->pluck('count', 'insurance_company');
 
 $royalCount = $counts->get('ROYAL', 0); 
-$tataCount = $counts->get('TATA', 0); 
+$tataCount1 = $counts->get('TATA', 0); 
+$tataCount2 = $counts->get('tata', 0); 
+
+$tataCount = $tataCount1 + $tataCount2 ;
 $futureCount = $counts->get('FUTURE', 0); 
 
   
