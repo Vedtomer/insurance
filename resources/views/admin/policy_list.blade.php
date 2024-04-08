@@ -83,6 +83,7 @@
                                     <th>Commission</th>
                                     <th>Upload Policy</th>
                                     <th>Agent</th>
+                                    <th>Insurance Company</th>
                                     <th>Payment By</th>
 
                                     <th>Policy Start Date</th>
@@ -150,7 +151,7 @@
                                                 
                                             @endif
                                         </td>
-                                        
+                                        <td>{{ $user->insurance_company }}</td>
                                         <td>{{ $user->payment_by }}</td>
 
 

@@ -101,6 +101,19 @@ class AdminController extends Controller
     if (!empty($agent_id)) {
         $transactions->where('agent_id', $agent_id);
     }
+    $counts = Policy::whereIn('insurance_company', ['ROYAL', 'FUTURE' ,'TATA'])
+    ->selectRaw('insurance_company, COUNT(*) as count')
+    ->groupBy('insurance_company')
+    ->pluck('count', 'insurance_company');
+
+$royalCount = $counts->get('ROYAL', 0); 
+$tataCount = $counts->get('TATA', 0); 
+$futureCount = $counts->get('FUTURE', 0); 
+
+  
+
+
+
     $transaction = $transactions->get();
     
     $policy = $policy->get();
@@ -120,7 +133,7 @@ class AdminController extends Controller
         //  $data = $query->get();
         $agent = Agent::get();
         
-        return view('admin.dashboard', compact('admin'  , 'agent' ,'policyCount' ,'paymentby' ,'premiums'));
+        return view('admin.dashboard', compact('admin'  , 'agent' ,'policyCount' ,'paymentby' ,'premiums' ,'royalCount' ,'futureCount','tataCount'));
     }
     public function userdata()
     {

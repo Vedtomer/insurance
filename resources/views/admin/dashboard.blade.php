@@ -120,6 +120,81 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-lg-12">
+                        <div class="main-card mb-3 card">
+                            <h2 style="text-align: center">Insurance Company</h2>
+                            <div class="card-body d-flex">
+                              
+
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="card mb-3 widget-content ">
+                                        <div class="widget-content-wrapper text-black">
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading"> 
+                                                    <img src="{{ asset('royal.png') }}" width="130" height="60">
+                                                   
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                
+                                                <div class="widget-numbers text-black">
+                                                    {{-- <i class="fa fa-rupee" style="font-size:24px"></i>  --}}
+                                                    {{ $royalCount }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="card mb-3 widget-content ">
+                                        <div class="widget-content-wrapper text-black">
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">
+                                                     <img src="{{ asset('future1.jpg') }}" width="130" height="60">
+                                                    
+                                                </div>
+                                           
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="widget-numbers text-black"> 
+                                                    <div class="widget-numbers text-black">
+                                                        {{-- <i class="fa fa-rupee" style="font-size:24px"></i>  --}}
+                                                         {{ $futureCount }}
+                                                    </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="card mb-3 widget-content ">
+                                        <div class="widget-content-wrapper text-black">
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">
+                                                     <img src="{{ asset('images.png') }}" width="130" height="60">
+                                                     
+                                                </div>
+                                           
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="widget-numbers text-black"> 
+                                                    <div class="widget-numbers text-black">
+                                                        {{-- <i class="fa fa-rupee" style="font-size:24px"></i>  --}}
+                                                         {{ $tataCount }}
+                                                    </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
                     
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     
