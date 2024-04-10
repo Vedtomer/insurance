@@ -101,6 +101,16 @@ class AdminController extends Controller
     if (!empty($agent_id)) {
         $transactions->where('agent_id', $agent_id);
     }
+    $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
+        $query->whereBetween('policy_start_date', [$start_date, $end_date]);
+    }])->orderBy('created_at', 'asc');
+    
+    if (!empty($agent_id)) {
+        $query->where('id', $agent_id);
+    }
+
+    $datausers = $query->get();
+
     $counts = Policy::where(function($query) {
         $query->where('insurance_company', 'LIKE', '%ROYAL%')
               ->orWhere('insurance_company', 'LIKE', '%FUTURE%')
@@ -135,7 +145,7 @@ class AdminController extends Controller
         //  $data = $query->get();
         $agent = Agent::get();
         
-        return view('admin.dashboard', compact('admin'  , 'agent' ,'policyCount' ,'paymentby' ,'premiums' ,'royalCount' ,'futureCount','tataCount'));
+        return view('admin.dashboard', compact('admin'  , 'agent' ,'policyCount' ,'paymentby' ,'premiums' ,'royalCount' ,'futureCount','tataCount' ,'datausers'));
     }
     public function userdata()
     {

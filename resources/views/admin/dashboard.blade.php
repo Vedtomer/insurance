@@ -18,23 +18,21 @@
                         <div class="main-card mb-3 card">
                             <div class="card-body">
                     
-                               <div class="mb-5" style="display: flex; align-items: center;">
-                                <div id="report"
-                                style="background: #fff; padding: 5px 10px; border: 1px solid #ccc; margin-right: 8rem !important; width: 280px; display: grid;
-                               
-                                grid-template-columns: 10px 10px 216px;
-                                align-items: start;
-                                justify-content: space-between;">
+                               <div class="mb-5 d-lg-flex" >
+                                <div class="col-lg-4 mb-5">
+                                <div id="report" class="mb-5"
+                                style="background: #fff; padding: 5px 10px; border: 1px solid #ccc; width: 280px; display: grid; grid-template-columns: 10px 10px 216px;
+                                align-items: start; justify-content: space-between;">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span>
                                     {{-- Select date --}}
                                 </span> <i class="fa fa-caret-down"></i>
                             </div>
+                    </div>
                           
-                            <div class="add" style="display: flex; align-items: center;">
-                                   
+                           
+                    <div class="col-lg-4 mb-5">
                                 <div class="btns" style="margin-left: auto;">
-                                    {{-- <a id="openModalBtn" href="{{ route('agent') }}" class="btn btn-secondary mb-2">Add Agent</a> --}}
                                     <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
                     
                                         <optgroup>
@@ -46,7 +44,6 @@
                                         </optgroup>
                                     </select>
                                 </div>
-                               
                             </div>
                                </div>
                              
@@ -186,12 +183,44 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    {{-- <div class="container"> --}}
-                      
                     {{-- </div> --}}
+
                     
+
+<div class="col-lg-8">
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            
+            <div class="table-responsive">
+                <table class="mb-0 table table-striped table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%" scope="col">Sr. No.</th>
+                            <th style="width: 20%" scope="col">Name</th>
+                            <th style="width: 20%" scope="col">Policy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($datausers as $key => $user)
+                            <tr 
+                                @if (count($user->Policy) == 0) style="background-color: #ef9292 ;" @endif>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>
+                                    @php
+                                        $policyCount = count($user->Policy);
+                                    @endphp
+                                    <span class="mb-2 mr-2 btn btn-warning">{{ $policyCount }}</span>
+                                </td>
+                              
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
                     
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     
