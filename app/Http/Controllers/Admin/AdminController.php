@@ -71,11 +71,15 @@ class AdminController extends Controller
 
         if ($start_date !== null) {
             $start_date = Carbon::parse($start_date);
+        } else {
+            $start_date = now()->startOfMonth();
         }
     
         if ($end_date !== null) {
             $end_date = Carbon::parse($end_date);
-        } 
+        } else {
+            $end_date = now()->endOfDay();
+        }
 
         $admin = Auth::guard('admin')->user();
 
@@ -102,8 +106,10 @@ class AdminController extends Controller
         $transactions->where('agent_id', $agent_id);
     }
     $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
-        $query->whereBetween('policy_start_date', [$start_date, $end_date]);
+        $query->whereBetween('policy_start_date', [$start_date, $end_date])
+              ->where('policy_no', '0');
     }])->orderBy('created_at', 'asc');
+    
     
     if (!empty($agent_id)) {
         $query->where('id', $agent_id);
