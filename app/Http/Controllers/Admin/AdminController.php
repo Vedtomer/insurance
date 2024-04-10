@@ -65,20 +65,35 @@ class AdminController extends Controller
     public function dashboard(Request $request)
     {
         
-        $start_date = $request->input('start_date', "") ===  "null"  ? "" : $request->input('start_date');
-        $end_date = $request->input('end_date', "") ===  "null"  ? "" : $request->input('end_date');
+        $start_date = $request->input('start_date', "") === "null" ? date('Y-m-01') : $request->input('start_date');
+        $end_date = $request->input('end_date', "") === "null" ? date('Y-m-t') : $request->input('end_date');
         $agent_id = $request->input('agent_id', "") === "null" ? "" : $request->input('agent_id', "");
-
-        if ($start_date !== null) {
-            $start_date = Carbon::parse($start_date);
-        } else {
-            $start_date = now()->startOfMonth();
-        }
     
-        if ($end_date !== null) {
-            $end_date = Carbon::parse($end_date);
-        } else {
-            $end_date = now()->endOfDay();
+        if (!isset($agent_id)) {
+
+            if (!isset($start_date) || !$start_date instanceof Carbon) {
+                $start_date = now()->startOfMonth();
+            }
+
+            if (!isset($end_date) || !$end_date instanceof Carbon) {
+                $end_date = now()->endOfDay();
+            }
+        }
+        
+        if (isset($agent_id)) {
+            $agent = Agent::find($agent_id);
+            
+            if ($start_date !== null) {
+                $start_date = Carbon::parse($start_date);
+            } else {
+                $start_date = now()->startOfMonth();
+            }
+        
+            if ($end_date !== null) {
+                $end_date = Carbon::parse($end_date);
+            } else {
+                $end_date = now()->endOfDay();
+            }
         }
 
         $admin = Auth::guard('admin')->user();
