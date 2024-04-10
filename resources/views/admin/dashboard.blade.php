@@ -66,7 +66,7 @@
                                                     @php
                                                     $totalagentpremium = $user->Policy->sum('premium');
                                                     @endphp
-                                                    <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:24px"></i>
+                                                    <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:22px"></i>
                                                         <span class="text-sm">{{ $data['premiums'] }}</span>
                                                     </span>
                                                 </div>
@@ -83,7 +83,7 @@
                                             </div>
                                             <div class="widget-content-right">
                                                 <div class="widget-numbers text-white">
-                                                    <span class="mb-2 mr-2"><i class='fas fa-box' style='font-size:24px'></i>
+                                                    <span class="mb-2 mr-2"><i class='fas fa-box' style='font-size:22px'></i>
                                                         <span class="text-lg">{{ $data['policyCount'] }}</span>
                                                     </span>
                                                 </div>
@@ -101,7 +101,7 @@
                                             <div class="widget-content-right">
                                                 <div class="widget-numbers text-white">
                                                     <a href="{{ route('agentpandding.blance') }}" class="mb-2 mr-2" style="color: white">
-                                                        <i class="fa fa-rupee" style="font-size:24px"></i>
+                                                        <i class="fa fa-rupee" style="font-size:22px"></i>
                                                         <span class="text-lg">{{ $data['paymentby'] }}</span>
                                                     </a>
                                                 </div>
