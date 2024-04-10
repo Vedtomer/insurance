@@ -203,14 +203,14 @@
                     <tbody>
                         @foreach ($datausers as $key => $user)
                             <tr 
-                                @if (count($user->Policy) == 0) style="background-color: #ef9292 ;" @endif>
+                                @if (count($user->Policy) == 0)  @endif>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>
                                     @php
                                         $policyCount = count($user->Policy);
                                     @endphp
-                                    <span class="mb-2 mr-2 btn btn-warning">{{ $policyCount }}</span>
+                                    <span >{{ $policyCount }}</span>
                                 </td>
                               
                             </tr>

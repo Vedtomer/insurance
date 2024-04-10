@@ -77,7 +77,7 @@ class AgentController extends Controller
         return view('admin.user', ['data' => $users, 'agent' => $agent]);
     }
 
- 
+
 
 public function downloadExcel(Request $request)
 {
