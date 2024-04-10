@@ -123,7 +123,7 @@ class PolicyController extends Controller
         //    $policy = Policy::where('payment_by','SELF')->whereBetween('policy_start_date', [$start_date, $end_date])->get();
         //    $transactions = Transaction::get();
 
-        $policy = DB::table('policies')
+        $policy = DB::table('policies')->whereBetween('policy_start_date', [$start_date, $end_date])
             ->leftJoin('agents', 'policies.agent_id', '=', 'agents.id')
             ->leftJoin(DB::raw('(SELECT agent_id, SUM(amount) as total_amount FROM transactions GROUP BY agent_id) AS trans'), function ($join) {
                 $join->on('policies.agent_id', '=', 'trans.agent_id');

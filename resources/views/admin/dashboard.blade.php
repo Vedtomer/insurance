@@ -19,10 +19,16 @@
                             <div class="card-body">
                     
                                <div class="mb-5" style="display: flex; align-items: center;">
-                                <div class="col-3 mr-5" id="report"
-                                style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; margin-right: 50rem !important; width: 100%">
+                                <div id="report"
+                                style="background: #fff; padding: 5px 10px; border: 1px solid #ccc; margin-right: 8rem !important; width: 280px; display: grid;
+                               
+                                grid-template-columns: 10px 10px 216px;
+                                align-items: start;
+                                justify-content: space-between;">
                                 <i class="fa fa-calendar"></i>&nbsp;
-                                <span>Select date</span> <i class="fa fa-caret-down"></i>
+                                <span>
+                                    {{-- Select date --}}
+                                </span> <i class="fa fa-caret-down"></i>
                             </div>
                           
                             <div class="add" style="display: flex; align-items: center;">
