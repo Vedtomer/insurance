@@ -106,11 +106,21 @@ class AdminController extends Controller
         $transactions->where('agent_id', $agent_id);
     }
     $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
-        $query->whereBetween('policy_start_date', [$start_date, $end_date])
-              ->where('policy_no', '0');
-    }])->orderBy('created_at', 'asc');
+        $query->whereBetween('policy_start_date', [$start_date, $end_date]);
+    }])
+    ->whereDoesntHave('Policy')
+    ->orderBy('created_at', 'asc');
     
     
+    // $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
+    //     $query->whereBetween('policy_start_date', [$start_date, $end_date])
+    //           ->where('policy_no', '0');
+    // }])
+    // ->whereHas('Policy', function ($query) use ($start_date, $end_date) {
+    //     $query->whereBetween('policy_start_date', [$start_date, $end_date])
+    //           ->where('policy_no', '0');
+    // })
+    // ->orderBy('created_at', 'asc');
     if (!empty($agent_id)) {
         $query->where('id', $agent_id);
     }
