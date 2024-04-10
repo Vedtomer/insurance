@@ -201,8 +201,10 @@
                        
                         
                         // Set default start and end dates
-                        var start 
-                        var end 
+                        // var start 
+                        // var end 
+                        var start = moment().startOf('month');
+                        var end = moment();
                         
                         // If start_date and end_date parameters are present in the URL, use them
                         if (startDateParam && endDateParam && startDateParam !="null") {
