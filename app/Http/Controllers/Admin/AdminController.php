@@ -111,16 +111,6 @@ class AdminController extends Controller
     ->whereDoesntHave('Policy')
     ->orderBy('created_at', 'asc');
     
-    
-    // $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
-    //     $query->whereBetween('policy_start_date', [$start_date, $end_date])
-    //           ->where('policy_no', '0');
-    // }])
-    // ->whereHas('Policy', function ($query) use ($start_date, $end_date) {
-    //     $query->whereBetween('policy_start_date', [$start_date, $end_date])
-    //           ->where('policy_no', '0');
-    // })
-    // ->orderBy('created_at', 'asc');
     if (!empty($agent_id)) {
         $query->where('id', $agent_id);
     }
@@ -150,18 +140,15 @@ class AdminController extends Controller
        $amount = $transactions->sum('amount');
        $status = $policy->pluck('payment_by');
        $premiums = $policy->sum('premium');
-    //   return $premiums = Policy::sum('premium');
-    //    if($status){
         $premium = $policy->where('payment_by','SELF')->sum('premium'); 
-    //    }
-
         $paymentby = $premium - $amount ;
        
 
         //  $data = $query->get();
         $agent = Agent::get();
-        
-        return view('admin.dashboard', compact('admin'  , 'agent' ,'policyCount' ,'paymentby' ,'premiums' ,'royalCount' ,'futureCount','tataCount' ,'datausers'));
+        $data = compact('admin'  , 'agent' ,'policyCount' ,'paymentby' ,'premiums' ,'royalCount' ,'futureCount','tataCount' ,'datausers');
+
+        return view('admin.dashboard', ['data' => $data]);
     }
     public function userdata()
     {

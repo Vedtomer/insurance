@@ -37,7 +37,7 @@
                     
                                         <optgroup>
                                             <option selected disabled>Select Agent</option>
-                                            @foreach ($agent as $user)
+                                            @foreach ($data['agent'] as $user)
                                             <option value="{{ $user->id }}" @if(isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif> {{ $user->name }}</option>
                                             
                                             @endforeach
@@ -54,55 +54,56 @@
                                         <div class="widget-content-wrapper text-white">
                                             <div class="widget-content-left">
                                                 <div class="widget-heading">Total Premium</div>
-                                                {{-- <div class="widget-subheading">Last year expenses</div> --}}
                                             </div>
                                             <div class="widget-content-right">
                                                 <div class="widget-numbers text-white">
-                                                
                                                     @php
-                                                    $totalagentpremium = $user->Policy->sum('premium');
-                                                @endphp
-                                                <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:24px"></i> {{ $premiums }}</span>
-                
+                                                        $totalagentpremium = $user->Policy->sum('premium');
+                                                    @endphp
+                                                    <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:24px"></i> 
+                                                        <span class="text-sm">{{ $data['premiums'] }}</span>
+                                                    </span>
                                                 </div>
-                                            </div>
-                                            
                                             </div>
                                         </div>
                                     </div>
-                              
+                                </div>
+                                
                                 <div class="col-md-6 col-xl-4">
                                     <div class="card mb-3 widget-content bg-arielle-smile">
                                         <div class="widget-content-wrapper text-white">
                                             <div class="widget-content-left">
                                                 <div class="widget-heading">Total Policy</div>
-                                                {{-- <div class="widget-subheading">Total Clients Profit</div> --}}
                                             </div>
                                             <div class="widget-content-right">
                                                 <div class="widget-numbers text-white"> 
-                                                    {{-- @php
-                                                    $policyCount = count($user->Policy);
-                                                @endphp --}}
-                                                <span class="mb-2 mr-2"><i class='fas fa-box' style='font-size:24px'></i> {{ $policyCount }}</span>
-
-                                            </div>
+                                                    <span class="mb-2 mr-2"><i class='fas fa-box' style='font-size:24px'></i> 
+                                                        <span class="text-lg">{{ $data['policyCount'] }}</span>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-6 col-xl-4">
                                     <div class="card mb-3 widget-content bg-grow-early">
                                         <div class="widget-content-wrapper text-white">
                                             <div class="widget-content-left">
                                                 <div class="widget-heading">Pending Premium</div>
-                                                {{-- <div class="widget-subheading">People Interested</div> --}}
                                             </div>
                                             <div class="widget-content-right">
-                                                <div class="widget-numbers text-white">  <a href="{{ route('agentpandding.blance') }}" class="mb-2 mr-2" style="color: white"><i class="fa fa-rupee" style="font-size:24px"></i> {{ $paymentby }}</a></div>
+                                                <div class="widget-numbers text-white">  
+                                                    <a href="{{ route('agentpandding.blance') }}" class="mb-2 mr-2" style="color: white">
+                                                        <i class="fa fa-rupee" style="font-size:24px"></i> 
+                                                        <span class="text-lg">{{ $data['paymentby'] }}</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
                                 {{-- <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
                                     <div class="card mb-3 widget-content bg-premium-dark">
                                         <div class="widget-content-wrapper text-white">
@@ -138,7 +139,7 @@
                                                     </div>
                                                     <div class="widget-content-right">
                                                         <div class="widget-numbers text-black">
-                                                            {{ $royalCount }}
+                                                            {{ $data['royalCount'] }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -155,7 +156,7 @@
                                                     </div>
                                                     <div class="widget-content-right">
                                                         <div class="widget-numbers text-black"> 
-                                                            {{ $futureCount }}
+                                                            {{ $data['futureCount'] }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -172,7 +173,7 @@
                                                     </div>
                                                     <div class="widget-content-right">
                                                         <div class="widget-numbers text-black"> 
-                                                            {{ $tataCount }}
+                                                            {{ $data['tataCount'] }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -201,7 +202,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($datausers as $key => $user)
+                        @foreach ($data['datausers'] as $key => $user)
                             <tr 
                                 @if (count($user->Policy) == 0)  @endif>
                                 <td>{{ $key + 1 }}</td>
