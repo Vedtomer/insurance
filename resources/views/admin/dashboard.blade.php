@@ -18,8 +18,8 @@
                         <div class="main-card mb-3 card">
                             <div class="card-body">
                     
-                               <div class="mb-5 d-lg-flex" >
-                                <div class="col-lg-4 mb-5">
+                               <div class="d-lg-flex" >
+                                <div class="col-lg-4">
                                 <div id="report" class="mb-5"
                                 style="background: #fff; padding: 5px 10px; border: 1px solid #ccc; width: 280px; display: grid; grid-template-columns: 10px 10px 216px;
                                 align-items: start; justify-content: space-between;">
@@ -31,7 +31,7 @@
                     </div>
                           
                            
-                    <div class="col-lg-4 mb-5">
+                    <div class="col-lg-4">
                                 <div class="btns" style="margin-left: auto;">
                                     <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
                     
