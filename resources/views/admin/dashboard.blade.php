@@ -2,7 +2,13 @@
 @section('title', 'Admin Dashboard')
 @section('section')
 
-
+<style>
+    @media only screen and (max-width: 768px) {
+        .widget-numbers {
+            font-size: 16px !important;
+        }
+    }
+</style>
 
                     <div class="errors">
                         @if ($errors->any())
@@ -58,9 +64,9 @@
                                             <div class="widget-content-right">
                                                 <div class="widget-numbers text-white">
                                                     @php
-                                                        $totalagentpremium = $user->Policy->sum('premium');
+                                                    $totalagentpremium = $user->Policy->sum('premium');
                                                     @endphp
-                                                    <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:24px"></i> 
+                                                    <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:24px"></i>
                                                         <span class="text-sm">{{ $data['premiums'] }}</span>
                                                     </span>
                                                 </div>
@@ -76,8 +82,8 @@
                                                 <div class="widget-heading">Total Policy</div>
                                             </div>
                                             <div class="widget-content-right">
-                                                <div class="widget-numbers text-white"> 
-                                                    <span class="mb-2 mr-2"><i class='fas fa-box' style='font-size:24px'></i> 
+                                                <div class="widget-numbers text-white">
+                                                    <span class="mb-2 mr-2"><i class='fas fa-box' style='font-size:24px'></i>
                                                         <span class="text-lg">{{ $data['policyCount'] }}</span>
                                                     </span>
                                                 </div>
@@ -93,9 +99,9 @@
                                                 <div class="widget-heading">Pending Premium</div>
                                             </div>
                                             <div class="widget-content-right">
-                                                <div class="widget-numbers text-white">  
+                                                <div class="widget-numbers text-white">
                                                     <a href="{{ route('agentpandding.blance') }}" class="mb-2 mr-2" style="color: white">
-                                                        <i class="fa fa-rupee" style="font-size:24px"></i> 
+                                                        <i class="fa fa-rupee" style="font-size:24px"></i>
                                                         <span class="text-lg">{{ $data['paymentby'] }}</span>
                                                     </a>
                                                 </div>
