@@ -18,9 +18,9 @@
                         <div class="main-card mb-3 card">
                             <div class="card-body">
                     
-                               <div class="d-lg-flex" >
+                               <div class="d-lg-flex mb-2" >
                                 <div class="col-lg-4">
-                                <div id="report" class="mb-5"
+                                <div id="report" class="mb-4"
                                 style="background: #fff; padding: 5px 10px; border: 1px solid #ccc; width: 280px; display: grid; grid-template-columns: 10px 10px 216px;
                                 align-items: start; justify-content: space-between;">
                                 <i class="fa fa-calendar"></i>&nbsp;
