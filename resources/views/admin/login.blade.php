@@ -83,26 +83,35 @@
 </head>
 
 <body>
-    <div class="login-container">
-        <h2 class="text-center">Login</h2>
-        <form action="" method="POST">
-            @csrf
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Login</h2>
+                        <form action="" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3 position-relative">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <span class="password-toggle" id="password-toggle" onclick="togglePassword()">
+                                    <i class="fas fa-eye"></i> <!-- Font Awesome icon for showing the password -->
+                                </span>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3 position-relative">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-                <span class="password-toggle" id="password-toggle" onclick="togglePassword()">
-                    <i class="fas fa-eye"></i> <!-- Font Awesome icon for showing the password -->
-                </span>
-            </div>
-            <div class="center-btn">
-                <button type="submit" class=" btn btn-primary">Login</button>
-            </div>
-        </form>
+        </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
