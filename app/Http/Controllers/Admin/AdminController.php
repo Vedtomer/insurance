@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
-
+use Illuminate\Database\Eloquent\Builder;
 
 class AdminController extends Controller
 {
@@ -120,12 +120,17 @@ class AdminController extends Controller
     if (!empty($agent_id)) {
         $transactions->where('agent_id', $agent_id);
     }
-    $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
+    // $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
+    //     $query->whereBetween('policy_start_date', [$start_date, $end_date]);
+    // }])
+   
+    // ->orderBy('created_at', 'DESC');
+    $query = Agent::withCount(['Policy as policy_count' => function (Builder $query) use ($start_date, $end_date) {
         $query->whereBetween('policy_start_date', [$start_date, $end_date]);
     }])
-   
-    ->orderBy('created_at', 'asc');
-    
+    ->having('policy_count', '<', 10)
+    ->orderBy('policy_count', 'asc')
+    ;
     if (!empty($agent_id)) {
         $query->where('id', $agent_id);
     }

@@ -15,6 +15,21 @@
             
         }
     }
+
+    @media only screen and (max-width: 768px) {
+        .Insurance {
+            font-size: 22px !important;
+            
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        .faicon {
+            font-size: 16px !important;
+            
+        }
+    }
+    
 </style>
 
                     <div class="errors">
@@ -46,7 +61,7 @@
                            
                     <div class="col-lg-4">
                                 <div class="datefil" style="margin-left: auto;">
-                                    <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
+                                    <select class=" datefil form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
                     
                                         <optgroup>
                                             <option selected disabled>Select Agent</option>
@@ -73,7 +88,7 @@
                                                     @php
                                                     $totalagentpremium = $user->Policy->sum('premium');
                                                     @endphp
-                                                    <span class="mb-2 mr-2 "><i class="fa fa-rupee" style="font-size:22px"></i>
+                                                    <span class="mb-2 mr-2 "><i class="faicon fa fa-rupee" style="font-size:22px"></i>
                                                         <span class="text-sm">{{ $data['premiums'] }}</span>
                                                     </span>
                                                 </div>
@@ -90,7 +105,7 @@
                                             </div>
                                             <div class="widget-content-right">
                                                 <div class="widget-numbers text-white">
-                                                    <span class="mb-2 mr-2"><i class='fas fa-box' style='font-size:22px'></i>
+                                                    <span class="mb-2 mr-2"><i class='faicon fas fa-box' style='font-size:22px'></i>
                                                         <span class="text-lg">{{ $data['policyCount'] }}</span>
                                                     </span>
                                                 </div>
@@ -108,7 +123,7 @@
                                             <div class="widget-content-right">
                                                 <div class="widget-numbers text-white">
                                                     <a href="{{ route('agentpandding.blance') }}" class="mb-2 mr-2" style="color: white">
-                                                        <i class="fa fa-rupee" style="font-size:22px"></i>
+                                                        <i class="faicon fa fa-rupee" style="font-size:22px"></i>
                                                         <span class="text-lg">{{ $data['paymentby'] }}</span>
                                                     </a>
                                                 </div>
@@ -139,7 +154,7 @@
                         <div class="row ml-1 mr-1">
                             <div class="col-lg-12">
                                 <div class="main-card mb-3 card">
-                                    <h2 style="text-align: center">Insurance Company</h2>
+                                    <h2 style="text-align: center" class="Insurance">Insurance Company</h2>
                                     <div class="card-body d-flex flex-wrap">
                                         
                                         <div class="col-md-6 col-xl-4 mb-3">
@@ -222,10 +237,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>
-                                    @php
-                                        $policyCount = count($user->Policy);
-                                    @endphp
-                                    <span >{{ $policyCount }}</span>
+                                    <span >{{ $user->policy_count }}</span>
                                 </td>
                                 
                             </tr>
