@@ -132,7 +132,7 @@ class AdminController extends Controller
 
     $datausers = $query->get();
 
-    $counts = Policy::where(function($query) {
+    $counts = Policy::whereBetween('policy_start_date', [$start_date, $end_date])->where(function($query) {
         $query->where('insurance_company', 'LIKE', '%ROYAL%')
               ->orWhere('insurance_company', 'LIKE', '%FUTURE%')
               ->orWhere('insurance_company', 'LIKE', '%TATA%')
@@ -147,7 +147,7 @@ class AdminController extends Controller
     $futureCount = $counts->get('FUTURE', 0); 
     
 
-    if (!empty($agent_id)) {
+    if (isset($agent_id)) {
         $counts->where('id', $agent_id);
     } 
     $transaction = $transactions->get();
