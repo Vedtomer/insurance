@@ -123,7 +123,7 @@ class AdminController extends Controller
     $query = Agent::with(['Policy' => function ($query) use ($start_date, $end_date) {
         $query->whereBetween('policy_start_date', [$start_date, $end_date]);
     }])
-    ->whereDoesntHave('Policy')
+   
     ->orderBy('created_at', 'asc');
     
     if (!empty($agent_id)) {
@@ -132,24 +132,25 @@ class AdminController extends Controller
 
     $datausers = $query->get();
 
-    $counts = Policy::whereBetween('policy_start_date', [$start_date, $end_date])->where(function($query) {
+    $counts = Policy::whereBetween('policy_start_date', [$start_date, $end_date])
+    ->where(function($query) {
         $query->where('insurance_company', 'LIKE', '%ROYAL%')
               ->orWhere('insurance_company', 'LIKE', '%FUTURE%')
               ->orWhere('insurance_company', 'LIKE', '%TATA%')
               ->orWhere('insurance_company', 'LIKE', '%tata%'); 
     })
+    ->when(!empty($agent_id), function ($query) use ($agent_id) {
+        return $query->where('agent_id', $agent_id);
+    })
     ->selectRaw('insurance_company, COUNT(*) as count')
     ->groupBy('insurance_company')
     ->pluck('count', 'insurance_company');
     
-    $royalCount = $counts->get('ROYAL', 0); 
-    $tataCount = $counts->get('TATA', 0) + $counts->get('tata', 0); 
-    $futureCount = $counts->get('FUTURE', 0); 
-    
+$royalCount = $counts->get('ROYAL', 0); 
+$tataCount = $counts->get('TATA', 0) + $counts->get('tata', 0); 
+$futureCount = $counts->get('FUTURE', 0); 
 
-    if (isset($agent_id)) {
-        $counts->where('id', $agent_id);
-    } 
+   
     $transaction = $transactions->get();
     
     $policy = $policy->get();
@@ -164,7 +165,7 @@ class AdminController extends Controller
 
         //  $data = $query->get();
         $agent = Agent::get();
-        $data = compact('admin'  , 'agent' ,'policyCount' ,'paymentby' ,'premiums' ,'royalCount' ,'futureCount','tataCount' ,'datausers');
+        $data = compact('admin'  , 'agent' ,'policyCount' ,'paymentby' ,'premiums' ,'royalCount' ,'futureCount','tataCount' ,'datausers' ,'policy');
 
         return view('admin.dashboard', ['data' => $data]);
     }

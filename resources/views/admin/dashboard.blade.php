@@ -200,12 +200,13 @@
                     {{-- </div> --}}
 
                     
-
+                    @if (isset($data['datausers']) && count($data['datausers']) > 0)
 <div class="col-lg-8">
     <div class="main-card mb-3 card">
         <div class="card-body">
             
             <div class="table-responsive">
+               
                 <table class="mb-0 table table-striped table-bordered table-responsive">
                     <thead>
                         <tr>
@@ -216,8 +217,8 @@
                     </thead>
                     <tbody>
                         @foreach ($data['datausers'] as $key => $user)
-                            <tr 
-                                @if (count($user->Policy) <= 10)  @endif>
+                        @if (count($user->Policy) <= 10)
+                            <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>
@@ -226,16 +227,21 @@
                                     @endphp
                                     <span >{{ $policyCount }}</span>
                                 </td>
-                              
+                                
                             </tr>
-                        @endforeach
+                        @endif
+                    @endforeach
+                    
                     </tbody>
                 </table>
+              
             </div>
         </div>
     </div>
 </div>
-                    
+@else
+{{-- <p>No Policy Data</p> --}}
+@endif             
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     
                     <script type="text/javascript">
