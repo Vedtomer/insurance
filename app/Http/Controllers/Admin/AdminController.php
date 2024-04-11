@@ -147,6 +147,9 @@ class AdminController extends Controller
     $futureCount = $counts->get('FUTURE', 0); 
     
 
+    if (!empty($agent_id)) {
+        $counts->where('id', $agent_id);
+    } 
     $transaction = $transactions->get();
     
     $policy = $policy->get();

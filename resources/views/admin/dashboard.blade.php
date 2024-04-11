@@ -8,6 +8,13 @@
             font-size: 16px !important;
         }
     }
+
+    @media only screen and (max-width: 768px) {
+        .datefil {
+            width: 220px !important;
+            
+        }
+    }
 </style>
 
                     <div class="errors">
@@ -26,7 +33,7 @@
                     
                                <div class="d-lg-flex mb-2" >
                                 <div class="col-lg-4">
-                                <div id="report" class="mb-4"
+                                <div id="report" class="datefil mb-4"
                                 style="background: #fff; padding: 5px 10px; border: 1px solid #ccc; width: 280px; display: grid; grid-template-columns: 10px 10px 216px;
                                 align-items: start; justify-content: space-between;">
                                 <i class="fa fa-calendar"></i>&nbsp;
@@ -38,7 +45,7 @@
                           
                            
                     <div class="col-lg-4">
-                                <div class="btns" style="margin-left: auto;">
+                                <div class="datefil" style="margin-left: auto;">
                                     <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
                     
                                         <optgroup>
@@ -210,7 +217,7 @@
                     <tbody>
                         @foreach ($data['datausers'] as $key => $user)
                             <tr 
-                                @if (count($user->Policy) == 0)  @endif>
+                                @if (count($user->Policy) <= 10)  @endif>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>
