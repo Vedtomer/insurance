@@ -45,35 +45,31 @@
                     <div class="col-lg-12">
                         <div class="main-card mb-3 card">
                             <div class="card-body">
-                    
-                               <div class="d-lg-flex mb-2" >
-                                <div class="col-lg-4">
-                                <div id="report" class="datefil mb-4"
-                                style="background: #fff; padding: 5px 10px; border: 1px solid #ccc; width: 280px; display: grid; grid-template-columns: 10px 10px 216px;
-                                align-items: start; justify-content: space-between;">
-                                <i class="fa fa-calendar"></i>&nbsp;
-                                <span>
-                                    {{-- Select date --}}
-                                </span> <i class="fa fa-caret-down"></i>
-                            </div>
-                    </div>
-                          
-                           
-                    <div class="col-lg-4">
-                                <div class="datefil" style="margin-left: auto;">
-                                    <select class=" datefil form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
-                    
-                                        <optgroup>
-                                            <option selected disabled>Select Agent</option>
-                                            @foreach ($data['agent'] as $user)
-                                            <option value="{{ $user->id }}" @if(isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif> {{ $user->name }}</option>
-                                            
-                                            @endforeach
-                                        </optgroup>
-                                    </select>
+                                <div class="container">
+                                    <div class="row justify-content-center mt-2">
+                                        <div class="col-lg-4 mb-2">
+                                            <div id="report" class="datefil mb-4" style="background: #fff; padding: 5px 10px; border: 1px solid #ccc;">
+                                                <i class="fa fa-calendar"></i>&nbsp;
+                                                <span>
+                                                    {{-- Select date --}}
+                                                </span> <i class="fa fa-caret-down"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 mb-2">
+                                            <div class="datefil">
+                                                <select class="form-select js-example-basic-single select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
+                                                    <optgroup>
+                                                        <option selected disabled>Select Agent</option>
+                                                        @foreach ($data['agent'] as $user)
+                                                        <option value="{{ $user->id }}" @if(isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif>{{ $user->name }}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                               </div>
+                                
                              
                                <div class="row">
 
