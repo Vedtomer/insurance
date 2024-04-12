@@ -19,7 +19,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("https://jmtvehicles.com/wp-content/uploads/2023/08/New-all-wallpaper-3-scaled.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/img/background_cleanup.jpg");
+
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
