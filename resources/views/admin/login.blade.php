@@ -123,18 +123,25 @@ a, a:visited {
 <body>
 
     <img class="logo" src="{{ asset('logos.png') }}" alt="Logo">
- <div class="cont mt-5">
-    <form action="" method="POST">
-        @csrf
-            <h4> Login Information </h4>
-            <input type="email" class="form-control" id="email" name="email" required>
-            <input type="password" class="form-control" id="password" name="password" required>
-               
-             
-            <li><a href="#">Forgot your password?</a></li>
-            <input class="button" type="submit" value="Log in"/>
-          </form>
- </div>
+
+ <div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <form action="" method="POST" class="form">
+                @csrf
+                <h4>Login Information</h4>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                <div class="text-end mb-3 mt-5">
+                    <a href="#" class="text-decoration-none">Forgot your password?</a>
+                    <input class="button" type="submit" value="Log in"/>
+                </div>
+              
+            </form>
+        </div>
+    </div>
+</div>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
