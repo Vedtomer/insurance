@@ -13,7 +13,7 @@
     <!-- Include Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
-    <title>Login Form</title>
+    <title>Social Engineer Insurance</title>
     <style>
 body {
     margin: 0;
