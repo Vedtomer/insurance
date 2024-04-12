@@ -1,7 +1,15 @@
 @extends('admin.layout.main')
 @section('title', 'Agent Listing')
 @section('section')
+<style>
+      @media only screen and (max-width: 768px) {
+        .datefil {
+            width: 250px !important;
+            
+        }
+    }
 
+</style>
 <div class="errors">
     @if ($errors->any())
         @foreach ($errors->all() as $error)
@@ -16,14 +24,17 @@
     <div class="main-card mb-3 card">
         <div class="card-body">
 
-           <div class="" style="display: flex; align-items: center;">
-            <div class="col-3 mr-5" id="reportrange"
-            style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+            <div class="row justify-content-left mt-2">
+                <div class="col-lg-4 mb-2">
+            <div class="datefil " id="reportrange"
+            style="background: #fff; padding: 5px 10px; border: 1px solid #ccc;">
             <i class="fa fa-calendar"></i>&nbsp;
             <span></span> <i class="fa fa-caret-down"></i>
         </div>
-        <div class="right ml-5" >
-            <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
+                </div>
+                <div class="col-lg-4 mb-2">
+        <div class="" >
+            <select class=" datefil form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
     
                 <optgroup>
                     <option selected disabled>Select Agent</option>
@@ -34,6 +45,7 @@
                 </optgroup>
             </select>
         </div>
+                </div>
         <div class="right ml-5" >
             <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
                 @csrf
