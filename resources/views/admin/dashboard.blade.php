@@ -11,7 +11,7 @@
 
     @media only screen and (max-width: 768px) {
         .datefil {
-            width: 220px !important;
+            width: 250px !important;
             
         }
     }
@@ -57,7 +57,7 @@
                                         </div>
                                         <div class="col-lg-4 mb-2">
                                             <div class="datefil">
-                                                <select class="form-select js-example-basic-single select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
+                                                <select class=" datefil form-select js-example-basic-single select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
                                                     <optgroup>
                                                         <option selected disabled>Select Agent</option>
                                                         @foreach ($data['agent'] as $user)
