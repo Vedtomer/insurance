@@ -40,7 +40,7 @@ body {
       box-shadow: -1px 92px 99px -62px rgba(3, 107, 255, 0.27), 0 1px 6px 0 rgba(10, 48, 255, 0.48);
     border-radius: 5px;
 }
-.box h1{
+.box h2{
   color: white;
   text-transform: uppercase;
   font-weight: 500;
@@ -121,7 +121,7 @@ body {
   background: #2ecc71;
 }
 
-h1 {
+h2 {
     display: block;
     font-size: 2em;
     margin-block-start: 0.67em;
@@ -195,7 +195,7 @@ h1 {
 
     <form class="box" action="" method="POST">
         @csrf
-        <h1>Social Engineer Insurance</h1> 
+        <h2>Social Engineer Insurance</h2> 
         <div class="logo">
             <img src="{{ asset('socialengineerinsurance-logo.png') }}" alt="Logo">
           </div>
