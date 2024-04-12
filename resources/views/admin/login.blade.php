@@ -24,11 +24,12 @@ body {
     background-repeat: no-repeat;
     background-position: top;
     background-attachment: fixed; /* Keep the background fixed */
+
 }
 
 .box{
-  width: 365px;
-  padding: 40px;
+  width: 300px;
+  padding: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
