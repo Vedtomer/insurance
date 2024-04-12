@@ -45,8 +45,8 @@
                     <div class="col-lg-12">
                         <div class="main-card mb-3 card">
                             <div class="card-body">
-                                <div class="container">
-                                    <div class="row justify-content-center mt-2">
+                                {{-- <div class="container"> --}}
+                                    <div class="row justify-content-left mt-2">
                                         <div class="col-lg-4 mb-2">
                                             <div id="report" class="datefil mb-4" style="background: #fff; padding: 5px 10px; border: 1px solid #ccc;">
                                                 <i class="fa fa-calendar"></i>&nbsp;
@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {{-- </div> --}}
                                 
                              
                                <div class="row">
