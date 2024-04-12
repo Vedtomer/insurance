@@ -15,15 +15,17 @@
 
     <title>Login Form</title>
     <style>
- body{
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-     background-image: url("https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80");
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-image: url("https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
+    background-attachment: fixed; /* Keep the background fixed */
 }
+
 .box{
   width: 365px;
   padding: 40px;
