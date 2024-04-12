@@ -15,102 +15,126 @@
 
     <title>Login Form</title>
     <style>
-        :root {
-            --primary-color: #387f97;
-        }
+      * {
+  margin:0;
+  padding:0;
+  font-family: 'Source Sans Pro', sans-serif;
+}
 
-        body {
-            background-color: #f4f4f4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
+body {
+  background:#2c3e50; /*From http://flatuicolors.com/ */
+}
 
-        .login-container {
-            min-width: 500px;
-            padding: 40px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
+form {
+    position: absolute;
+  width:556px;
+  height:350px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align:center;
+  background:#ecf0f1;
+  padding:40px;
+  -webkit-border-radius:20px 0 0 0;
+     -moz-border-radius:20px 0 0 0;
+          border-radius:20px 0 0 0;
+  -webkit-box-shadow: 0px 1px 0px #ad392d, inset 0px 1px 0px white;
+     -moz-box-shadow: 0px 1px 0px #ad392d, inset 0px 1px 0px white;
+          box-shadow: 0px 1px 0px #ad392d, inset 0px 1px 0px white;
+  box-shadow: 20px 20px 20px;
+}
 
-        .btn-primary {
-            border-radius: 0;
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            font-size: 20px !important;
-            /* Increase button font size */
-        }
 
-        .btn-primary:hover {
-            background-color: rgba(56, 127, 151, 0.9);
-            border-color: rgba(56, 127, 151, 0.9);
-        }
+h4 {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size:2em;
+  font-weight:300;
+  margin-bottom:25px;
+  color:#7f8c8d;
+  text-shadow:1px 1px 0px white;
+}
 
-        .center-btn {
-            text-align: center;
-        }
+input {
+  display:block;
+  width:415px;
+  padding:14px;
+  -webkit-border-radius:6px;
+     -moz-border-radius:6px;
+          border-radius:6px;
+  border:0;
+  margin-bottom:12px;
+  color:#7f8c8d;
+  font-weight:600;
+  font-size:19px;
+}
 
-        /* Increase font size for labels and form inputs */
-        .form-label {
-            font-size: 20px !important;
-        }
+input:focus {
+  background:#fafafa;
+}
 
-        .form-control {
-            font-size: 20px !important;
-        }
 
-        /* Increase font size for the Login heading */
-        h2 {
-            font-size: 24px;
-        }
+li {
+  position:absolute;
+  right:40px;
+  bottom:62px;
+  list-style:none;
+}
 
-        /* Increase font size for the password toggle button */
-        .password-toggle {
+a, a:visited {
+  text-decoration:none;
+  color:#7f8c8d;
+  font-weight:400;
+  text-shadow:1px 1px 0px white;
+  -webkit-transition: all .3s ease-in-out;
+     -moz-transition: all .3s ease-in-out;
+          transition: all .3s ease-in-out;
+}
+.cont{
+    margin-top: 50px;
+}
+
+.button {
+  position:relative;
+  float:left;
+  width:145px;
+  margin-top:10px;
+  background:#3498db;
+  color:#fff;
+  font-weight:400;
+  text-shadow:1px 1px 0px #2d7baf;
+  box-shadow:0px 3px 0px #2d7baf;
+  -webkit-transition: all .3s ease-in-out;
+     -moz-transition: all .3s ease-in-out;
+          transition: all .3s ease-in-out;
+}
+.logo {
             position: absolute;
-            top: 50%;
-            right: 4px;
-            transform: translateY(4%);
-            cursor: pointer;
-            font-size: 24px;
-            /* Increase font size */
+            top: 40px;
+            left: 40px;
+            width: 280px;
+            height:185px;
+            border-radius: 0px;
+            padding: 10px;
         }
 
-        /* Increase font size for the logo */
     </style>
 </head>
 
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-5">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="text-center mb-4">Login</h2>
-                        <form action="" method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <div class="mb-3 position-relative">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                                <span class="password-toggle" id="password-toggle" onclick="togglePassword()">
-                                    <i class="fas fa-eye"></i> <!-- Font Awesome icon for showing the password -->
-                                </span>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    <img class="logo" src="{{ asset('logos.png') }}" alt="Logo">
+ <div class="cont mt-5">
+    <form action="" method="POST">
+        @csrf
+            <h4> Login Information </h4>
+            <input type="email" class="form-control" id="email" name="email" required>
+            <input type="password" class="form-control" id="password" name="password" required>
+               
+             
+            <li><a href="#">Forgot your password?</a></li>
+            <input class="button" type="submit" value="Log in"/>
+          </form>
+ </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
