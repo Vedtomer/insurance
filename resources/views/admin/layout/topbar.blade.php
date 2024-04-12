@@ -33,7 +33,7 @@
         </div>
      
     </div>
-    <div class="dropdown m ml-5 ">
+    <div class="dropdown ml-5 ">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="simpleDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"
         class="btn-shadow mr-3 btn btn-dark">
         <i class="fa fa-star"></i>
@@ -47,10 +47,4 @@
             </a>
         </div>
     </div>
-   
-    
-   
-      
-        
-
 </div>
