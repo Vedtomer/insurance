@@ -36,15 +36,19 @@
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-body">
-       <div class="top" style="display: flex;">
-        <div  class="col-3 mb-4 mr-5" id="reportrange"
+                <div class="row justify-content-left mt-2">
+                    <div class="col-lg-4 mb-2">
+        <div  class="datefil" id="reportrange"
         style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; margin-right: 50rem !important;
     }">
         <i class="fa fa-calendar"></i>&nbsp;
         <span></span> <i class="fa fa-caret-down"></i>
     </div>
-    <div class="left ml-5">
-        <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
+    </div>
+
+    <div class="col-lg-4 mb-2">
+    <div class="left">
+        <select class="datefil form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
 
             <optgroup>
                 <option selected disabled>Select Agent</option>
@@ -55,6 +59,7 @@
             </optgroup>
         </select>
     </div>
+                </div>
        </div>
             
           

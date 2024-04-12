@@ -32,8 +32,9 @@
             <span></span> <i class="fa fa-caret-down"></i>
         </div>
                 </div>
+
                 <div class="col-lg-4 mb-2">
-        <div class="" >
+            <div class="" >
             <select class=" datefil form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
     
                 <optgroup>
@@ -46,7 +47,7 @@
             </select>
         </div>
                 </div>
-        <div class="right ml-5" >
+        <div class="right ml-3" >
             <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
                 @csrf
         <a href="{{ route('download.excel') }}" class="btn btn-primary">Download Excel</a>
