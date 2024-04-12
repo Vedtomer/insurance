@@ -7,19 +7,28 @@
         float:right;
         margin-bottom: 8px;
     }
- 
+    @media only screen and (max-width: 768px) {
+        .datefil {
+            width: 250px !important;
+            
+        }
+    }
+
 </style>
 <div class="col-lg-12">
     <div class="main-card mb-3 card">
     <div class="card-body">
-        <div class="top" style="display: flex;">
-        <div  class="col-3 mb-4 mr-5" id="reportrange"
+        <div class="row justify-content-left mt-2">
+            <div class="col-lg-4 mb-2">
+        <div  class="datefil" id="reportrange"
         style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; margin-right: 18rem !important;">
         <i class="fa fa-calendar"></i>&nbsp;
         <span></span> <i class="fa fa-caret-down"></i>
     </div>
-    <div class="left ml-5 mr-5">
-        <select class="form-select js-example-basic-single select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
+            </div>
+
+     <div class="col-lg-4 mb-2">
+        <select class="datefil form-select js-example-basic-single select2" data-control="select2" data-placeholder="Select an option" onchange="filterAgent(this.value)">
             <option disabled>Select Agent</option>
             @foreach ($agent as $user)
             <option value="{{ $user->id }}" @if(isset($_GET['agent_id']) && $user->id == $_GET['agent_id']) selected @endif>{{ $user->name }}</option>
@@ -29,7 +38,7 @@
         
     </div>
 
-    <div class="left ml-5 mr-5">
+    <div class="left ml-3 mb-2 mr-5">
 
         <select class="form-select js-example-basic-single  select2" data-control="select2" data-placeholder="Select an option" onchange="filterPayment(this.value)">
 
@@ -47,7 +56,7 @@
     </div>
     
 
-        <div class="add ml-5" style="display: flex; align-items: center;">
+        <div class="add ml-3" style="display: flex; align-items: center;">
            
             <div class="btns" style="margin-left: auto;">
                 <a id="openModalBtn" href="{{ route('add.transaction') }}" class="btn btn-secondary mb-2">Add Transaction</a>
