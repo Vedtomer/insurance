@@ -54,7 +54,7 @@
                            
                             <th scope="col">Agent Name</th>
                             <th scope="col">Total Pending Premium</th>
-                            <th scope="col">Total Amount Paid</th>
+                            <th scope="col">Total Received Amount</th>
                             <th scope="col">Balance</th>
                         </tr>
                     </thead>
