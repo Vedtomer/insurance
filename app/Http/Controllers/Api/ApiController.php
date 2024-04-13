@@ -138,7 +138,8 @@ class ApiController extends Controller
             return response()->json(['message' => "Points are requireds", 'status' => false, 'data' => null]);
         }
         $points = $request->input('points');
-        $agent_id =  auth()->guard('api')->user()->id;
+        $agent =  auth()->guard('api')->user();
+        $agent_id=$agent->id;
 
         $inProgressRedemption = PointRedemption::where('agent_id', $agent_id)
             ->where('status', 'in_progress')
@@ -147,6 +148,10 @@ class ApiController extends Controller
         if ($inProgressRedemption) {
             return response()->json(['message' => 'You already have a redemption in progress.', 'status' => false, 'data' => null]);
         }
+
+        if ($agent->cut_and_pay) {
+            return response()->json(['message' => 'You are not allowed to redeem points because "cut and pay" is enabled for your account.', 'status' => false, 'data' => null]);
+        }        
 
         $total = Policy::where('agent_id', $agent_id)
             ->sum('agent_commission');
