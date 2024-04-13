@@ -75,6 +75,7 @@
                             <th style="width: 20%" scope="col">Email</th>
                             <th style="width: 20%" scope="col">City</th>
                             <th style="width: 20%" scope="col">Mobile</th>
+                            <th style="width: 20%" scope="col">Cut And Pay</th>
                             <th style="width: 20%" scope="col">Commission</th>
                             <th style="width: 20%" scope="col">Transaction</th>
                             <th style="width: 15%" scope="col">Action</th>
@@ -118,6 +119,14 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->city }}</td>
                                 <td>{{ $user->mobile_number }}</td>
+                                <td>
+                                    @if ($user->cut_and_pay == 1)
+                                      <span class="text-success">Yes</span>
+                                    @else
+                                      <span class="text-danger">No</span>
+                                    @endif
+                                  </td>
+                                  
                                 <td>
                                     <a class="btn  mr-2" href="{{ route('agent.commission', $user->id) }}"><i
                                             class="fa fa-edit" style="font-size:24px"></i></a>

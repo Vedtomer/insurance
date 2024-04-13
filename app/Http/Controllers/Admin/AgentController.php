@@ -14,7 +14,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
-// use App\Exports\UsersImport;
 use App\Exports\AgentExport;
 
 class AgentController extends Controller
@@ -38,6 +37,7 @@ class AgentController extends Controller
             $agent->city = $request->city;
             $agent->address = $request->address;
             $agent->mobile_number = $request->mobile_number;
+            $agent->cut_and_pay = $request->cut_and_pay;
             $agent->save();
 
             return redirect()->route('agent.commission', ['id' => $agent->id])->with('success', 'Agent created successfully.');
@@ -226,6 +226,9 @@ public function importExcel(Request $request)
             $agent->state = $request->state;
             $agent->city = $request->city;
             $agent->address = $request->address;
+            $agent->cut_and_pay = $request->cut_and_pay;
+
+            
             $agent->mobile_number = $request->mobile_number;
             $agent->save();
             return redirect()->route('agent.list')->with('success', 'Update successfully.');

@@ -34,7 +34,7 @@ class Agent extends Authenticatable implements MustVerifyEmail
         'address',
         'mobile_number',
         'commission',
-        'status', 'agent_code'
+        'status', 'agent_code','cut_and_pay'
     ];
 
     /**

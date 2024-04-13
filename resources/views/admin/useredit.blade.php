@@ -50,6 +50,20 @@
               <label >Mobile - Number</label>
               <input type="text" class="form-control" name="mobile_number" value="{{$data->mobile_number}}" onkeypress="allowOnlyNumbers(event)" >
             </div>
+
+            <div class="mb-3">
+              <label class="d-block"> Cut and Pay</label>
+              <div class="form-check-inline">
+                <label class="form-check-label mr-3">
+                  <input type="radio" class="form-check-input" name="cut_and_pay" value="1" {{$data->cut_and_pay ? 'checked' : ''}}> Yes
+                </label>
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="cut_and_pay" value="0" {{$data->cut_and_pay ? '' : 'checked'}}> No
+                </label>
+              </div>
+            </div>
+            
+            
            
           
             
