@@ -108,24 +108,25 @@ class PolicyController extends Controller
     public function panddingblance(Request $request)
     {
         DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
-    
+
         // Check if start date and end date are provided, otherwise set them accordingly
         $start_date = $request->input('start_date') ?? Carbon::now()->startOfMonth();
         $end_date = $request->input('end_date') ?? Carbon::today();
         $agent_id = $request->input('agent_id') ?? "";
-    
+
         // Parse dates if they are not null
         if ($start_date !== null) {
             $start_date = Carbon::parse($start_date);
         }
-    
+
         if ($end_date !== null) {
             $end_date = Carbon::parse($end_date);
         }
-    
-        $policy = DB::table('policies')
+            $policy = DB::table('policies')
             ->whereBetween('policy_start_date', [$start_date, $end_date])
-            ->leftJoin('agents', 'policies.agent_id', '=', 'agents.id')
+            ->leftJoin('agents', function ($join) {
+                $join->on('policies.agent_id', '=', 'agents.id');
+            })
             ->leftJoin(DB::raw('(SELECT agent_id, SUM(amount) as total_amount FROM transactions GROUP BY agent_id) AS trans'), function ($join) {
                 $join->on('policies.agent_id', '=', 'trans.agent_id');
             })
@@ -134,15 +135,22 @@ class PolicyController extends Controller
                 'policies.agent_id',
                 'agents.name',
                 DB::raw('SUM(policies.premium) as total_premium'),
+                DB::raw('SUM(CASE WHEN agents.cut_and_pay = 1 THEN policies.agent_commission ELSE 0 END) as total_agent_commission'),
                 DB::raw('COALESCE(trans.total_amount, 0) as total_amount'),
-                DB::raw('ROUND(SUM(policies.premium) - COALESCE(trans.total_amount, 0)) as balance')
+                DB::raw('ROUND(SUM(policies.premium) - COALESCE(trans.total_amount, 0)) as balance'),
+                'agents.cut_and_pay' // Include cut_and_pay column
             )
-            ->groupBy('policies.agent_id', 'agents.name')
+            ->groupBy('policies.agent_id', 'agents.name', 'agents.cut_and_pay') // Group by cut_and_pay as well
             ->havingRaw('balance > 0')
             ->get();
-    
+
+
+        // Calculate sum for each column
+        $totalPremium = $policy->sum('total_premium');
+        $totalAmount = $policy->sum('total_amount');
+        $totalBalance = $policy->sum('balance')-$policy->sum('total_agent_commission');
+
         $agentData = Agent::get();
-        return view('admin.agent_pandding_blance', compact('policy', 'agentData'));
+        return view('admin.agent_pandding_blance', compact('policy', 'agentData', 'totalPremium', 'totalAmount', 'totalBalance'));
     }
-    
 }
