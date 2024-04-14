@@ -61,6 +61,7 @@
                         </thead>
                         <tbody>
                             @foreach ($policy as $user)
+                            @if(round($user->balance - $user->total_agent_commission)  > 0)
                                 <tr>
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $user->name }}</td>
@@ -72,8 +73,9 @@
                                     </td>
 
                                     <td>{{ $user->total_amount }}</td>
-                                    <td>{{ $user->balance - $user->total_agent_commission }}</td>
+                                    <td>{{ round($user->balance - $user->total_agent_commission) }}</td>
                                 </tr>
+                                @endif
                             @endforeach
                             <tr>
                                 <td></td>
