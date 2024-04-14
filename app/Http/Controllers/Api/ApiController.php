@@ -54,10 +54,10 @@ class ApiController extends Controller
 
 
         $dummyData = [
-            'total_commission' => $totalCommission,
+            'total_commission' => round($totalCommission),
             'total_policy' => $totalPolicy,
-            'total_premium_paid' => $totalPremiumPaid,
-            'pending_premium' => $pendingPremium,
+            'total_premium_paid' => round($totalPremiumPaid),
+            'pending_premium' => round($pendingPremium),
             'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
         ];
 
