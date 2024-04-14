@@ -120,10 +120,12 @@ class ApiController extends Controller
         try {
 
             $data = $this->points($request);
+            
 
             return response([
                 'status' => true,
                 'data' => $data,
+                'cut_and_pay'=> auth()->guard('api')->user()->cut_and_pay,
                 'message' => 'Points History'
             ]);
         } catch (\Exception $e) {
