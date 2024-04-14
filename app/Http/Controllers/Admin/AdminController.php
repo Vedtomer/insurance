@@ -498,7 +498,7 @@ class AdminController extends Controller
             $end_date = Carbon::parse($end_date)->endOfDay();
         }
 
-        $query = Transaction::whereBetween('created_at', [$start_date, $end_date])->orderBy('created_at', 'desc');
+        $query = Transaction::whereBetween('created_at', [$start_date, $end_date])->orderBy('payment_date', 'desc');
 
         if (!empty($payment_mode)) {
 
