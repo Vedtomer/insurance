@@ -47,7 +47,7 @@ class ApiController extends Controller
             ->sum('premium');
 
         if ($cutAndPayTrue) {
-            $pendingPremium =$pendingPremium - $transaction - $totalCommission;
+            $pendingPremium =$pendingPremium - ($transaction + $totalCommission);
         } else {
             $pendingPremium =$pendingPremium -$transaction;
         }
