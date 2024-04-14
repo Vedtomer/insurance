@@ -14,50 +14,59 @@ use App\Models\PointRedemption;
 class ApiController extends Controller
 {
     public function index(Request $request)
-{
-    $startDate = $request->start_date;
-    $endDate = $request->end_date;
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
 
-    $startDate = !empty($startDate) ? Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay() : Carbon::now()->firstOfMonth();
-    $endDate = !empty($endDate) ? Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay() : Carbon::now();
+        $startDate = !empty($startDate) ? Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay() : Carbon::now()->firstOfMonth();
+        $endDate = !empty($endDate) ? Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay() : Carbon::now();
 
-    $agent_id = auth()->guard('api')->user()->id;
+        $agent = auth()->guard('api')->user();
+        $agent_id = $agent->id;
+        $cutAndPayTrue = $agent->cut_and_pay;
 
-    $totalCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-        ->where('agent_id', $agent_id)
-        ->sum('agent_commission');
+        $totalCommission = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->sum('agent_commission');
 
-    $totalPolicy = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-        ->where('agent_id', $agent_id)
-        ->count();
+        $totalPolicy = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->count();
 
-    $totalPremiumPaid = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
-        ->where('agent_id', $agent_id)
-        ->sum('premium');
+        $totalPremiumPaid = Policy::whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agent_id)
+            ->sum('premium');
 
-    $transaction = Transaction::where('agent_id', $agent_id)
-        ->whereBetween('created_at', [$startDate, $endDate])
-        ->sum('amount');
+        $transaction = Transaction::where('agent_id', $agent_id)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->sum('amount');
 
-    $pendingPremium = Policy::where('payment_by', 'self')
-        ->where('agent_id', $agent_id)
-        ->whereBetween('policy_start_date', [$startDate, $endDate])
-        ->sum('premium');
+        $pendingPremium = Policy::where('payment_by', 'self')
+            ->where('agent_id', $agent_id)
+            ->whereBetween('policy_start_date', [$startDate, $endDate])
+            ->sum('premium');
 
-    $dummyData = [
-        'total_commission' => $totalCommission,
-        'total_policy' => $totalPolicy,
-        'total_premium_paid' => $totalPremiumPaid, // Include transaction amount
-        'pending_premium' => $pendingPremium - $transaction, // Subtract transaction amount
-        'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
-    ];
+        if ($cutAndPayTrue) {
+            $pendingPremium -= $transaction - $totalCommission;
+        } else {
+            $pendingPremium -= $transaction;
+        }
 
-    return response()->json([
-        'message' => 'Success',
-        'status' => true,
-        'data' => $dummyData
-    ]);
-}
+
+        $dummyData = [
+            'total_commission' => $totalCommission,
+            'total_policy' => $totalPolicy,
+            'total_premium_paid' => $totalPremiumPaid,
+            'pending_premium' => $pendingPremium,
+            'sliders' => Slider::where('status', 1)->pluck('image')->toArray(),
+        ];
+
+        return response()->json([
+            'message' => 'Success',
+            'status' => true,
+            'data' => $dummyData
+        ]);
+    }
 
 
 
@@ -139,7 +148,7 @@ class ApiController extends Controller
         }
         $points = $request->input('points');
         $agent =  auth()->guard('api')->user();
-        $agent_id=$agent->id;
+        $agent_id = $agent->id;
 
         $inProgressRedemption = PointRedemption::where('agent_id', $agent_id)
             ->where('status', 'in_progress')
@@ -151,7 +160,7 @@ class ApiController extends Controller
 
         if ($agent->cut_and_pay) {
             return response()->json(['message' => 'You are not allowed to redeem points because "cut and pay" is enabled for your account.', 'status' => false, 'data' => null]);
-        }        
+        }
 
         $total = Policy::where('agent_id', $agent_id)
             ->sum('agent_commission');
