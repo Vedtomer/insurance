@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Twilio\Rest\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
@@ -191,14 +191,42 @@ class ApiController extends Controller
         $pointRedemption->save();
 
         $data = $this->points($request);
+      
+        
+        $whatsapp = $this->sendWhatsAppMessage($points , $agent->name);
 
         return response([
             'status' => true,
             'data' => $data,
+            
+            'whatsapp' => $whatsapp,
             'message' => 'Points redeemed successfully'
         ]);
     }
 
+    public function sendWhatsAppMessage($points , $agent)
+    {
+        try{
+            $sid    = env('TWILIO_SID');
+            $token  = env('TWILIO_AUTH_TOKEN');
+            $twilio = new Client($sid, $token);
+        
+            $messageBody = "$agent requested redeem of $points points.";
+        
+            $message = $twilio->messages
+                ->create("whatsapp:+919802244899", 
+                    array(
+                        "from" => "whatsapp:+14155238886",
+                        "body" => $messageBody
+                    )
+                );
+        
+            print($message->sid);
+            return response()->json(['message' => 'WhatsApp message sent successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
     public function points($request)
     {
         $startDate = $request->start_date;
