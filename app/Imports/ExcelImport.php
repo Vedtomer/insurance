@@ -21,7 +21,6 @@ class ExcelImport implements ToModel, WithHeadingRow
     {
         $existingRecord = Policy::firstOrNew([
             'policy_no' => $row['policy_no'],
-            'insurance_company' => $row['insurance_company'],
         ]);
 
         Log::info($row);
