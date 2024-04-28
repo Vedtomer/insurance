@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use Twilio\Rest\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use App\Models\Agent;
 use App\Models\Policy;
 use Carbon\Carbon;
 use App\Models\PointRedemption;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -47,9 +49,9 @@ class ApiController extends Controller
             ->sum('premium');
 
         if ($cutAndPayTrue) {
-            $pendingPremium =$pendingPremium - ($transaction + $totalCommission);
+            $pendingPremium = $pendingPremium - ($transaction + $totalCommission);
         } else {
-            $pendingPremium =$pendingPremium -$transaction;
+            $pendingPremium = $pendingPremium - $transaction;
         }
 
 
@@ -120,12 +122,12 @@ class ApiController extends Controller
         try {
 
             $data = $this->points($request);
-            
+
 
             return response([
                 'status' => true,
                 'data' => $data,
-                'cut_and_pay'=> auth()->guard('api')->user()->cut_and_pay,
+                'cut_and_pay' => auth()->guard('api')->user()->cut_and_pay,
                 'message' => 'Points History'
             ]);
         } catch (\Exception $e) {
@@ -191,37 +193,38 @@ class ApiController extends Controller
         $pointRedemption->save();
 
         $data = $this->points($request);
-      
-        
-        $whatsapp = $this->sendWhatsAppMessage($points , $agent->name);
+
+
+        $whatsapp = $this->sendWhatsAppMessage($points, $agent->name);
 
         return response([
             'status' => true,
             'data' => $data,
-            
+
             'whatsapp' => $whatsapp,
             'message' => 'Points redeemed successfully'
         ]);
     }
 
-    public function sendWhatsAppMessage($points , $agent)
+    public function sendWhatsAppMessage($points, $agent)
     {
-        try{
+        try {
             $sid    = env('TWILIO_SID');
             $token  = env('TWILIO_AUTH_TOKEN');
             $twilio = new Client($sid, $token);
-        
+
             $messageBody = "$agent requested redeem of $points points.";
-        
+
             $message = $twilio->messages
-                ->create("whatsapp:+919802244899", 
+                ->create(
+                    "whatsapp:+919802244899",
                     array(
                         "from" => "whatsapp:+14155238886",
                         "body" => $messageBody
                     )
                 );
-        
-            print($message->sid);
+
+            // print($message->sid);
             return response()->json(['message' => 'WhatsApp message sent successfully']);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -284,5 +287,110 @@ class ApiController extends Controller
             'total_in_progress_reedeem' => $totalInProgressCommission,
             'policy' => $royalData,
         ];
+    }
+
+    public function PointsLedger(Request $request)
+    {
+        try {
+            $startDate = $request->start_date ? Carbon::createFromFormat('d-m-Y', $request->start_date)->startOfDay() : Carbon::now()->firstOfMonth();
+            $endDate = $request->end_date ? Carbon::createFromFormat('d-m-Y', $request->end_date)->endOfDay() : Carbon::now();
+            $agentId = auth()->guard('api')->user()->id;
+
+            $currentMonthStart = $startDate->copy()->startOfMonth();
+
+            // Calculate the opening balance for the previous month
+            $openingBalance = Policy::where('agent_id', $agentId)
+                ->where('policy_start_date', '<', $currentMonthStart)
+                ->sum('agent_commission');
+
+            // Calculate the sum of redeemed points for the previous month
+            $reedeemPoints = PointRedemption::where('agent_id', $agentId)
+                ->whereIn('status', ['in_progress', 'completed'])
+                ->where('created_at', '<', $currentMonthStart)
+                ->sum('points');
+
+            $openingBalance -= $reedeemPoints;
+
+            // Create an array for the opening balance
+            $openingBalanceRecord = (object) [
+                'date' => $currentMonthStart->copy()->startOfMonth()->toDateString(),
+                'opening_balance' => $openingBalance,
+            ];
+
+            $policies = DB::table('policies')
+                ->whereBetween('policy_start_date', [$startDate, $endDate])
+                ->where('agent_id', $agentId)
+                ->select(
+                    'policy_no',
+                    DB::raw('DATE(policy_start_date) as date'), // Change the date format
+                    'customername',
+                    'agent_commission as credit',
+                    DB::raw('NULL as debit'),
+                    DB::raw('NULL as tds')
+                )
+                ->get();
+
+            // Retrieve point_redemptions for debit
+            $debitRedemptions = DB::table('point_redemptions')
+                ->where('agent_id', $agentId)
+                ->where('status', 'completed')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->select(
+                    DB::raw('NULL as policy_no'),
+                    DB::raw('DATE(created_at) as date'), // Change the date format
+                    DB::raw('NULL as customername'),
+                    DB::raw('NULL as credit'),
+                    'amount_to_be_paid as debit',
+                    DB::raw('NULL as tds')
+                )
+                ->get();
+
+            // Retrieve point_redemptions for tds
+            $tdsRedemptions = DB::table('point_redemptions')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->where('agent_id', $agentId)
+                ->select(
+                    DB::raw('NULL as policy_no'),
+                    DB::raw('DATE(created_at) as date'), // Change the date format
+                    DB::raw('NULL as customername'),
+                    DB::raw('NULL as credit'),
+                    DB::raw('NULL as debit'),
+                    'tds'
+                )
+                ->get();
+
+            // Merge records and prepend the opening balance record
+            $combinedRecords = collect([$openingBalanceRecord])->concat($policies)->concat($debitRedemptions)->concat($tdsRedemptions);
+
+            // Sort the merged collection by ascending date
+            $sortedRecords = $combinedRecords->sortBy('date');
+
+            // Calculate balance for each record and round off
+            $balance = $openingBalance;
+            $sortedRecords = $sortedRecords->map(function ($record) use (&$balance) {
+                if (isset($record->opening_balance)) {
+                    $record->balance = round($record->opening_balance, 2);
+                } else {
+                    $balance += isset($record->credit) ? $record->credit : 0;
+                    $balance -= isset($record->debit) ? $record->debit : 0;
+                    $balance -= isset($record->tds) ? $record->tds : 0;
+                    $record->balance = round($balance, 2);
+                }
+                return $record;
+            });
+
+            $sortedRecords = $sortedRecords->values();
+
+            return response()->json([
+                'status' => true,
+                'data' => $sortedRecords,
+                'message' => 'Ledger retrieved successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while fetching the ledger data.'
+            ], 500);
+        }
     }
 }
