@@ -457,10 +457,15 @@ class ApiController extends Controller
 
             $sortedRecords = $combinedRecords->sortBy('date');
 
-            $recordsWithPendingBal = $sortedRecords->map(function ($record) use ($openingBalance) {
-                if (!isset($record->opening_balance)) {
-                    $pendingBal = $openingBalance + ($record->premium ?? 0) - ($record->credit ?? 0);
-                    $record->pending_balance = $pendingBal > 0 ? $pendingBal : 0;
+            $balance = $openingBalance;
+
+            $sortedRecords = $sortedRecords->map(function ($record) use (&$balance) {
+                if (isset($record->opening_balance)) {
+                    $record->balance = round($record->opening_balance, 2);
+                } else {
+                    $balance += isset($record->premium) ? $record->premium : 0;
+                    $balance -= isset($record->credit) ? $record->credit : 0;
+                    $record->balance = round($balance, 2);
                 }
                 return $record;
             });
@@ -468,15 +473,14 @@ class ApiController extends Controller
             $openingBalanceRecord = (object) [
                 'date' => $currentMonthStart->copy()->startOfMonth()->toDateString(),
                 'opening_balance' => $openingBalance,
-                'pending_balance' => $openingBalance // Initial pending balance same as opening balance
             ];
 
             // Add the opening balance record to the beginning of the sorted records
-            $recordsWithPendingBal->prepend($openingBalanceRecord);
+            $sortedRecords->prepend($openingBalanceRecord);
 
             return response()->json([
                 'status' => true,
-                'data' => $recordsWithPendingBal,
+                'data' => $sortedRecords->values()->all(),
                 'message' => 'Pending premium ledger retrieved successfully'
             ]);
         } catch (\Exception $e) {
@@ -486,4 +490,5 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
 }
