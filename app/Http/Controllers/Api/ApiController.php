@@ -414,7 +414,9 @@ class ApiController extends Controller
         try {
             $startDate = $request->start_date ? Carbon::createFromFormat('d-m-Y', $request->start_date)->startOfDay() : Carbon::now()->firstOfMonth();
             $endDate = $request->end_date ? Carbon::createFromFormat('d-m-Y', $request->end_date)->endOfDay() : Carbon::now();
-            $agentId = auth()->guard('api')->user()->id;
+            $agent = auth()->guard('api')->user();
+            $agentId = $agent->id;
+            $cutAndPay = $agent->cut_and_pay ?? 0;
 
             $currentMonthStart = $startDate->copy()->startOfMonth();
 
@@ -440,7 +442,8 @@ class ApiController extends Controller
                     'policy_no',
                     DB::raw('DATE(policy_start_date) as date'),
                     'customername',
-                    'premium'
+                    'premium',
+                    'agent_commission'
                 )
                 ->get();
 
@@ -459,12 +462,18 @@ class ApiController extends Controller
 
             $balance = $openingBalance;
 
-            $sortedRecords = $sortedRecords->map(function ($record) use (&$balance) {
+            $sortedRecords = $sortedRecords->map(function ($record) use (&$balance, $cutAndPay) {
                 if (isset($record->opening_balance)) {
                     $record->balance = round($record->opening_balance, 2);
                 } else {
-                    $balance += isset($record->premium) ? $record->premium : 0;
-                    $balance -= isset($record->credit) ? $record->credit : 0;
+                    if ($cutAndPay == 1) {
+                        $balance += isset($record->premium) ? $record->premium : 0;
+                        $balance -= isset($record->credit) ? $record->credit : 0;
+                        $balance -= isset($record->agent_commission) ? $record->agent_commission : 0;
+                    } else {
+                        $balance += isset($record->premium) ? $record->premium : 0;
+                        $balance -= isset($record->credit) ? $record->credit : 0;
+                    }
                     $record->balance = round($balance, 2);
                 }
                 return $record;
@@ -490,5 +499,4 @@ class ApiController extends Controller
             ], 500);
         }
     }
-
 }
