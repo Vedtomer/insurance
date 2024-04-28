@@ -19,7 +19,7 @@ class LoginController extends Controller
 
     public function agentlogin(Request $request)
     {
-        // try {
+        try {
             $email = $request->input('email');
             $password = $request->input('password');
 
@@ -74,9 +74,9 @@ class LoginController extends Controller
             }
 
             return response()->json(['message' => 'User not found', 'status' => false, 'data' => []], 404);
-        // } catch (\Exception $e) {
-        //     return response()->json(['message' => $e->getMessage(), 'status' => false, 'data' => []], 500);
-        // }
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'status' => false, 'data' => []], 500);
+        }
     }
 
 
