@@ -410,94 +410,95 @@ class ApiController extends Controller
 
 
     public function PendingPremiumLedger(Request $request)
-    {
-        try {
-            $startDate = $request->start_date ? Carbon::createFromFormat('d-m-Y', $request->start_date)->startOfDay() : Carbon::now()->firstOfMonth();
-            $endDate = $request->end_date ? Carbon::createFromFormat('d-m-Y', $request->end_date)->endOfDay() : Carbon::now();
-            $agent = auth()->guard('api')->user();
-            $agentId = $agent->id;
-            $cutAndPay = $agent->cut_and_pay ?? 0;
+{
+    try {
+        $startDate = $request->start_date ? Carbon::createFromFormat('d-m-Y', $request->start_date)->startOfDay() : Carbon::now()->firstOfMonth();
+        $endDate = $request->end_date ? Carbon::createFromFormat('d-m-Y', $request->end_date)->endOfDay() : Carbon::now();
+        $agent = auth()->guard('api')->user();
+        $agentId = $agent->id;
+        $cutAndPay = $agent->cut_and_pay ?? 0;
 
-            $currentMonthStart = $startDate->copy()->startOfMonth();
+        $currentMonthStart = $startDate->copy()->startOfMonth();
 
-            // Calculate the opening balance for the previous month
-            $submitBalance = Transaction::where('agent_id', $agentId)
-                ->where('created_at', '<', $currentMonthStart)
-                ->sum('amount');
+        // Calculate the opening balance for the previous month
+        $submitBalance = Transaction::where('agent_id', $agentId)
+            ->where('created_at', '<', $currentMonthStart)
+            ->sum('amount');
 
-            // Calculate the sum of pending premium for the previous month
-            $pendingAmount = Policy::where('agent_id', $agentId)
-                ->where('payment_by', "SELF")
-                ->where('policy_start_date', '<', $currentMonthStart)
-                ->sum('agent_commission');
+        // Calculate the sum of pending premium for the previous month
+        $pendingAmount = Policy::where('agent_id', $agentId)
+            ->where('payment_by', "SELF")
+            ->where('policy_start_date', '<', $currentMonthStart)
+            ->sum('agent_commission');
 
-            $openingBalance = $pendingAmount - $submitBalance;
+        $openingBalance = $pendingAmount - $submitBalance;
 
-            // Retrieve policies
-            $policies = DB::table('policies')
-                ->whereBetween('policy_start_date', [$startDate, $endDate])
-                ->where('agent_id', $agentId)
-                ->where('payment_by', "SELF")
-                ->select(
-                    'policy_no',
-                    DB::raw('DATE(policy_start_date) as date'),
-                    'customername',
-                    DB::raw('ROUND(premium, 2) as premium'),
-                    DB::raw('ROUND(agent_commission, 2) as agent_commission')
-                )
-                ->get();
+        // Retrieve policies
+        $policies = DB::table('policies')
+            ->whereBetween('policy_start_date', [$startDate, $endDate])
+            ->where('agent_id', $agentId)
+            ->where('payment_by', "SELF")
+            ->select(
+                'policy_no',
+                DB::raw('DATE(policy_start_date) as date'),
+                'customername',
+                'premium',
+                'agent_commission'
+            )
+            ->get();
 
-            // Retrieve transactions
-            $transactions = Transaction::where('agent_id', $agentId)
-                ->whereBetween('payment_date', [$startDate, $endDate])
-                ->select(
-                    DB::raw('payment_date as date'),
-                    DB::raw('ROUND(amount, 2) as credit')
-                )
-                ->get();
+        // Retrieve transactions
+        $transactions = Transaction::where('agent_id', $agentId)
+            ->whereBetween('payment_date', [$startDate, $endDate])
+            ->select(
+                DB::raw('payment_date as date'),
+                'amount as credit'
+            )
+            ->get();
 
-            $combinedRecords = $policies->merge($transactions);
+        $combinedRecords = $policies->merge($transactions);
 
-            $sortedRecords = $combinedRecords->sortBy('date');
+        $sortedRecords = $combinedRecords->sortBy('date');
 
-            $balance = $openingBalance;
+        $balance = $openingBalance;
 
-            $sortedRecords = $sortedRecords->map(function ($record) use (&$balance, $cutAndPay) {
-                if (isset($record->opening_balance)) {
-                    $record->balance = round($record->opening_balance, 2);
+        $sortedRecords = $sortedRecords->map(function ($record) use (&$balance, $cutAndPay) {
+            if (isset($record->opening_balance)) {
+                $record->balance = round($record->opening_balance, 2);
+            } else {
+                if ($cutAndPay == 1) {
+                    $balance += isset($record->premium) ? $record->premium : 0;
+                    $balance -= isset($record->credit) ? $record->credit : 0;
+                    $balance -= isset($record->agent_commission) ? $record->agent_commission : 0;
                 } else {
-                    if ($cutAndPay == 1) {
-                        $balance += isset($record->premium) ? $record->premium : 0;
-                        $balance -= isset($record->credit) ? $record->credit : 0;
-                        $balance -= isset($record->agent_commission) ? $record->agent_commission : 0;
-                    } else {
-                        $balance += isset($record->premium) ? $record->premium : 0;
-                        $balance -= isset($record->credit) ? $record->credit : 0;
-                    }
-                    $record->balance = round($balance, 2);
+                    $balance += isset($record->premium) ? $record->premium : 0;
+                    $balance -= isset($record->credit) ? $record->credit : 0;
                 }
-                return $record;
-            });
+                $record->balance = round($balance, 2);
+            }
+            return $record;
+        });
 
-            $openingBalanceRecord = (object) [
-                'date' => $currentMonthStart->copy()->startOfMonth()->toDateString(),
-                'opening_balance' => round($openingBalance, 2),
-            ];
+        $openingBalanceRecord = (object) [
+            'date' => $currentMonthStart->copy()->startOfMonth()->toDateString(),
+            'opening_balance' => round($openingBalance, 2),
+        ];
 
-            // Add the opening balance record to the beginning of the sorted records
-            $sortedRecords->prepend($openingBalanceRecord);
+        // Add the opening balance record to the beginning of the sorted records
+        $sortedRecords->prepend($openingBalanceRecord);
 
-            return response()->json([
-                'status' => true,
-                'data' => $sortedRecords->values()->all(),
-                'message' => 'Pending premium ledger retrieved successfully'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'An error occurred while fetching the pending premium ledger data.'
-            ], 500);
-        }
+        return response()->json([
+            'status' => true,
+            'data' => $sortedRecords->values()->all(),
+            'message' => 'Pending premium ledger retrieved successfully'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => false,
+            'message' => 'An error occurred while fetching the pending premium ledger data.'
+        ], 500);
     }
+}
+
 
 }
