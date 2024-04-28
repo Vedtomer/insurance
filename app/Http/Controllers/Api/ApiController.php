@@ -442,8 +442,8 @@ class ApiController extends Controller
                     'policy_no',
                     DB::raw('DATE(policy_start_date) as date'),
                     'customername',
-                    'premium',
-                    'agent_commission'
+                    DB::raw('ROUND(premium, 2) as premium'),
+                    DB::raw('ROUND(agent_commission, 2) as agent_commission')
                 )
                 ->get();
 
@@ -452,7 +452,7 @@ class ApiController extends Controller
                 ->whereBetween('payment_date', [$startDate, $endDate])
                 ->select(
                     DB::raw('payment_date as date'),
-                    'amount as credit'
+                    DB::raw('ROUND(amount, 2) as credit')
                 )
                 ->get();
 
@@ -481,7 +481,7 @@ class ApiController extends Controller
 
             $openingBalanceRecord = (object) [
                 'date' => $currentMonthStart->copy()->startOfMonth()->toDateString(),
-                'opening_balance' => $openingBalance,
+                'opening_balance' => round($openingBalance, 2),
             ];
 
             // Add the opening balance record to the beginning of the sorted records
@@ -499,4 +499,5 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
 }
