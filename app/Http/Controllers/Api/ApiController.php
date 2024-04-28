@@ -304,12 +304,12 @@ class ApiController extends Controller
                 ->sum('agent_commission');
 
             // Calculate the sum of redeemed points for the previous month
-            $reedeemPoints = PointRedemption::where('agent_id', $agentId)
+            $redeemPoints = PointRedemption::where('agent_id', $agentId)
                 ->whereIn('status', ['in_progress', 'completed'])
                 ->where('created_at', '<', $currentMonthStart)
                 ->sum('points');
 
-            $openingBalance -= $reedeemPoints;
+            $openingBalance -= $redeemPoints;
 
             // Create an array for the opening balance
             $openingBalanceRecord = (object) [
@@ -326,14 +326,15 @@ class ApiController extends Controller
                     'customername',
                     'agent_commission as credit',
                     DB::raw('NULL as debit'),
-                    DB::raw('NULL as tds')
+                    DB::raw('NULL as tds'),
+                    DB::raw('NULL as status') // Adding status column with NULL value
                 )
                 ->get();
 
             // Retrieve point_redemptions for debit
             $debitRedemptions = DB::table('point_redemptions')
                 ->where('agent_id', $agentId)
-                ->where('status', 'completed')
+                ->whereIn('status', ['in_progress', 'completed'])
                 ->whereBetween('created_at', [$startDate, $endDate])
                 ->select(
                     DB::raw('NULL as policy_no'),
@@ -341,23 +342,36 @@ class ApiController extends Controller
                     DB::raw('NULL as customername'),
                     DB::raw('NULL as credit'),
                     'amount_to_be_paid as debit',
-                    DB::raw('NULL as tds')
+                    DB::raw('NULL as tds'),
+                    'status' // Adding status column
                 )
                 ->get();
+
+            // Set status to NULL or 0 for policies
+            foreach ($policies as $policy) {
+                $policy->status = null;
+            }
 
             // Retrieve point_redemptions for tds
             $tdsRedemptions = DB::table('point_redemptions')
                 ->whereBetween('created_at', [$startDate, $endDate])
                 ->where('agent_id', $agentId)
+                ->whereIn('status', ['in_progress', 'completed'])
                 ->select(
                     DB::raw('NULL as policy_no'),
                     DB::raw('DATE(created_at) as date'), // Change the date format
                     DB::raw('NULL as customername'),
                     DB::raw('NULL as credit'),
                     DB::raw('NULL as debit'),
-                    'tds'
+                    'tds',
+                    'status' // Adding status column
                 )
                 ->get();
+
+            // Set status to NULL or 0 for policies
+            foreach ($tdsRedemptions as $tdsRedemption) {
+                $tdsRedemption->status = null;
+            }
 
             // Merge records and prepend the opening balance record
             $combinedRecords = collect([$openingBalanceRecord])->concat($policies)->concat($debitRedemptions)->concat($tdsRedemptions);
