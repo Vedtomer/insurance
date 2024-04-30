@@ -354,19 +354,19 @@ class ApiController extends Controller
 
             // Retrieve point_redemptions for tds
             $tdsRedemptions = DB::table('point_redemptions')
-                ->whereBetween('created_at', [$startDate, $endDate])
-                ->where('agent_id', $agentId)
-                ->whereIn('status', ['in_progress', 'completed'])
-                ->select(
-                    DB::raw('NULL as policy_no'),
-                    DB::raw('DATE(created_at) as date'), // Change the date format
-                    DB::raw('NULL as customername'),
-                    DB::raw('NULL as credit'),
-                    DB::raw('NULL as debit'),
-                    'tds',
-                    'status' // Adding status column
-                )
-                ->get();
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->where('agent_id', $agentId)
+            ->whereIn('status', ['in_progress', 'completed'])
+            ->select(
+                DB::raw('NULL as policy_no'),
+                DB::raw('DATE(created_at) as date'), // Change the date format
+                DB::raw('NULL as customername'),
+                DB::raw('NULL as credit'),
+                DB::raw('NULL as debit'),
+                DB::raw('CAST(tds AS CHAR) as tds'), // Cast tds to string
+                'status' // Adding status column
+            )
+            ->get();
 
             // Set status to NULL or 0 for policies
             foreach ($tdsRedemptions as $tdsRedemption) {
