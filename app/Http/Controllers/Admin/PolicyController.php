@@ -127,8 +127,9 @@ class PolicyController extends Controller
             ->leftJoin('agents', function ($join) {
                 $join->on('policies.agent_id', '=', 'agents.id');
             })
-            ->leftJoin(DB::raw('(SELECT agent_id, SUM(amount) as total_amount FROM transactions GROUP BY agent_id) AS trans'), function ($join) {
-                $join->on('policies.agent_id', '=', 'trans.agent_id');
+            ->leftJoin(DB::raw('(SELECT agent_id, SUM(amount) as total_amount,created_at FROM transactions GROUP BY agent_id) AS trans'), function ($join) use ($start_date, $end_date) {
+                $join->on('policies.agent_id', '=', 'trans.agent_id')
+                    ->whereBetween(DB::raw('trans.created_at'), [$start_date, $end_date]);
             })
             ->where('payment_by', 'SELF')
             ->select(
