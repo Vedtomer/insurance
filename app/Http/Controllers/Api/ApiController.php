@@ -40,16 +40,20 @@ class ApiController extends Controller
             ->sum('premium');
 
         $transaction = Transaction::where('agent_id', $agent_id)
-            ->whereBetween('created_at', [$startDate, $endDate])
+            //->whereBetween('created_at', [$startDate, $endDate])
             ->sum('amount');
 
         $pendingPremium = Policy::where('payment_by', 'self')
             ->where('agent_id', $agent_id)
-            ->whereBetween('policy_start_date', [$startDate, $endDate])
+           // ->whereBetween('policy_start_date', [$startDate, $endDate])
             ->sum('premium');
 
+            $totalCommissionpendingPremium = Policy::where('agent_id', $agent_id)
+            //->whereBetween('policy_start_date', [$startDate, $endDate])
+            ->sum('agent_commission');
+
         if ($cutAndPayTrue) {
-            $pendingPremium = $pendingPremium - ($transaction + $totalCommission);
+            $pendingPremium = $pendingPremium - ($transaction + $totalCommissionpendingPremium);
         } else {
             $pendingPremium = $pendingPremium - $transaction;
         }
