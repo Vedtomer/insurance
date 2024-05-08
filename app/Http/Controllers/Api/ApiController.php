@@ -195,13 +195,13 @@ class ApiController extends Controller
         $data = $this->points($request);
 
 
-        $whatsapp = $this->sendWhatsAppMessage($points, $agent->name);
+        // $whatsapp = $this->sendWhatsAppMessage($points, $agent->name);
 
         return response([
             'status' => true,
             'data' => $data,
 
-            'whatsapp' => $whatsapp,
+            // 'whatsapp' => $whatsapp,
             'message' => 'Points redeemed successfully'
         ]);
     }
