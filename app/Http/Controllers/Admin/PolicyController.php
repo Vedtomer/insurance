@@ -143,6 +143,7 @@ class PolicyController extends Controller
             )
             ->groupBy('policies.agent_id', 'agents.name', 'agents.cut_and_pay') // Group by cut_and_pay as well
             ->havingRaw('balance > 0')
+            ->orderBy('balance',"desc")
             ->get();
 
 
