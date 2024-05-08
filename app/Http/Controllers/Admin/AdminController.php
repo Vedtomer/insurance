@@ -81,7 +81,7 @@ class AdminController extends Controller
         }
 
         if (isset($agent_id)) {
-            $agent = Agent::find($agent_id);
+            // $agent = Agent::find($agent_id);
 
             if ($start_date !== null) {
                 $start_date = Carbon::parse($start_date);
@@ -106,9 +106,9 @@ class AdminController extends Controller
             $policy->whereBetween('policy_start_date', [$start_date, $end_date]);
         }
 
-        if (!empty($start_date) && !empty($end_date)) {
-            $transactions->whereBetween('payment_date', [$start_date, $end_date]);
-        }
+        // if (!empty($start_date) && !empty($end_date)) {
+        //     $transactions->whereBetween('payment_date', [$start_date, $end_date]);
+        // }
 
         if (!empty($agent_id)) {
             $policy->where('agent_id', $agent_id);
@@ -155,7 +155,8 @@ class AdminController extends Controller
         $amount = $transactions->sum('amount');
         $status = $policy->pluck('payment_by');
         $premiums = $policy->sum('premium');
-        $premium = $policy->where('payment_by', 'SELF')->sum('premium');
+
+        $premium = Policy::where('payment_by', 'SELF')->sum('premium');
 
 
         $agentIdsWithCutAndPay = Agent::where('cut_and_pay', 1)->pluck('id');
@@ -163,9 +164,9 @@ class AdminController extends Controller
         $sumCommission = Policy::where('payment_by', 'SELF')
             ->whereIn('agent_id', $agentIdsWithCutAndPay);
 
-        if (!empty($start_date) && !empty($end_date)) {
-            $sumCommission->whereBetween('policy_start_date', [$start_date, $end_date]);
-        }
+        // if (!empty($start_date) && !empty($end_date)) {
+        //     $sumCommission->whereBetween('policy_start_date', [$start_date, $end_date]);
+        // }
 
         if (!empty($agent_id)) {
             $sumCommission->where('agent_id', $agent_id);
@@ -178,7 +179,6 @@ class AdminController extends Controller
 
         $agent = Agent::get();
         $data = compact('admin', 'agent', 'policyCount', 'paymentby', 'premiums', 'royalCount', 'futureCount', 'tataCount', 'datausers', 'policy');
-
         return view('admin.dashboard', ['data' => $data]);
     }
 
@@ -201,7 +201,7 @@ class AdminController extends Controller
 
         ]);
 
-        // POLICY COUNT , premium , PENDDING premium , POINTS , 
+        // POLICY COUNT , premium , PENDDING premium , POINTS ,
         $userdata = new User();
         $userdata->name = $request->name;
         $userdata->email = $request->email;
@@ -302,7 +302,7 @@ class AdminController extends Controller
     //         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
 
     //     ]);
-    //     // dd($request->all());  
+    //     // dd($request->all());
     //     $USER = new ();
 
 
