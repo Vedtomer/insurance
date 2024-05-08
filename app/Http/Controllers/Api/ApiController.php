@@ -422,17 +422,23 @@ class ApiController extends Controller
             $currentMonthStart = $startDate->copy()->startOfMonth();
 
             // Calculate the opening balance for the previous month
-            $submitBalance = Transaction::where('agent_id', $agentId)
-                ->where('created_at', '<', $currentMonthStart)
+                 $submitBalance = Transaction::where('agent_id', $agentId)
+                ->where('payment_date', '<', $currentMonthStart)
                 ->sum('amount');
 
             // Calculate the sum of pending premium for the previous month
-            $pendingAmount = Policy::where('agent_id', $agentId)
-                ->where('payment_by', "SELF")
-                ->where('policy_start_date', '<', $currentMonthStart)
-                ->sum('agent_commission');
+                $pendingAmount = Policy::where('agent_id', $agentId)
+            ->where('payment_by', "SELF")
+            ->where('policy_start_date', '<', $currentMonthStart)
+            ->selectRaw('SUM(premium) as premium_total, SUM(agent_commission) as commission_total')
+            ->first();
 
-            $openingBalance = $pendingAmount - $submitBalance;
+
+            $openingBalance = $pendingAmount['premium_total'] - $submitBalance;
+
+            if($cutAndPay){
+                $openingBalance = $pendingAmount['premium_total']- $pendingAmount['commission_total'] - $submitBalance;
+            }
 
             // Retrieve policies
             $policies = DB::table('policies')
