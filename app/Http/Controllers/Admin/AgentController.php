@@ -238,6 +238,27 @@ public function importExcel(Request $request)
         }
     }
 
+    public function ChangePassword(Request $request, string $id)
+{
+    if ($request->isMethod('post')) {
+
+        $validate = $request->validate([
+            'password' => 'required|string|min:8|confirmed', 
+        ]);
+
+        $hashedPassword = bcrypt($request->password);
+
+        $user = Agent::find($id);
+        $user->password = $hashedPassword;
+        $user->save();
+
+        return redirect()->route('agent.list')->with('success', 'Password updated successfully.');
+    } else {
+        return view('admin.useredit',compact('id'));
+    }
+}
+    
+
     public function updateagentid(Request $request, $royalsundaram_id = null, $agent_id = null)
     {
 

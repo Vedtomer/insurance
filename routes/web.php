@@ -102,6 +102,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/delete-commission/{id}', [AgentController::class, 'destroy'])->name('delete.commission');
         Route::match(['get', 'post'], 'agent-edit/{id}', [AgentController::class, 'AgentEdit'])->name('agent.edit');
+        Route::match(['get', 'post'], 'change-password/{id}', [AgentController::class, 'ChangePassword'])->name('agent.change.password');
 
 
 
