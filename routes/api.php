@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\ApiController;
 
 Route::prefix('agent')->group(function () {
     Route::post('login', [LoginController::class, 'agentLogin']);
-    Route::post('signup-agent', [LoginController::class, 'agentSignUp']);
+    Route::post('signup', [LoginController::class, 'agentSignUp']);
 
     Route::middleware(['auth:api'])->group(function () {
         Route::post('logout', [LoginController::class, 'agentlogout']);
