@@ -2,16 +2,12 @@
 
 
 namespace App\Http\Controllers\Api;
-use DB;
 use Validator;
-use App\Imports\ExcelImport;
 use Illuminate\Http\Request;
-
-
-use Illuminate\Http\JsonResponse;
+use App\Models\Agent;
 use App\Http\Controllers\Controller;
-use App\Models\Shriramgi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -80,6 +76,45 @@ class LoginController extends Controller
     }
     
 
+    public function agentSignUp(Request $request)
+    {
+        // Validate the incoming request
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:agents',
+            'password' => 'required|string|min:6',
+            'mobile_number' => 'required|string|max:15|unique:agents',
+            'address' => 'nullable|string|max:255', // Assuming address is optional
+        ]);
+    
+        if ($validator->fails()) {
+            // Return only the first validation error
+            $firstError = $validator->errors()->first();
+            return response()->json(['message' => 'Validation Error', 'error' => $firstError, 'status' => false], 422);
+        }
+    
+        try {
+            // Create new agent
+            $agent = new Agent();
+            $agent->name = $request->name;
+            $agent->email = $request->email;
+            $agent->password = Hash::make($request->password);
+            $agent->address = $request->address;
+            $agent->mobile_number = $request->mobile_number;
+            $agent->save();
+    
+            // Generate a token for the newly created agent
+            $token = $agent->createToken('MyApp')->accessToken;
+    
+            return response()->json([
+                'status' => true,
+                'data' => $agent,
+                'token' => $token
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'status' => false], 500);
+        }
+    }
 
 public function agentlogout()
 {
