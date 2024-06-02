@@ -274,15 +274,15 @@ class ApiController extends Controller
             ->where('status', 'completed')
             ->sum('points');
 
-        $total = Policy::where('agent_id', $agent_id)
-            ->sum('agent_commission');
+        // $total = Policy::where('agent_id', $agent_id)
+        //     ->sum('agent_commission');
 
         $reedeemPoints = PointRedemption::where('agent_id', $agent_id)
             ->whereIn('status', ['in_progress', 'completed'])
             ->sum('points');
 
 
-        $remainingPoints = $total - $reedeemPoints;
+        $remainingPoints = $totalAgentCommission - $reedeemPoints;
 
         return  $data = [
             'remaining_points' => $remainingPoints,

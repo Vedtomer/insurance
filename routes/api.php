@@ -7,6 +7,13 @@ use App\Http\Controllers\Api\ApiController;
 
 
 
+
+
+
+
+
+
+
 Route::prefix('agent')->group(function () {
     Route::post('login', [LoginController::class, 'agentLogin']);
     Route::post('signup', [LoginController::class, 'agentSignUp']);
